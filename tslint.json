@@ -1,0 +1,36 @@
+{
+    /*"rulesDirectory": "built/local/tslint",*/
+    "extends": "tslint:recommended",
+    "rules": {
+        "completed-docs": true,
+        "comment-format": [true,
+            "check-space"
+        ],
+	"no-console": false,
+        "indent": [true,
+            "spaces"
+        ],
+        "no-internal-module": true,
+        "jsdoc-format": true,
+        "linebreak-style": [true, "unix"],
+        "ordered-imports": false,
+        "prefer-const": true,
+        "quotemark": [true,
+            "single",
+            "avoid-escape"
+        ],
+        "no-switch-case-fall-through": true,
+        "triple-equals": true,
+        "whitespace": [true,
+            "check-branch",
+            "check-decl",
+            "check-separator",
+            "check-rest-spread",
+            "check-type",
+            "check-typecast",
+            "check-type-operator",
+            "check-preblock",
+            "check-postbrace"
+        ]
+    }
+}
