@@ -28,6 +28,18 @@ export interface ITwitarrHTTP {
   /** The default options used when making requests with this instance. */
   options: TwitarrHTTPOptions;
 
+  /** The username for ReST APIv2 calls. */
+  getUsername(): string;
+  setUsername(username: string): ITwitarrHTTP;
+
+  /** The password for ReST APIv2 calls. */
+  getPassword(): string;
+  setPassword(password: string): ITwitarrHTTP;
+
+  /** The authorization key to use for ReST APIv2 calls. */
+  getKey(): string;
+  setKey(key: string): ITwitarrHTTP;
+
   /**
    * Perform an HTTP GET to the provided URL.
    * @param url The URL to connect to.

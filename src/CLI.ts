@@ -103,6 +103,7 @@ const CLI = () => {
         config.url = url;
         config.username = undefined;
         config.password = undefined;
+        config.key = undefined;
       }
 
       if (options.username) {
@@ -111,19 +112,53 @@ const CLI = () => {
       if (options.password) {
         config.password = options.password;
       }
-      const auth = new API.TwitarrAuthConfig(config.username, config.password);
+      const auth = new API.TwitarrAuthConfig(config.username, config.password, config.key);
       const server = new API.TwitarrServer('Twitarr', config.url, auth);
       const http = new Rest.AxiosHTTP(server);
+
       return Client.checkServer(server, http).then(() => {
-        console.log(colors.green('Connection succeeded.'));
-        if (!program.config) { // don't write the config if a config was passed in
-          console.warn('Saving configuration to ' + defaultConfigFile);
-          fs.writeFileSync(defaultConfigFile, JSON.stringify(config, undefined, 2), { mode: 0o600 });
-        }
-        return true;
+        console.log(colors.green('Server is valid.'));
+        return new Client(http).connect('Twitarr', config.url, config.username, config.password)
+          .then((ret) => {
+            console.log(colors.green('Login succeeded.'));
+            config.key = http.getKey();
+            if (!program.config) { // don't write the config if a config was passed in
+              console.warn('Saving configuration to ' + defaultConfigFile);
+              fs.writeFileSync(defaultConfigFile, JSON.stringify(config, undefined, 2), { mode: 0o600 });
+            }
+            return ret;
+          });
       }).catch((err) => {
         return handleError('Server check failed', err);
       });
+    });
+
+  program.command('profile')
+    .description('Read or edit your profile')
+    .option('-d, --display-name <display-name>', 'Set your display name')
+    .option('-e, --email <email>', 'Set your email address')
+    .option('-h, --home <home-location>', 'Set your home location')
+    .option('-r, --real-name <real-name>', 'Set your real name')
+    .option('-p, --pronouns <pronouns>', 'Set your pronouns')
+    .option('-n, --room-number <room-number>', 'Set your room number')
+    .action((options) => {
+      const config = readConfig();
+      const auth = new API.TwitarrAuthConfig(config.username, config.password, config.key);
+      const server = new API.TwitarrServer('Twitarr', config.url, auth);
+      const http = new Rest.AxiosHTTP(server);
+      if (options.length > 0) {
+        console.log('setting options:', options);
+      } else {
+        return new Client(http).user().getProfile().then((profile) => {
+          const t = new Table(tableFormat);
+          for (const key of Object.keys(profile)) {
+            const name = key? key.replace(/_/g, ' ') : key;
+            t.push([name + ':', profile[key]]);
+          }
+          console.log(t.toString());
+          console.log('');
+        });
+      }
     });
 
   program.parse(process.argv);

@@ -11,6 +11,8 @@ import {TwitarrResult} from './api/TwitarrResult';
 import {TwitarrServer} from './api/TwitarrServer';
 
 import {AxiosHTTP} from './rest/AxiosHTTP';
+import { UserDAO } from './dao/UserDAO';
+import { userInfo } from 'os';
 
 /**
  * The Twitarr client.  This is the primary interface to Twitarr servers.
@@ -34,7 +36,7 @@ export class Client implements IHasHTTP {
     }
     opts.headers.accept = 'application/json';
 
-    const welcomeUrl = server.resolveURL('text/welcome.json');
+    const welcomeUrl = server.resolveURL('api/v2/text/welcome');
     console.debug('checkServer: checking URL: ' + welcomeUrl);
     await httpImpl.get(welcomeUrl, opts);
     return true;
@@ -65,6 +67,16 @@ export class Client implements IHasHTTP {
     this.http = Client.defaultHttp;
   }
 
+  public async isLoggedIn(): Promise<boolean> {
+    try {
+      return this.user().getProfile().then(() => {
+        return true;
+      });
+    } catch (err) {
+      return false;
+    }
+  }
+
   /**
    * Connect to an Twitarr server and return a [[TwitarrServer]] for that connection.
    */
@@ -82,13 +94,32 @@ export class Client implements IHasHTTP {
     }
     self.server = server;
 
+    if (self.server.auth.key) {
+      try {
+        const profile = await this.user().getProfile();
+        console.log('found auth key:', self.server.auth.key, profile);
+        return self;
+      } catch (err) {
+        console.log('auth key was invalid:', err);
+      }
+    }
+
+    try {
+      await this.user().login();
+    } catch (err) {
+      if (err.code === 401) {
+        throw new TwitarrError('username or password was invalid', err.code, err.options, err.data);
+      }
+      throw new TwitarrError('unexpected error: ' + err.message, err.code, err.options, err.data);
+    }
+
     return self;
   }
 
-  /** Get a flow DAO for querying flows. */
-  /*
-  public flows() {
-    return new FlowDAO(this);
+  /**
+   * Get a user DAO.
+   */
+  public user() {
+    return new UserDAO(this);
   }
-  */
 }

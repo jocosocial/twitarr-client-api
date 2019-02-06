@@ -2,7 +2,6 @@
     /*"rulesDirectory": "built/local/tslint",*/
     "extends": "tslint:recommended",
     "rules": {
-        "completed-docs": true,
         "comment-format": [true,
             "check-space"
         ],

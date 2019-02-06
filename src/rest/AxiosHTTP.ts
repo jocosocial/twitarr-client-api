@@ -226,10 +226,6 @@ export class AxiosHTTP extends AbstractHTTP {
       const allOptions = this.getOptions(options);
 
       const axiosOpts = {
-        auth: {
-          password: allOptions.auth.password,
-          username: allOptions.auth.username,
-        },
         baseURL: server.url,
         timeout: allOptions.timeout,
         withCredentials: true,

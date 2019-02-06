@@ -64,6 +64,45 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     }
   }
 
+  public getUsername() {
+    return this.server && this.server.auth? this.server.auth.username : null;
+  }
+
+  public setUsername(username: string) {
+    if (this.server && this.server.auth) {
+      this.server.auth.username = username;
+    } else {
+      throw new TwitarrError('server auth not yet configured!');
+    }
+    return this;
+  }
+
+  public getPassword() {
+    return this.server && this.server.auth? this.server.auth.password : null;
+  }
+
+  public setPassword(password: string) {
+    if (this.server && this.server.auth) {
+      this.server.auth.password = password;
+    } else {
+      throw new TwitarrError('server auth not yet configured!');
+    }
+    return this;
+  }
+
+  public getKey() {
+    return this.server && this.server.auth? this.server.auth.key : null;
+  }
+
+  public setKey(key: string): ITwitarrHTTP {
+    if (this.server && this.server.auth) {
+      this.server.auth.key = key;
+    } else {
+      throw new TwitarrError('server auth not yet configured!');
+    }
+    return this;
+  }
+
   /** Make an HTTP GET call. This must be implemented by the concrete implementation. */
   public abstract get(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 
@@ -134,12 +173,12 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
 
     const server = this.getServer(options);
     ret.server = server;
-    if (server && server.auth) {
-      ret.auth = Object.assign(ret.auth, server.auth);
-    }
     Object.assign(ret, options);
     if (!ret.headers.hasOwnProperty('X-Requested-With')) {
       ret.headers['X-Requested-With'] = 'XMLHttpRequest';
+    }
+    if (!ret.parameters.hasOwnProperty('key')) {
+      ret.parameters.key = this.getKey();
     }
     return ret;
   }

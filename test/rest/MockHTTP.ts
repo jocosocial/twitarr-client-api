@@ -20,8 +20,8 @@ export class MockHTTP extends AbstractHTTP {
       urlObj.search(options.parameters);
     }
 
-    switch(urlObj.toString()) {
-      case 'http://demo.twitarr.com/text/welcome.json': {
+    switch (urlObj.toString()) {
+      case 'http://demo.twitarr.com/api/v2/text/welcome': {
         const result = TwitarrResult.ok(require('../data/welcome.json'));
         result.type = 'application/json';
         return Promise.resolve(result);
@@ -50,7 +50,7 @@ export class MockHTTP extends AbstractHTTP {
       urlObj.search(options.parameters);
     }
 
-    switch(urlObj.toString()) {
+    switch (urlObj.toString()) {
       /*
       case 'rest/alarms/404725?ack=true': {
         const result = TwitarrResult.ok('');
@@ -69,7 +69,16 @@ export class MockHTTP extends AbstractHTTP {
       urlObj.search(options.parameters);
     }
 
-    switch(urlObj.toString()) {
+    switch (urlObj.toString()) {
+      case '/api/v2/user/auth': {
+        const result = TwitarrResult.ok({
+          key: 'kvort:12345',
+          status: 'ok',
+          username: 'kvort',
+        });
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
       /*
       case 'rest/alarms/404725?ack=true': {
         const result = TwitarrResult.ok('');
