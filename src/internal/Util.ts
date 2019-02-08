@@ -68,4 +68,20 @@ export class Util {
       return undefined;
     }
   }
+
+  public static setProperties(target: any, source: any, ...props) {
+    for (const prop of props) {
+      if (!Util.isEmpty(source[prop])) {
+        target[prop] = source[prop];
+      }
+    }
+  }
+
+  public static setDateProperties(target: any, source: any, ...props) {
+    for (const prop of props) {
+      if (!Util.isEmpty(source[prop])) {
+        target[prop] = Util.toMoment(source[prop]);
+      }
+    }
+  }
 }

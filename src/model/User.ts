@@ -9,22 +9,8 @@ import { Moment } from 'moment';
 export class User {
   public static fromRest(data: any) {
     const ret = new User();
-    for (const key of ['username', 'email', 'display_name', 'empty_password', 'unnoticed_alerts']) {
-      if (!Util.isEmpty(data[key])) {
-        ret[key] = data[key];
-      }
-    }
-    /*
-    if (!Util.isEmpty(data.role)) {
-      ret.role = Role.fromRest(data.role);
-    }
-    */
-    if (!Util.isEmpty(data.last_login)) {
-      ret.last_login = Util.toMoment(data.last_login);
-    }
-    if (!Util.isEmpty(data.last_photo_updated)) {
-      ret.last_photo_updated = Util.toMoment(data.last_photo_updated);
-    }
+    Util.setProperties(ret, data, 'username', 'email', 'display_name', 'empty_password', 'unnoticed_alerts');
+    Util.setDateProperties(ret, data, 'last_login', 'last_photo_updated');
     return ret;
   }
 
