@@ -4,6 +4,10 @@ import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrError } from '../api/TwitarrError';
 
+import { User } from '../model/User';
+
+import { Util } from '../internal/Util';
+
 export class UserDAO {
   /**
    * The [[ITwitarrHTTP]] implementation to use internally when making requests.
@@ -56,7 +60,7 @@ export class UserDAO {
   public async getProfile() {
     return this.http.get('/api/v2/user/whoami').then((result) => {
       return this.handleErrors(result).then((data) => {
-        return data.user;
+        return User.fromRest(data.user);
       });
     });
   }
