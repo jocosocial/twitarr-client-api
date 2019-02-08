@@ -1,6 +1,8 @@
 import * as startCase from 'lodash.startcase';
 
 import {API, Model, Rest, DAO, Client} from './API';
+import { Util } from './internal/Util';
+import { TwitarrError } from './api/TwitarrError';
 
 /** @hidden */
 const CLI = () => {
@@ -52,9 +54,8 @@ const CLI = () => {
       config = JSON.parse(fs.readFileSync(configfile));
     } else {
       config = {
-        password: 'admin',
+        key: undefined,
         url: undefined,
-        username: 'admin',
       };
     }
     return config;
@@ -101,24 +102,19 @@ const CLI = () => {
       if (url) {
         // the user is passing a URL, reset the config
         config.url = url;
-        config.username = undefined;
-        config.password = undefined;
         config.key = undefined;
       }
+      if (Util.isEmpty(options.username) || Util.isEmpty(options.password)) {
+        throw new TwitarrError('A username and password are required!');
+      }
 
-      if (options.username) {
-        config.username = options.username;
-      }
-      if (options.password) {
-        config.password = options.password;
-      }
-      const auth = new API.TwitarrAuthConfig(config.username, config.password, config.key);
+      const auth = new API.TwitarrAuthConfig(options.username, options.password);
       const server = new API.TwitarrServer('Twitarr', config.url, auth);
       const http = new Rest.AxiosHTTP(server);
 
       return Client.checkServer(server, http).then(() => {
         console.log(colors.green('Server is valid.'));
-        return new Client(http).connect('Twitarr', config.url, config.username, config.password)
+        return new Client(http).connect('Twitarr', config.url, options.username, options.password)
           .then((ret) => {
             console.log(colors.green('Login succeeded.'));
             config.key = http.getKey();
@@ -143,7 +139,7 @@ const CLI = () => {
     .option('-n, --room-number <room-number>', 'Set your room number')
     .action((options) => {
       const config = readConfig();
-      const auth = new API.TwitarrAuthConfig(config.username, config.password, config.key);
+      const auth = new API.TwitarrAuthConfig(undefined, undefined, config.key);
       const server = new API.TwitarrServer('Twitarr', config.url, auth);
       const http = new Rest.AxiosHTTP(server);
       if (options.length > 0) {
