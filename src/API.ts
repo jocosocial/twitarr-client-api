@@ -9,6 +9,7 @@ import {AxiosHTTP} from './rest/AxiosHTTP';
 import {Client} from './Client';
 
 /* tslint:disable:object-literal-sort-keys */
+/* tslint:disable:variable-name */
 
 /** @hidden */
 const API = Object.freeze({
@@ -33,6 +34,7 @@ const Rest = Object.freeze({
 });
 
 /* tslint:enable:object-literal-sort-keys */
+/* tslint:enable:variable-name */
 
 /** @hidden */
 export {API, DAO, Model, Rest, Client};

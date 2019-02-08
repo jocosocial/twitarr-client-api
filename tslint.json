@@ -2,10 +2,14 @@
     /*"rulesDirectory": "built/local/tslint",*/
     "extends": "tslint:recommended",
     "rules": {
+        "variable-name": [true,
+            "allow-leading-underscore",
+            "allow-snake-case"
+        ],
         "comment-format": [true,
             "check-space"
         ],
-	"no-console": false,
+        "no-console": false,
         "indent": [true,
             "spaces"
         ],
