@@ -16,6 +16,20 @@ const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
 export class Util {
 
   /**
+   * Whether a string is empty.
+   * @param value
+   */
+  public static isEmpty(value?: any) {
+    if (value === undefined || value === null) {
+      return true;
+    }
+    if (typeof value === 'string') {
+      return value.trim().length === 0;
+    }
+    return false;
+  }
+
+  /**
    * Whether or not the passed object is already a date. (Either a [[Moment]] object, or
    * a JavaScript [[Date]] object.)
    */
