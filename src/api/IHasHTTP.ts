@@ -1,4 +1,4 @@
-import {ITwitarrHTTP} from './ITwitarrHTTP';
+import { ITwitarrHTTP } from './ITwitarrHTTP';
 
 /**
  * Interface for a class that has an HTTP object.

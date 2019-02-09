@@ -1,12 +1,12 @@
-import {TwitarrAuthConfig} from './api/TwitarrAuthConfig';
-import {TwitarrError} from './api/TwitarrError';
-import {TwitarrHTTPOptions} from './api/TwitarrHTTPOptions';
-import {TwitarrResult} from './api/TwitarrResult';
-import {TwitarrServer} from './api/TwitarrServer';
+import { TwitarrAuthConfig } from './api/TwitarrAuthConfig';
+import { TwitarrError } from './api/TwitarrError';
+import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
+import { TwitarrResult } from './api/TwitarrResult';
+import { TwitarrServer } from './api/TwitarrServer';
 
-import {AxiosHTTP} from './rest/AxiosHTTP';
+import { AxiosHTTP } from './rest/AxiosHTTP';
 
-import {Client} from './Client';
+import { Client } from './Client';
 
 /* tslint:disable:object-literal-sort-keys */
 /* tslint:disable:variable-name */
@@ -37,4 +37,4 @@ const Rest = Object.freeze({
 /* tslint:enable:variable-name */
 
 /** @hidden */
-export {API, DAO, Model, Rest, Client};
+export { API, DAO, Model, Rest, Client };

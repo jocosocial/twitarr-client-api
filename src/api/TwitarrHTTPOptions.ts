@@ -1,6 +1,6 @@
-import {TwitarrAuthConfig} from './TwitarrAuthConfig';
-import {TwitarrServer} from './TwitarrServer';
-import {IHash} from '../internal/IHash';
+import { TwitarrAuthConfig } from './TwitarrAuthConfig';
+import { TwitarrServer } from './TwitarrServer';
+import { IHash } from '../internal/IHash';
 
 const DEFAULT_TIMEOUT = 10000;
 
@@ -29,7 +29,7 @@ export class TwitarrHTTPOptions {
     if (this[AUTH_PROP]) {
       return this[AUTH_PROP];
     }
-    return {} as TwitarrAuthConfig;
+    return { } as TwitarrAuthConfig;
   }
 
   public set auth(a: TwitarrAuthConfig) {
@@ -40,10 +40,10 @@ export class TwitarrHTTPOptions {
   public server: TwitarrServer;
 
   /** HTTP headers to be passed to the request. */
-  public headers = {} as IHash<string>;
+  public headers = { } as IHash<string>;
 
   /** HTTP parameters to be passed on the URL. */
-  public parameters = {} as IHash<string>;
+  public parameters = { } as IHash<string>;
 
   /** HTTP data to be passed when POSTing */
   public data: any;
@@ -81,12 +81,14 @@ export class TwitarrHTTPOptions {
   }
 
   public toJSON(): object {
-    const ret = Object.assign({}, this);
+    const ret = Object.assign({ }, this);
     if (this[TIMEOUT_PROP]) {
       ret.timeout = this.timeout;
+      delete ret[TIMEOUT_PROP];
     }
     if (this[AUTH_PROP]) {
       ret.auth = this.auth;
+      delete ret[AUTH_PROP];
     }
     return ret;
   }

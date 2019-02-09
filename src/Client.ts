@@ -1,18 +1,13 @@
-import * as axios from 'axios';
+import { IHasHTTP } from './api/IHasHTTP';
+import { ITwitarrHTTP } from './api/ITwitarrHTTP';
 
-import {IHasHTTP} from './api/IHasHTTP';
-import {ITwitarrHTTP} from './api/ITwitarrHTTP';
+import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
+import { TwitarrError } from './api/TwitarrError';
 
-import {TwitarrAuthConfig} from './api/TwitarrAuthConfig';
-import {TwitarrHTTPOptions} from './api/TwitarrHTTPOptions';
-import {TwitarrError} from './api/TwitarrError';
-import {TwitarrResult} from './api/TwitarrResult';
+import { TwitarrServer } from './api/TwitarrServer';
 
-import {TwitarrServer} from './api/TwitarrServer';
-
-import {AxiosHTTP} from './rest/AxiosHTTP';
+import { AxiosHTTP } from './rest/AxiosHTTP';
 import { UserDAO } from './dao/UserDAO';
-import { userInfo } from 'os';
 
 /**
  * The Twitarr client.  This is the primary interface to Twitarr servers.
@@ -108,9 +103,9 @@ export class Client implements IHasHTTP {
       await this.user().login();
     } catch (err) {
       if (err.code === 401) {
-        throw new TwitarrError('username or password was invalid', err.code, err.options, err.data);
+        throw new TwitarrError('username or password was invalid', err.code, err.options, err.errors, err.data);
       }
-      throw new TwitarrError('unexpected error: ' + err.message, err.code, err.options, err.data);
+      throw new TwitarrError('unexpected error: ' + err.message, err.code, err.options, err.errors, err.data);
     }
 
     return self;

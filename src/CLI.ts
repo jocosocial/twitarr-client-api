@@ -1,6 +1,6 @@
 import * as startCase from 'lodash.startcase';
 
-import {API, Model, Rest, DAO, Client} from './API';
+import { API, Model, Rest, DAO, Client } from './API';
 import { Util } from './internal/Util';
 import { TwitarrError } from './api/TwitarrError';
 

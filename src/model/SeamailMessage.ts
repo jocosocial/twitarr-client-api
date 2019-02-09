@@ -11,16 +11,20 @@ import { Moment } from 'moment';
 export class SeamailMessage {
   public static fromRest(data: any) {
     const ret = new SeamailMessage();
-    Util.setProperties(ret, data, 'id', 'text');
-    Util.setDateProperties(ret, data, 'timestamp');
 
-    if (!Util.isEmpty(data.author)) {
-      ret.author = User.fromRest(data.author);
+    if (!Util.isEmpty(data)) {
+      Util.setProperties(ret, data, 'id', 'text');
+      Util.setDateProperties(ret, data, 'timestamp');
+
+      if (!Util.isEmpty(data.author)) {
+        ret.author = User.fromRest(data.author);
+      }
+
+      if (!Util.isEmpty(data.read_users)) {
+        ret.read_users = data.read_users.map((user) => User.fromRest(user));
+      }
     }
 
-    if (!Util.isEmpty(data.read_users)) {
-      ret.read_users = data.read_users.map((user) => User.fromRest(user));
-    }
     return ret;
   }
 
@@ -37,5 +41,5 @@ export class SeamailMessage {
   public timestamp: Moment;
 
   /** The users who have read the message. */
-  public read_users: User[];
+  public read_users: User[] = [];
 }

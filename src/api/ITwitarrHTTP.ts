@@ -1,9 +1,9 @@
 /** @hidden */
 declare const Promise;
 
-import {TwitarrHTTPOptions} from './TwitarrHTTPOptions';
-import {TwitarrResult} from './TwitarrResult';
-import {TwitarrServer} from './TwitarrServer';
+import { TwitarrHTTPOptions } from './TwitarrHTTPOptions';
+import { TwitarrResult } from './TwitarrResult';
+import { TwitarrServer } from './TwitarrServer';
 
 /**
  * Interface for making ReST calls to an HTTP server.

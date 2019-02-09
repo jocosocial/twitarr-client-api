@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {AxiosStatic, AxiosInstance, AxiosResponse, AxiosRequestConfig} from 'axios';
+import { AxiosStatic, AxiosInstance, /*AxiosResponse,*/ AxiosRequestConfig } from 'axios';
 import * as qs from 'qs';
 import * as clonedeep from 'lodash.clonedeep';
 
@@ -7,13 +7,11 @@ import * as clonedeep from 'lodash.clonedeep';
 // tslint:disable-next-line
 const URI = require('urijs');
 
-import {AbstractHTTP} from './AbstractHTTP';
-import {TwitarrError} from '../api/TwitarrError';
-import {TwitarrHTTPOptions} from '../api/TwitarrHTTPOptions';
-import {TwitarrResult} from '../api/TwitarrResult';
-import {TwitarrServer} from '../api/TwitarrServer';
-
-import {Util} from '../internal/Util';
+import { AbstractHTTP } from './AbstractHTTP';
+import { TwitarrError } from '../api/TwitarrError';
+import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
+import { TwitarrResult } from '../api/TwitarrResult';
+import { TwitarrServer } from '../api/TwitarrServer';
 
 /**
  * Implementation of the [[ITwitarrHTTP]] interface using Axios: https://github.com/mzabriskie/axios
@@ -82,7 +80,7 @@ export class AxiosHTTP extends AbstractHTTP {
     urlObj.search(opts.params);
     console.debug('PUT ' + urlObj.toString());
 
-    opts.data = Object.apply({}, opts.params);
+    opts.data = Object.apply({ }, opts.params);
     opts.method = 'put';
     opts.url = realUrl;
 
@@ -181,7 +179,7 @@ export class AxiosHTTP extends AbstractHTTP {
     if (allOptions.headers) {
       ret.headers = clonedeep(allOptions.headers);
     } else {
-      ret.headers = {};
+      ret.headers = { };
     }
 
     if (!ret.headers.accept) {

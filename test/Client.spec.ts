@@ -7,12 +7,12 @@ import {TwitarrServer} from '../src/api/TwitarrServer';
 
 import {MockHTTP} from './rest/MockHTTP';
 
-const SERVER_NAME='Demo';
-const SERVER_URL='http://demo.twitarr.com/';
-const SERVER_USER='demo';
-const SERVER_PASSWORD='demo';
+const SERVER_NAME = 'Demo';
+const SERVER_URL = 'http://demo.twitarr.com/';
+const SERVER_USER = 'demo';
+const SERVER_PASSWORD = 'demo';
 
-let twitarr : Client, server, auth, mockHTTP;
+let twitarr: Client, server, auth, mockHTTP;
 
 describe('Given an instance of Twitarr...', () => {
   beforeEach(() => {
@@ -23,10 +23,10 @@ describe('Given an instance of Twitarr...', () => {
   });
   describe('when I have a default Twitarr object', () => {
     it('it should have no server', () => {
-      expect((<any>twitarr).server).toBeUndefined();
+      expect((twitarr).server).toBeUndefined();
     });
     it('it should pass when checkServer is called on a valid server', () => {
-      let ret = Client.checkServer(server, mockHTTP);
+      const ret = Client.checkServer(server, mockHTTP);
       expect(ret).toBeDefined();
       return ret.then((result) => {
         expect(result).toBeDefined();

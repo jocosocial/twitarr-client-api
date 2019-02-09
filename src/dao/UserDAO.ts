@@ -52,7 +52,7 @@ export class UserDAO {
           this.http.setKey(data.key);
           return true;
         }
-        throw new TwitarrError('No key returned from user auth', result.code, undefined, result);
+        throw new TwitarrError('No key returned from user auth', result.code, undefined, undefined, result);
       });
     });
   }
@@ -86,6 +86,6 @@ export class UserDAO {
         return Promise.resolve(result.data);
       }
     }
-    throw new TwitarrError('Failed to parse result.', result.code, undefined, result.data);
+    throw new TwitarrError('Failed to parse result.', result.code, undefined, undefined, result.data);
   }
 }

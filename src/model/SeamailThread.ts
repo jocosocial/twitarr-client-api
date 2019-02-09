@@ -12,9 +12,18 @@ import { Moment } from 'moment';
 export class SeamailThread {
   public static fromRest(data: any) {
     const ret = new SeamailThread();
-    Util.setProperties(ret, data, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
-    Util.setDateProperties(ret, data, 'timestamp');
-    ret.messages = data.messages.map((message) => SeamailMessage.fromRest(message));
+
+    if (!Util.isEmpty(data)) {
+      Util.setProperties(ret, data, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
+      Util.setDateProperties(ret, data, 'timestamp');
+      if (!Util.isEmpty(data.users)) {
+        ret.users = data.users.map((user) => User.fromRest(user));
+      }
+      if (!Util.isEmpty(data.messages)) {
+        ret.messages = data.messages.map((message) => SeamailMessage.fromRest(message));
+      }
+    }
+
     return ret;
   }
 
@@ -22,13 +31,13 @@ export class SeamailThread {
   public id: string;
 
   /** The users involved in the message. */
-  public users: User[];
+  public users: User[] = [];
 
   /** The subject of the thread. */
   public subject: string;
 
   /** The messages in the thread. */
-  public messages: SeamailMessage[];
+  public messages: SeamailMessage[] = [];
 
   /** The number of messages (or unread messages) in the thread. */
   public message_count: number;
@@ -37,8 +46,8 @@ export class SeamailThread {
   public timestamp: Moment;
 
   /** Whether `message_count` is unread or total. */
-  public count_is_unread: boolean;
+  public count_is_unread: false;
 
   /** Whether there are unread messages in the thread. */
-  public is_unread: boolean;
+  public is_unread: false;
 }

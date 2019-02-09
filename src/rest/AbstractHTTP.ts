@@ -1,12 +1,12 @@
 // tslint:disable-next-line
 /// <reference path="../../typings/index.d.ts" />
 
-import {ITwitarrHTTP} from '../api/ITwitarrHTTP';
-import {TwitarrError} from '../api/TwitarrError';
-import {TwitarrHTTPOptions} from '../api/TwitarrHTTPOptions';
-import {TwitarrResult} from '../api/TwitarrResult';
-import {TwitarrServer} from '../api/TwitarrServer';
-import {JsonTransformer} from './JsonTransformer';
+import { ITwitarrHTTP } from '../api/ITwitarrHTTP';
+import { TwitarrError } from '../api/TwitarrError';
+import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
+import { TwitarrResult } from '../api/TwitarrResult';
+import { TwitarrServer } from '../api/TwitarrServer';
+import { JsonTransformer } from './JsonTransformer';
 
 /** @hidden */
 const jsonTransformer = new JsonTransformer();
@@ -26,7 +26,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     if (this[OPTIONS_PROP]) {
       return this[OPTIONS_PROP];
     }
-    return {} as TwitarrHTTPOptions;
+    return { } as TwitarrHTTPOptions;
   }
 
   public set options(o: TwitarrHTTPOptions) {
@@ -198,8 +198,9 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   protected handleError(err: any, options?: any): TwitarrError {
     const message = AbstractHTTP.extractMessage(err);
     const status = AbstractHTTP.extractStatus(err);
+    const errors = AbstractHTTP.extractError(err);
     const data = AbstractHTTP.extractData(err);
-    return new TwitarrError(message, status, options, data);
+    return new TwitarrError(message, status, options, errors, data);
   }
 
   /* tslint:disable:member-ordering */
@@ -241,11 +242,22 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   }
 
   /**
+   * Attempt to determine the error message in an error response.
+   * @hidden
+   */
+  protected static extractError(err: any): any {
+    if (err && err.response && err.response.data && err.response.data.status === 'error') {
+      return err.response.data.errors;
+    }
+    return undefined;
+  }
+
+  /**
    * Attempt to determine the data in an error response.
    * @hidden
    */
   protected static extractData(err: any): any {
-    if (err && err.response && err.response.data) {
+    if (err && err.response && err.response.data && err.response.data.status !== 'error') {
       return err.response.data;
     }
     return undefined;

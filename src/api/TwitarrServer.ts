@@ -2,8 +2,8 @@
 // tslint:disable-next-line
 const URI = require('urijs');
 
-import {TwitarrAuthConfig} from './TwitarrAuthConfig';
-import {UUID} from '../internal/UUID';
+import { TwitarrAuthConfig } from './TwitarrAuthConfig';
+import { UUID } from '../internal/UUID';
 
 /**
  * Represents a remote Twitarr server.

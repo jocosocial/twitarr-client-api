@@ -10,14 +10,19 @@ export class TwitarrError extends Error {
   private statusCode: number;
 
   /**
-   * The data (payload) associated with a response.
-   */
-  private data: any;
-
-  /**
-   * The options provided as part of the request that resulted in this erro.
+   * The options provided as part of the request that resulted in this error.
    */
   private options: any;
+
+  /**
+   * Any error messages that were returned from Twit-arr.
+   */
+  private errors: { [key: string]: string } = { };
+
+  /**
+   * Any other useful data.
+   */
+  private data: any;
 
   /** The error code associated with this error. */
   public get code() {
@@ -30,12 +35,19 @@ export class TwitarrError extends Error {
    * @param message - The error message.
    * @param code - An optional error code to associate with the error.
    */
-  constructor(message: string, code?: number, options?: any, data?: any) {
+  // tslint:disable-next-line
+  constructor(message?: string, code?: number, errors?: string[] | { [key: string]: string }, options?: any, data?: any) {
       super(message);
-      this.name = this.constructor.name;
-      this.statusCode = code;
-      this.data = data;
-      this.options = options;
+      const self = this;
+      self.name = self.constructor.name;
+      self.statusCode = code;
+      if (errors && errors instanceof Array) {
+        errors.forEach((err, index) => self.errors[''+index] = err[index]);
+      }
+      self.options = options;
+      self.data = data;
+
+       // tslint:disable-next-line
       if (typeof Error.captureStackTrace === 'function') {
           Error.captureStackTrace(this, this.constructor);
       } else {

@@ -1,6 +1,6 @@
-import {TwitarrError} from '../api/TwitarrError';
+import { TwitarrError } from '../api/TwitarrError';
 
-import {Moment} from 'moment';
+import { Moment } from 'moment';
 
 /** @hidden */
 // tslint:disable-next-line
@@ -70,17 +70,21 @@ export class Util {
   }
 
   public static setProperties(target: any, source: any, ...props) {
-    for (const prop of props) {
-      if (!Util.isEmpty(source[prop])) {
-        target[prop] = source[prop];
+    if (!Util.isEmpty(source)) {
+      for (const prop of props) {
+        if (!Util.isEmpty(source[prop])) {
+          target[prop] = source[prop];
+        }
       }
     }
   }
 
   public static setDateProperties(target: any, source: any, ...props) {
-    for (const prop of props) {
-      if (!Util.isEmpty(source[prop])) {
-        target[prop] = Util.toMoment(source[prop]);
+    if (!Util.isEmpty(source)) {
+      for (const prop of props) {
+        if (!Util.isEmpty(source[prop])) {
+          target[prop] = Util.toMoment(source[prop]);
+        }
       }
     }
   }
