@@ -197,10 +197,10 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    */
   protected handleError(err: any, options?: any): TwitarrError {
     const message = AbstractHTTP.extractMessage(err);
-    const status = AbstractHTTP.extractStatus(err);
+    const code = AbstractHTTP.extractCode(err);
     const errors = AbstractHTTP.extractError(err);
     const data = AbstractHTTP.extractData(err);
-    return new TwitarrError(message, status, options, errors, data);
+    return new TwitarrError(message, code, options, errors, data);
   }
 
   /* tslint:disable:member-ordering */
@@ -215,8 +215,10 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
         return err.message;
       } else if (err.response) {
         return this.extractMessage(err.response);
-      } else if (err.data && Object.prototype.toString.call(err) === '[object String]') {
+      } else if (err.data && Object.prototype.toString.call(err.data) === '[object String]') {
         return err.data;
+      } else if (err.data && err.data.message) {
+        return err.data.message;
       } else if (err.statusText) {
         return err.statusText;
       }
@@ -229,16 +231,18 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    * Attempt to determine an error status code from an error response.
    * @hidden
    */
-  protected static extractStatus(err: any): number {
-    let status = -1;
+  protected static extractCode(err: any): number {
+    let code = -1;
     if (err.code) {
-      status = err.code;
-    } else if (err.status) {
-      status = err.status;
-    } else if (err.response && err.response.status) {
-      status = err.response.status;
+      code = err.code;
+    } else if (err.response && err.response.code !== undefined) {
+      code = parseInt(err.response.code, 10);
+    } else if (err.status && typeof err.status === 'number') {
+      code = err.status;
+    } else if (err.response && err.response.status && typeof err.response.status === 'number') {
+      code = err.response.status;
     }
-    return status;
+    return code;
   }
 
   /**
@@ -246,7 +250,8 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    * @hidden
    */
   protected static extractError(err: any): any {
-    if (err && err.response && err.response.data && err.response.data.status === 'error') {
+    // tslint:disable-next-line
+    if (err && err.response && err.response.data && err.response.data.status === 'error' && (err.response.data.error || err.response.data.errors)) {
       return err.response.data.error || err.response.data.errors;
     }
     return undefined;

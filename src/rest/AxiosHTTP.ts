@@ -63,6 +63,10 @@ export class AxiosHTTP extends AbstractHTTP {
       if (response.headers && response.headers['content-type']) {
         type = response.headers['content-type'];
       }
+      const data = this.getData(response);
+      if (data && data.status === 'error') {
+        throw response;
+      }
       return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
     }).catch((err) => {
       throw this.handleError(err, opts);
@@ -89,6 +93,10 @@ export class AxiosHTTP extends AbstractHTTP {
       if (response.headers && response.headers['content-type']) {
         type = response.headers['content-type'];
       }
+      const data = this.getData(response);
+      if (data && data.status === 'error') {
+        throw response;
+      }
       return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
     }).catch((err) => {
       throw this.handleError(err, opts);
@@ -114,6 +122,10 @@ export class AxiosHTTP extends AbstractHTTP {
       if (response.headers && response.headers['content-type']) {
         type = response.headers['content-type'];
       }
+      const data = this.getData(response);
+      if (data && data.status === 'error') {
+        throw response;
+      }
       return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
     }).catch((err) => {
       throw this.handleError(err, opts);
@@ -138,6 +150,10 @@ export class AxiosHTTP extends AbstractHTTP {
         let type;
         if (response.headers && response.headers['content-type']) {
             type = response.headers['content-type'];
+        }
+        const data = this.getData(response);
+        if (data && data.status === 'error') {
+          throw response;
         }
         return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
     }).catch((err) => {
