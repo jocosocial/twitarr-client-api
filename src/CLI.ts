@@ -175,10 +175,10 @@ const CLI = () => {
       if (command === 'list') {
         return client.seamail().getMetadata().then((seamail) => {
           const format = Object.assign({ }, tableFormat);
-          format.head = [ 'Unread', 'Subject', 'Last Updated'];
+          format.head = [ 'Unread', 'ID', 'Subject', 'Last Updated'];
           const t = new Table(format);
           for (const thread of seamail.threads) {
-            t.push([thread.is_unread? '*' : '', thread.subject, thread.timestamp.fromNow()]);
+            t.push([thread.is_unread? '*' : '', thread.id, thread.subject, thread.timestamp.fromNow()]);
           }
           console.log(t.toString());
           console.log('');
