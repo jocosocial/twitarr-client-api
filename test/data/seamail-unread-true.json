@@ -1,0 +1,31 @@
+{
+  "status": "ok",
+  "seamail_meta": [
+    {
+      "id": "5c5cfd9f1fca877544f927da",
+      "users": [
+        {
+          "username": "kvort",
+          "display_name": "kvort",
+          "last_photo_updated": 1549827517608
+        },
+        {
+          "username": "james",
+          "display_name": "james",
+          "last_photo_updated": 1549598100329
+        },
+        {
+          "username": "steve",
+          "display_name": "steve",
+          "last_photo_updated": 1549598100329
+        }
+      ],
+      "subject": "artemis?",
+      "message_count": 2,
+      "timestamp": 1549531800000,
+      "is_unread": true,
+      "count_is_unread": true
+    }
+  ],
+  "last_checked": 1549836308412
+}

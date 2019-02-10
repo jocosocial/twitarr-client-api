@@ -13,9 +13,9 @@ import { TwitarrHTTPOptions } from '../../src/api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../../src/api/TwitarrResult';
 import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
-const getError = (method: string, url: string, options?: TwitarrHTTPOptions) => {
+const getError = (method: string, urlObj: any, options?: TwitarrHTTPOptions) => {
   // tslint:disable-next-line
-  return new Error('Not yet implemented: ' + method + ' ' + url + ': ' + JSON.stringify(options.parameters) + ' ' + JSON.stringify(options.data));
+  return new Error('Not yet implemented: ' + method + ' ' + urlObj.toString() + ': ' + JSON.stringify(options.parameters) + ' ' + JSON.stringify(options.data));
 };
 
 export class MockHTTP extends AbstractHTTP {
@@ -26,7 +26,6 @@ export class MockHTTP extends AbstractHTTP {
       urlObj.search(options.parameters);
     }
 
-    console.log(urlObj.toString());
     switch (urlObj.toString()) {
       case 'http://demo.twitarr.com/api/v2/text/welcome': {
         const result = TwitarrResult.ok(require('../data/welcome.json'));
@@ -35,6 +34,16 @@ export class MockHTTP extends AbstractHTTP {
       }
       case '/api/v2/seamail': {
         const result = TwitarrResult.ok(require('../data/seamail.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
+      case '/api/v2/seamail?unread=true': {
+        const result = TwitarrResult.ok(require('../data/seamail-unread-true.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
+      case '/api/v2/seamail?after=1549827395180': {
+        const result = TwitarrResult.ok(require('../data/seamail-after-epoch.json'));
         result.type = 'application/json';
         return Promise.resolve(result);
       }
@@ -53,7 +62,7 @@ export class MockHTTP extends AbstractHTTP {
       */
     }
 
-    return Promise.reject(getError('GET', url, options));
+    return Promise.reject(getError('GET', urlObj, options));
   }
 
   public put(url: string, options?: TwitarrHTTPOptions) {
@@ -72,7 +81,7 @@ export class MockHTTP extends AbstractHTTP {
       */
     }
 
-    return Promise.reject(getError('PUT', url, options));
+    return Promise.reject(getError('PUT', urlObj, options));
   }
 
   public post(url: string, options?: TwitarrHTTPOptions) {
@@ -106,11 +115,11 @@ export class MockHTTP extends AbstractHTTP {
       }
     }
 
-    return Promise.reject(getError('POST', url, options));
+    return Promise.reject(getError('POST', urlObj, options));
   }
 
   public httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
     const urlObj = new URI(url);
-    return Promise.reject(getError('DELETE', url, options));
+    return Promise.reject(getError('DELETE', urlObj, options));
   }
 }
