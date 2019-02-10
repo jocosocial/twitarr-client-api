@@ -247,7 +247,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    */
   protected static extractError(err: any): any {
     if (err && err.response && err.response.data && err.response.data.status === 'error') {
-      return err.response.data.errors;
+      return err.response.data.error || err.response.data.errors;
     }
     return undefined;
   }

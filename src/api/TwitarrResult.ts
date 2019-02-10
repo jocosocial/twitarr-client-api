@@ -1,3 +1,5 @@
+import { TwitarrError } from './TwitarrError';
+
 /**
  * An [[ITwitarrHTTP]] query result.
  * @module TwitarrResult
@@ -26,6 +28,9 @@ export class TwitarrResult<T> {
   /** The response code associated with this result. */
   public code: number;
 
+  /** The error associated with this response if any. */
+  public error: TwitarrError;
+
   /**
    * Construct a new result.
    * @param data The payload of the response.
@@ -34,10 +39,15 @@ export class TwitarrResult<T> {
    * @param type The request type of the response.
    */
   constructor(data: T, message?: string, code?: number, type?: string) {
-    this.data = data;
     this.message = message;
     this.code = code;
     this.type = type;
+
+    this.data = data;
+    if (!this.isSuccess() || (this.data && (this.data as any).status) && (this.data as any).status === 'error') {
+      const errors = this.data && (this.data as any).errors? (this.data as any).errors : undefined;
+      this.error = new TwitarrError(message, code, errors, undefined, this.data);
+    }
   }
 
   /** Whether this result is considered successful. */

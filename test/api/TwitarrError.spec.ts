@@ -1,10 +1,10 @@
 declare const describe, beforeEach, it, expect;
 
-import {TwitarrError} from '../../src/api/TwitarrError';
+import { TwitarrError } from '../../src/api/TwitarrError';
 
 let err;
 
-describe('Given an TwitarrError without a code...', () => {
+describe('Given a TwitarrError without a code...', () => {
   beforeEach(() => {
     err = new TwitarrError('blah');
   });
@@ -14,7 +14,7 @@ describe('Given an TwitarrError without a code...', () => {
   });
 });
 
-describe('Given an TwitarrError with a code...', () => {
+describe('Given a TwitarrError with a code...', () => {
   beforeEach(() => {
     err = new TwitarrError('blah', 404);
   });
@@ -24,3 +24,31 @@ describe('Given an TwitarrError with a code...', () => {
   });
 });
 
+describe('Twit-arr error responses', () => {
+  it('status_code_only', () => {
+    err = new TwitarrError('message', 401);
+    expect(err.toString()).toBe('Error 401: message');
+  });
+
+  it('status_code_with_message', () => {
+    err = new TwitarrError('message', 401, 'error message');
+    expect(err.toString()).toBe('Error 401: message: [error message]');
+
+    err = new TwitarrError(undefined, 401, 'error message');
+    expect(err.toString()).toBe('Error 401: [error message]');
+  });
+
+  it('status_code_with_error_list', () => {
+    // message='message'
+    err = new TwitarrError('message', 401, ['error 1', 'error 2']);
+    expect(err.toString()).toBe('Error 401: message: [error 1,error 2]');
+
+    err = new TwitarrError(undefined, 401, ['error 1', 'error 2']);
+    expect(err.toString()).toBe('Error 401: [error 1,error 2]');
+  });
+
+  it('status_code_with_parameters_errors', () => {
+    err = new TwitarrError(undefined, 401, { blah: ['error 1', 'error 2'] });
+    expect(err.toString()).toBe('Error 401: {blah:[error 1,error 2]}');
+  });
+});
