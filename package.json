@@ -99,6 +99,10 @@
       "js",
       "json"
     ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/dist/"
+    ],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "testURL": "http://localhost"
   },
