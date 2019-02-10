@@ -8,6 +8,7 @@ import { TwitarrServer } from './api/TwitarrServer';
 
 import { AxiosHTTP } from './rest/AxiosHTTP';
 import { UserDAO } from './dao/UserDAO';
+import { SeamailDAO } from './dao/SeamailDAO';
 
 /**
  * The Twitarr client.  This is the primary interface to Twitarr servers.
@@ -116,5 +117,12 @@ export class Client implements IHasHTTP {
    */
   public user() {
     return new UserDAO(this);
+  }
+
+  /**
+   * Get a seamail DAO.
+   */
+  public seamail() {
+    return new SeamailDAO(this);
   }
 }

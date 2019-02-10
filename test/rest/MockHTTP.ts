@@ -7,10 +7,16 @@ declare const require;
 // tslint:disable-next-line
 const URI = require('urijs');
 
-import {AbstractHTTP} from '../../src/rest/AbstractHTTP';
+import { AbstractHTTP } from '../../src/rest/AbstractHTTP';
 
-import {TwitarrHTTPOptions} from '../../src/api/TwitarrHTTPOptions';
-import {TwitarrResult} from '../../src/api/TwitarrResult';
+import { TwitarrHTTPOptions } from '../../src/api/TwitarrHTTPOptions';
+import { TwitarrResult } from '../../src/api/TwitarrResult';
+import { POINT_CONVERSION_COMPRESSED } from 'constants';
+
+const getError = (method: string, url: string, options?: TwitarrHTTPOptions) => {
+  // tslint:disable-next-line
+  return new Error('Not yet implemented: ' + method + ' ' + url + ': ' + JSON.stringify(options.parameters) + ' ' + JSON.stringify(options.data));
+};
 
 export class MockHTTP extends AbstractHTTP {
   /** make an HTTP get call -- this should be overridden by the implementation */
@@ -20,9 +26,15 @@ export class MockHTTP extends AbstractHTTP {
       urlObj.search(options.parameters);
     }
 
+    console.log(urlObj.toString());
     switch (urlObj.toString()) {
       case 'http://demo.twitarr.com/api/v2/text/welcome': {
         const result = TwitarrResult.ok(require('../data/welcome.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
+      case '/api/v2/seamail': {
+        const result = TwitarrResult.ok(require('../data/seamail.json'));
         result.type = 'application/json';
         return Promise.resolve(result);
       }
@@ -41,7 +53,7 @@ export class MockHTTP extends AbstractHTTP {
       */
     }
 
-    return Promise.reject(new Error('Not yet implemented: GET ' + urlObj.toString()));
+    return Promise.reject(getError('GET', url, options));
   }
 
   public put(url: string, options?: TwitarrHTTPOptions) {
@@ -60,7 +72,7 @@ export class MockHTTP extends AbstractHTTP {
       */
     }
 
-    return Promise.reject(new Error('Not yet implemented: PUT ' + urlObj.toString()));
+    return Promise.reject(getError('PUT', url, options));
   }
 
   public post(url: string, options?: TwitarrHTTPOptions) {
@@ -71,28 +83,34 @@ export class MockHTTP extends AbstractHTTP {
 
     switch (urlObj.toString()) {
       case '/api/v2/user/auth': {
-        const result = TwitarrResult.ok({
-          key: 'kvort:12345',
-          status: 'ok',
-          username: 'kvort',
-        });
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        if (options.data.username === 'demo' && options.data.password === 'demo') {
+          const result = TwitarrResult.ok({
+            key: 'demo:12345',
+            status: 'ok',
+            username: 'demo',
+          });
+          result.type = 'application/json';
+          return Promise.resolve(result);
+        } else if (options.data.username === 'demo' && options.data.password === 'invalid') {
+          const result = this.handleError({
+            response: {
+              code: 401,
+              data: {
+                message: 'invalid username or password',
+                status: 'error',
+              },
+            },
+          });
+          return Promise.reject(result);
+        }
       }
-      /*
-      case 'rest/alarms/404725?ack=true': {
-        const result = TwitarrResult.ok('');
-        result.type = 'text/plain';
-        return Promise.resolve(result);
-      }
-      */
     }
 
-    return Promise.reject(new Error('Not yet implemented: POST ' + urlObj.toString()));
+    return Promise.reject(getError('POST', url, options));
   }
 
   public httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
     const urlObj = new URI(url);
-    return Promise.reject(new Error('Not yet implemented: DELETE ' + urlObj.toString()));
+    return Promise.reject(getError('DELETE', url, options));
   }
 }

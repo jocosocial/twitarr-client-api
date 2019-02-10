@@ -61,6 +61,14 @@ const CLI = () => {
     return config;
   };
 
+  const getClient = () => {
+    const config = readConfig();
+    const auth = new API.TwitarrAuthConfig(undefined, undefined, config.key);
+    const server = new API.TwitarrServer('Twitarr', config.url, auth);
+    const http = new Rest.AxiosHTTP(server);
+    return new Client(http);
+  };
+
   const handleError = (message, err) => {
     let realError: any = new Error(message);
     if (err instanceof API.TwitarrResult) {
@@ -80,9 +88,14 @@ const CLI = () => {
 
   /* tslint:disable:no-console */
 
+  const oldDebug = console.debug;
+  console.debug = () => { }; // tslint:disable-line no-empty
+
   // global options
   program
-    .option('-d, --debug', 'Enable debug output')
+    .option('-d, --debug', 'Enable debug output', () => {
+      console.debug = oldDebug;
+    })
     .option('-c, --config <file>', 'Specify a configuration file (default: ~/.twitarr.config.json)')
     .option('-v, --version', 'Print the twitarr.js version and exit', () => {
       console.log(version);
@@ -138,14 +151,12 @@ const CLI = () => {
     .option('-p, --pronouns <pronouns>', 'Set your pronouns')
     .option('-n, --room-number <room-number>', 'Set your room number')
     .action((options) => {
-      const config = readConfig();
-      const auth = new API.TwitarrAuthConfig(undefined, undefined, config.key);
-      const server = new API.TwitarrServer('Twitarr', config.url, auth);
-      const http = new Rest.AxiosHTTP(server);
+      const client = getClient();
       if (options.length > 0) {
         console.log('setting options:', options);
+        throw new TwitarrError('Not yet implemented!');
       } else {
-        return new Client(http).user().getProfile().then((profile) => {
+        return client.user().getProfile().then((profile) => {
           const t = new Table(tableFormat);
           for (const key of Object.keys(profile)) {
             const name = key? key.replace(/_/g, ' ') : key;
@@ -155,6 +166,25 @@ const CLI = () => {
           console.log('');
         });
       }
+    });
+
+  program.command('seamail <command>')
+    .description('read or post seamail messages')
+    .action((command, options) => {
+      const client = getClient();
+      if (command === 'list') {
+        return client.seamail().getMetadata().then((seamail) => {
+          const format = Object.assign({ }, tableFormat);
+          format.head = [ 'Unread', 'Subject', 'Last Updated'];
+          const t = new Table(format);
+          for (const thread of seamail.threads) {
+            t.push([thread.is_unread? '*' : '', thread.subject, thread.timestamp.fromNow()]);
+          }
+          console.log(t.toString());
+          console.log('');
+        });
+      }
+      throw new TwitarrError('Unhandled command: seamail ' + command);
     });
 
   program.parse(process.argv);

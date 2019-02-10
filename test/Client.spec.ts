@@ -1,11 +1,10 @@
-declare const await, describe, beforeEach, it, expect, jest;
+declare const describe, beforeEach, it, expect;
 
-import {Client} from '../src/Client';
-import {TwitarrAuthConfig} from '../src/api/TwitarrAuthConfig';
-import {TwitarrResult} from '../src/api/TwitarrResult';
-import {TwitarrServer} from '../src/api/TwitarrServer';
+import { Client } from '../src/Client';
+import { TwitarrAuthConfig } from '../src/api/TwitarrAuthConfig';
+import { TwitarrServer } from '../src/api/TwitarrServer';
 
-import {MockHTTP} from './rest/MockHTTP';
+import { MockHTTP } from './rest/MockHTTP';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
@@ -14,18 +13,18 @@ const SERVER_PASSWORD = 'demo';
 
 let twitarr: Client, server, auth, mockHTTP;
 
-describe('Given an instance of Twitarr...', () => {
+describe('Client', () => {
   beforeEach(() => {
     mockHTTP = new MockHTTP();
     twitarr = new Client(mockHTTP);
     auth = new TwitarrAuthConfig(SERVER_USER, SERVER_PASSWORD);
     server = new TwitarrServer(SERVER_NAME, SERVER_URL, auth);
   });
-  describe('when I have a default Twitarr object', () => {
-    it('it should have no server', () => {
+  describe('* default object', () => {
+    it('* server = undefined', () => {
       expect((twitarr).server).toBeUndefined();
     });
-    it('it should pass when checkServer is called on a valid server', () => {
+    it('#checkServer', () => {
       const ret = Client.checkServer(server, mockHTTP);
       expect(ret).toBeDefined();
       return ret.then((result) => {
@@ -33,7 +32,16 @@ describe('Given an instance of Twitarr...', () => {
         expect(result).toEqual(true);
       });
     });
-    it('it should return a server object when connect is called', () => {
+    it('#checkServer=invalid', () => {
+      auth.password = 'invalid';
+      const ret = Client.checkServer(server, mockHTTP);
+      expect(ret).toBeDefined();
+      return ret.then((result) => {
+        expect(result).toBeDefined();
+        expect(result).toEqual(true);
+      });
+    });
+    it('#connect', () => {
       const ret = twitarr.connect(SERVER_NAME, SERVER_URL, SERVER_USER, SERVER_PASSWORD);
       expect(ret).toBeDefined();
       return ret.then((result) => {
