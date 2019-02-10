@@ -1,8 +1,6 @@
 declare const describe, beforeEach, it, expect, require;
 
-import {Util} from '../../src/internal/Util';
-
-import {Moment} from 'moment';
+import { Util } from '../../src/internal/Util';
 
 /** @hidden */
 // tslint:disable-next-line
@@ -90,11 +88,11 @@ describe('internal/Util', () => {
   describe('#setProperties()', () => {
     let target: any;
     beforeEach(() => {
-      target = {};
+      target = { };
     });
     it('undefined', () => {
       Util.setProperties(target, undefined, 'foo', 'bar');
-      expect(target).toMatchObject({});
+      expect(target).toMatchObject({ });
     });
   });
 });

@@ -1,9 +1,9 @@
-declare const describe, beforeEach, it, expect;
+declare const describe, it, expect;
 
-import {TwitarrHTTPOptions} from '../../src/api/TwitarrHTTPOptions';
+import { TwitarrHTTPOptions } from '../../src/api/TwitarrHTTPOptions';
 import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
 
-describe('TwitarrHTTPOptions', () => {
+describe('api/TwitarrHTTPOptions', () => {
   it('#toJSON', () => {
     let opts = new TwitarrHTTPOptions();
     expect(opts).toMatchObject({
