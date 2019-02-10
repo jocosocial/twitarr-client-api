@@ -12,8 +12,8 @@ export class SeamailResponse {
       if (!Util.isEmpty(data.seamail_meta)) {
         ret.threads = data.seamail_meta.map((thread) => SeamailThread.fromRest(thread));
         ret.is_meta = true;
-      } else if (!Util.isEmpty(data.seamail)) {
-        ret.threads = data.seamail.map((thread) => SeamailThread.fromRest(thread));
+      } else if (!Util.isEmpty(data.seamail_threads)) {
+        ret.threads = data.seamail_threads.map((thread) => SeamailThread.fromRest(thread));
         ret.is_meta = false;
       }
 
@@ -38,7 +38,7 @@ export class SeamailResponse {
     if (this.is_meta) {
       ret.seamail_meta = this.threads;
     } else {
-      ret.seamail = this.threads;
+      ret.seamail_threads = this.threads;
     }
     return ret;
   }

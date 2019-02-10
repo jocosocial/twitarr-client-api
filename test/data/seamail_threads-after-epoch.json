@@ -1,0 +1,50 @@
+{
+  "status": "ok",
+  "seamail_threads": [
+    {
+      "id": "5c607d43ea204f5815755cda",
+      "users": [
+        {
+          "username": "james",
+          "display_name": "james",
+          "last_photo_updated": 1549598100329
+        },
+        {
+          "username": "rob",
+          "display_name": "Manager Rob",
+          "last_photo_updated": 1549826231532
+        },
+        {
+          "username": "kvort",
+          "display_name": "kvort",
+          "last_photo_updated": 1549827517608
+        }
+      ],
+      "subject": "Meet up before the concert?",
+      "messages": [
+        {
+          "id": "5c607d43ea204f5815755cdb",
+          "author": {
+            "username": "kvort",
+            "display_name": "kvort",
+            "last_photo_updated": 1549827517608
+          },
+          "text": "Maybe we can play a board game or something.",
+          "timestamp": 1549827395180,
+          "read_users": [
+            {
+              "username": "kvort",
+              "display_name": "kvort",
+              "last_photo_updated": 1549827517608
+            }
+          ]
+        }
+      ],
+      "message_count": 1,
+      "timestamp": 1549827395180,
+      "is_unread": false,
+      "count_is_unread": false
+    }
+  ],
+  "last_checked": 1549838805902
+}

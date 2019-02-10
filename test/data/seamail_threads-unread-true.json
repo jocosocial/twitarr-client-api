@@ -1,0 +1,123 @@
+{
+  "status": "ok",
+  "seamail_threads": [
+    {
+      "id": "5c5cfd9f1fca877544f927da",
+      "users": [
+        {
+          "username": "kvort",
+          "display_name": "kvort",
+          "last_photo_updated": 1549827517608
+        },
+        {
+          "username": "james",
+          "display_name": "james",
+          "last_photo_updated": 1549598100329
+        },
+        {
+          "username": "steve",
+          "display_name": "steve",
+          "last_photo_updated": 1549598100329
+        }
+      ],
+      "subject": "artemis?",
+      "messages": [
+        {
+          "id": "5c5cfd9f1fca877544f927dc",
+          "author": {
+            "username": "james",
+            "display_name": "james",
+            "last_photo_updated": 1549598100329
+          },
+          "text": "Awesome!",
+          "timestamp": 1549531800000,
+          "read_users": [
+            {
+              "username": "james",
+              "display_name": "james",
+              "last_photo_updated": 1549598100329
+            }
+          ]
+        },
+        {
+          "id": "5c5cfd9f1fca877544f927db",
+          "author": {
+            "username": "steve",
+            "display_name": "steve",
+            "last_photo_updated": 1549598100329
+          },
+          "text": "We should go to the game room and play artemis at 15:00!",
+          "timestamp": 1549531380000,
+          "read_users": [
+            {
+              "username": "steve",
+              "display_name": "steve",
+              "last_photo_updated": 1549598100329
+            }
+          ]
+        }
+      ],
+      "message_count": 2,
+      "timestamp": 1549531800000,
+      "is_unread": true,
+      "count_is_unread": true
+    },
+    {
+      "id": "5c5cfd9f1fca877544f927d6",
+      "users": [
+        {
+          "username": "kvort",
+          "display_name": "kvort",
+          "last_photo_updated": 1549827517608
+        },
+        {
+          "username": "james",
+          "display_name": "james",
+          "last_photo_updated": 1549598100329
+        }
+      ],
+      "subject": "Hey lets meet up",
+      "messages": [
+        {
+          "id": "5c5cfd9f1fca877544f927d9",
+          "author": {
+            "username": "james",
+            "display_name": "james",
+            "last_photo_updated": 1549598100329
+          },
+          "text": "Sounds great to me!",
+          "timestamp": 1549528080000,
+          "read_users": [
+            {
+              "username": "james",
+              "display_name": "james",
+              "last_photo_updated": 1549598100329
+            }
+          ]
+        },
+        {
+          "id": "5c5cfd9f1fca877544f927d7",
+          "author": {
+            "username": "james",
+            "display_name": "james",
+            "last_photo_updated": 1549598100329
+          },
+          "text": "How about at 10:30?",
+          "timestamp": 1549527780000,
+          "read_users": [
+            {
+              "username": "james",
+              "display_name": "james",
+              "last_photo_updated": 1549598100329
+            }
+          ]
+        }
+      ],
+      "message_count": 2,
+      "timestamp": 1549528080000,
+      "is_unread": true,
+      "count_is_unread": true
+    }
+  ],
+  "last_checked": 1549838833018
+}

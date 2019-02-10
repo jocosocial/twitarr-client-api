@@ -47,19 +47,26 @@ export class MockHTTP extends AbstractHTTP {
         result.type = 'application/json';
         return Promise.resolve(result);
       }
-      /*
-      case 'http://demo.opennms.org/opennms/rest/info': {
-        return Promise.resolve(TwitarrResult.ok({}));
-      }
-      case 'http://demo.opennms.org/opennms/rest/alarms/count': {
-        return Promise.resolve(TwitarrResult.ok(1));
-      }
-      case 'rest/alarms/404725': {
-        const result = TwitarrResult.ok(require('./19.1.0/get/rest/alarms/404725.json'));
+      case '/api/v2/seamail_threads': {
+        const result = TwitarrResult.ok(require('../data/seamail_threads.json'));
         result.type = 'application/json';
         return Promise.resolve(result);
       }
-      */
+      case '/api/v2/seamail_threads?exclude_read_messages=true': {
+        const result = TwitarrResult.ok(require('../data/seamail_threads-exclude_read_messages-true.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
+      case '/api/v2/seamail_threads?unread=true': {
+        const result = TwitarrResult.ok(require('../data/seamail_threads-unread-true.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
+      case '/api/v2/seamail_threads?after=1549827390000': {
+        const result = TwitarrResult.ok(require('../data/seamail_threads-after-epoch.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));

@@ -18,55 +18,19 @@ export class SeamailDAO extends AbstractDAO {
     });
   }
 
-  /*
-  public async login() {
+  public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: Moment) {
     const options = new TwitarrHTTPOptions();
-    options.data = {
-      password: this.http.getPassword(),
-      username: this.http.getUsername(),
-    };
-
-    return this.http.post('/api/v2/user/auth', options).then((result) => {
-      return this.handleErrors(result).then((data) => {
-        if (data && data.key) {
-          this.http.setKey(data.key);
-          return true;
-        }
-        throw new TwitarrError('No key returned from user auth', result.code, undefined, undefined, result);
-      });
+    if (unread) {
+      options.parameters.unread = 'true';
+    }
+    if (exclude_read_messages) {
+      options.parameters.exclude_read_messages = 'true';
+    }
+    if (after) {
+      options.parameters.after = '' + after.valueOf();
+    }
+    return this.http.get('/api/v2/seamail_threads', options).then((result) => {
+      return SeamailResponse.fromRest(result.data);
     });
   }
-
-  public async getProfile() {
-    return this.http.get('/api/v2/user/whoami').then((result) => {
-      return this.handleErrors(result).then((data) => {
-        return User.fromRest(data.user);
-      });
-    });
-  }
-
-  public async createUser(registrationCode: string, username: string, password: string, displayName?: string) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('registration_code', registrationCode)
-      .withParameter('username', username)
-      .withParameter('password', password);
-
-    if (displayName) {
-      options.parameters.display_name = displayName;
-    }
-
-    return this.http.post('/api/v2/user/new', options);
-  }
-
-  private async handleErrors(result: TwitarrResult<any>) {
-    if (result.isSuccess()) {
-      const status = result.data && result.data.status? result.data.status : 'ok';
-      if (status === 'ok') {
-        // console.debug('result was ok:', result);
-        return Promise.resolve(result.data);
-      }
-    }
-    throw new TwitarrError('Failed to parse result.', result.code, undefined, undefined, result.data);
-  }
-  */
 }
