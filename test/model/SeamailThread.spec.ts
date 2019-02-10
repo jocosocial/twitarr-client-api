@@ -1,7 +1,6 @@
 declare const describe, beforeEach, it, expect, require;
 
-import {SeamailMessage} from '../../src/model/SeamailMessage';
-import {SeamailThread} from '../../src/model/SeamailThread';
+import { SeamailThread } from '../../src/model/SeamailThread';
 
 import { User } from '../../src/model/User';
 
@@ -42,15 +41,15 @@ const secondMessage = {
 
 describe('SeamailThread', () => {
   it('empty constructor', () => {
-    expect(new SeamailThread()).toMatchObject({});
+    expect(new SeamailThread()).toMatchObject({ });
   });
 
   describe('#fromRest', () => {
     it('undefined', () => {
-      expect(SeamailThread.fromRest(undefined)).toMatchObject({});
+      expect(SeamailThread.fromRest(undefined)).toMatchObject({ });
     });
     it('{}', () => {
-      expect(SeamailThread.fromRest({})).toMatchObject({});
+      expect(SeamailThread.fromRest({ })).toMatchObject({ });
     });
     it('no messages', () => {
       const thread = SeamailThread.fromRest({

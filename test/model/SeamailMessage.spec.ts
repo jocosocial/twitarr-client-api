@@ -1,6 +1,6 @@
 declare const describe, beforeEach, it, expect, require;
 
-import {SeamailMessage} from '../../src/model/SeamailMessage';
+import { SeamailMessage } from '../../src/model/SeamailMessage';
 
 import { User } from '../../src/model/User';
 
@@ -25,15 +25,15 @@ const otherUser = {
 
 describe('SeamailMessage', () => {
   it('empty constructor', () => {
-    expect(new SeamailMessage()).toMatchObject({});
+    expect(new SeamailMessage()).toMatchObject({ });
   });
 
   describe('#fromRest', () => {
     it('undefined', () => {
-      expect(SeamailMessage.fromRest(undefined)).toMatchObject({});
+      expect(SeamailMessage.fromRest(undefined)).toMatchObject({ });
     });
     it('{}', () => {
-      expect(SeamailMessage.fromRest({})).toMatchObject({});
+      expect(SeamailMessage.fromRest({ })).toMatchObject({ });
     });
     it('no users', () => {
       const message = SeamailMessage.fromRest({
