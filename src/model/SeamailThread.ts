@@ -50,4 +50,13 @@ export class SeamailThread {
 
   /** Whether there are unread messages in the thread. */
   public is_unread: false;
+
+  public toJSON() {
+    const ret = { } as any;
+    Util.setProperties(ret, this, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
+    ret.users = this.users.map((user) => user.toJSON());
+    ret.messages = this.messages.map((message) => message.toJSON());
+    ret.timestamp = this.timestamp.valueOf();
+    return ret;
+  }
 }

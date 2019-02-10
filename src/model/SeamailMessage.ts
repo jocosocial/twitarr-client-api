@@ -42,4 +42,14 @@ export class SeamailMessage {
 
   /** The users who have read the message. */
   public read_users: User[] = [];
+
+  public toJSON() {
+    return {
+      author: this.author.toJSON(),
+      id: this.id,
+      read_users: this.read_users.map((user) => user.toJSON()),
+      text: this.text,
+      timestamp: this.timestamp,
+    };
+  }
 }

@@ -37,4 +37,16 @@ export class User {
 
   /** The last time the user's photo was updated. */
   public last_photo_updated: Moment;
+
+  public toJSON() {
+    const ret = { } as any;
+    Util.setProperties(ret, this, 'username', 'role', 'email', 'display_name', 'empty_password', 'unnoticed_alerts');
+    if (!Util.isEmpty(this.last_login)) {
+      ret.last_login = this.last_login.valueOf();
+    }
+    if (!Util.isEmpty(this.last_photo_updated)) {
+      ret.last_photo_updated = this.last_photo_updated.valueOf();
+    }
+    return ret;
+  }
 }

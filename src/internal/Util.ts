@@ -5,6 +5,9 @@ import { Moment } from 'moment';
 /** @hidden */
 // tslint:disable-next-line
 const moment = require('moment');
+moment.fn.toJSON = () => {
+  return this.valueOf();
+};
 
 /** @hidden */
 const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
