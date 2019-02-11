@@ -49,4 +49,12 @@ export class User {
     }
     return ret;
   }
+
+  public getDisplayName() {
+    return Util.isEmpty(this.display_name)? '@' + this.username : this.display_name;
+  }
+
+  public toString() {
+    return '@' + this.username + (Util.isEmpty(this.display_name)? '' : ' (' + this.display_name + ')');
+  }
 }
