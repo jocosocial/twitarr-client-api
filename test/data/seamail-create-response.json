@@ -1,0 +1,32 @@
+{
+  "status": "ok",
+  "seamail": {
+    "id": "5c607d43ea204f5815755cda",
+    "users": [
+      {
+        "username": "rangerrick",
+        "display_name": "rangerrick"
+      },
+      {
+        "username": "twitarrteam",
+        "display_name": "twitarrteam"
+      }
+    ],
+    "subject": "Test Subject",
+    "messages": [
+      {
+        "id": "5c607d43ea204f5815755cdb",
+        "author": {
+          "username": "rangerrick",
+          "display_name": "rangerrick"
+        },
+        "text": "Test Message",
+        "timestamp": 1549827395180
+      }
+    ],
+    "message_count": 1,
+    "timestamp": 1549827395180,
+    "is_unread": false,
+    "count_is_unread": false
+  }
+}

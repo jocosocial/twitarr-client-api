@@ -80,7 +80,7 @@ const CLI = () => {
             .describe('n', 'list new threads and threads with new messages');
         })
         .command('read <id>', 'read a seamail thread')
-        .command('create <title> <users...>', 'create a new seamail thread');
+        .command('create <subject> <message> <users...>', 'create a new seamail thread');
     })
     .argv;
 
@@ -225,6 +225,13 @@ const CLI = () => {
     console.log('');
   };
 
+  const doSeamailCreate = async (subject: string, message: string, users: string[]) => {
+    const client = getClient();
+    const seamail = await client.seamail().create(subject, message, ...users);
+    console.log(colors.green('Created thread ' + seamail.threads[0].id));
+    console.log('');
+  };
+
   const processArgs = async (args) => {
     try {
       switch (args._[0]) {
@@ -245,6 +252,10 @@ const CLI = () => {
             }
             case 'read': {
               await doSeamailRead(args.id);
+              break;
+            }
+            case 'create': {
+              await doSeamailCreate(args.subject, args.message, args.users);
               break;
             }
             default: throw new TwitarrError('Unhandled seamail command: ' + command);

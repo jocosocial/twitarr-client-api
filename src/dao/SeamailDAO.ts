@@ -4,6 +4,7 @@ import { AbstractDAO } from './AbstractDAO';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { SeamailResponse } from '../model/SeamailResponse';
 import { TwitarrError } from '../api/TwitarrError';
+import { User } from '../model/User';
 
 export class SeamailDAO extends AbstractDAO {
   public async get(id: string, skip_mark_read?: boolean) {
@@ -44,6 +45,19 @@ export class SeamailDAO extends AbstractDAO {
       options.parameters.after = '' + after.valueOf();
     }
     return this.http.get('/api/v2/seamail_threads', options).then((result) => {
+      return SeamailResponse.fromRest(result.data);
+    });
+  }
+
+  public async create(subject: string, message: string, ...users: string[]) {
+    const options = new TwitarrHTTPOptions();
+    // tslint:disable object-literal-shorthand
+    options.data = {
+      subject: subject,
+      text: message,
+      users: users,
+    };
+    return this.http.post('/api/v2/seamail', options).then((result) => {
       return SeamailResponse.fromRest(result.data);
     });
   }

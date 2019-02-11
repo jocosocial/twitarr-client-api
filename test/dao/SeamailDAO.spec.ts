@@ -10,6 +10,7 @@ import { Util } from '../../src/internal/Util';
 
 import { MockHTTP } from '../rest/MockHTTP';
 import { sort } from 'shelljs';
+import { User } from '../../src/model/User';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
@@ -148,6 +149,14 @@ describe('dao/SeamailDAO', () => {
         expect(thread).toBeDefined();
         expect(thread.threads).toBeDefined();
         expect(thread.threads.length).toEqual(1);
+        done();
+      });
+    });
+
+    it('create()', async (done) => {
+      dao.create('Test Subject', 'Test Message', 'twitarrteam', 'rangerrick').then((response) => {
+        expect(response).toBeDefined();
+        expect(response).toBeInstanceOf(SeamailResponse);
         done();
       });
     });

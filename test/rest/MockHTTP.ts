@@ -129,6 +129,16 @@ export class MockHTTP extends AbstractHTTP {
           });
           return Promise.reject(result);
         }
+        break;
+      }
+      case '/api/v2/seamail': {
+        // tslint:disable-next-line max-line-length
+        if (options.data.subject === 'Test Subject' && options.data.text === 'Test Message' && options.data.users.length === 2) {
+          const result = TwitarrResult.ok(require('../data/seamail-create-response.json'));
+          result.type = 'application/json';
+          return Promise.resolve(result);
+        }
+        break;
       }
     }
 
