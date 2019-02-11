@@ -14,15 +14,13 @@ export class UserDAO extends AbstractDAO {
       username: this.http.getUsername(),
     };
 
-    return this.http.post('/api/v2/user/auth', options).then((result) => {
-      return this.handleErrors(result).then((data) => {
-        if (data && data.key) {
-          this.http.setKey(data.key);
-          return true;
-        }
-        throw new TwitarrError('No key returned from user auth', result.code, undefined, undefined, result);
-      });
-    });
+    const result = await this.http.post('/api/v2/user/auth', options);
+    const data = await this.handleErrors(result);
+    if (data && data.key) {
+      this.http.setKey(data.key);
+      return data.key;
+    }
+    throw new TwitarrError('No key returned from user auth', result.code, undefined, undefined, result);
   }
 
   public async getProfile() {

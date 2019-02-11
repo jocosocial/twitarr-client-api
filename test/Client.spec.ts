@@ -46,8 +46,7 @@ describe('Client', () => {
       expect(ret).toBeDefined();
       return ret.then((result) => {
         expect(result).toBeDefined();
-        expect(result).toBeInstanceOf(Client);
-        expect(result.server).toBeInstanceOf(TwitarrServer);
+        expect(result).toEqual('demo:12345');
       });
     });
   });
