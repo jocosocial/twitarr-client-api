@@ -93,23 +93,21 @@ export class Client implements IHasHTTP {
     if (self.server.auth.key) {
       try {
         const profile = await this.user().getProfile();
-        console.log('found auth key:', self.server.auth.key, profile);
+        console.debug('found auth key:', self.server.auth.key, profile);
         return self;
       } catch (err) {
-        console.log('auth key was invalid:', err);
+        console.error('auth key was invalid:', err);
       }
     }
 
     try {
-      await this.user().login();
+      return await this.user().login();
     } catch (err) {
       if (err.code === 401) {
         throw new TwitarrError('username or password was invalid', err.code, err.options, err.errors, err.data);
       }
       throw new TwitarrError('unexpected error: ' + err.message, err.code, err.options, err.errors, err.data);
     }
-
-    return self;
   }
 
   /**
