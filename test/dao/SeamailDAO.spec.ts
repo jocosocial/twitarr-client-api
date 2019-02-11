@@ -125,4 +125,31 @@ describe('dao/SeamailDAO', () => {
     });
   });
 
+  describe('#get', () => {
+    it('no arguments', async (done) => {
+      dao.get(undefined).catch((err) => {
+        expect(err).toBeDefined();
+        expect(err.message).toBe('id is required!');
+        done();
+      });
+    });
+
+    it('get(id)', async (done) => {
+      dao.get('5c607d43ea204f5815755cda').then((thread) => {
+        expect(thread).toBeDefined();
+        expect(thread.threads).toBeDefined();
+        expect(thread.threads.length).toEqual(1);
+        done();
+      });
+    });
+
+    it('get(id)', async (done) => {
+      dao.get('5c607d43ea204f5815755cda', true).then((thread) => {
+        expect(thread).toBeDefined();
+        expect(thread.threads).toBeDefined();
+        expect(thread.threads.length).toEqual(1);
+        done();
+      });
+    });
+  });
 });

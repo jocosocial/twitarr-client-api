@@ -3,8 +3,22 @@ import { Moment } from 'moment';
 import { AbstractDAO } from './AbstractDAO';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { SeamailResponse } from '../model/SeamailResponse';
+import { TwitarrError } from '../api/TwitarrError';
 
 export class SeamailDAO extends AbstractDAO {
+  public async get(id: string, skip_mark_read?: boolean) {
+    if (!id) {
+      return Promise.reject(new TwitarrError('id is required!'));
+    }
+    const options = new TwitarrHTTPOptions();
+    if (skip_mark_read) {
+      options.parameters.skip_mark_read = 'true';
+    }
+    return this.http.get('/api/v2/seamail/' + id, options).then((result) => {
+      return SeamailResponse.fromRest(result.data);
+    });
+  }
+
   public async getMetadata(unread?: boolean, after?: Moment) {
     const options = new TwitarrHTTPOptions();
     if (unread) {

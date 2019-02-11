@@ -67,6 +67,16 @@ export class MockHTTP extends AbstractHTTP {
         result.type = 'application/json';
         return Promise.resolve(result);
       }
+      case '/api/v2/seamail/5c607d43ea204f5815755cda': {
+        const result = TwitarrResult.ok(require('../data/seamail-5c607d43ea204f5815755cda.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
+      case '/api/v2/seamail/5c607d43ea204f5815755cda?skip_mark_read=true': {
+        const result = TwitarrResult.ok(require('../data/seamail-5c607d43ea204f5815755cda.json'));
+        result.type = 'application/json';
+        return Promise.resolve(result);
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));

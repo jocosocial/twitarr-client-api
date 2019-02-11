@@ -9,6 +9,10 @@ export class SeamailResponse {
 
     if (!Util.isEmpty(data)) {
       Util.setDateProperties(ret, data, 'last_checked');
+      if (!Util.isEmpty(data.seamail)) {
+        ret.threads = [SeamailThread.fromRest(data.seamail)];
+        ret.is_meta = false;
+      }
       if (!Util.isEmpty(data.seamail_meta)) {
         ret.threads = data.seamail_meta.map((thread) => SeamailThread.fromRest(thread));
         ret.is_meta = true;
