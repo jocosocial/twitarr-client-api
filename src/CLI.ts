@@ -80,7 +80,8 @@ const CLI = () => {
             .describe('n', 'list new threads and threads with new messages');
         })
         .command('read <id>', 'read a seamail thread')
-        .command('create <subject> <message> <users...>', 'create a new seamail thread');
+        .command('create <subject> <message> <users...>', 'create a new seamail thread')
+        .command('post <id> <message>', 'post a message to a thread');
     })
     .argv;
 
@@ -218,7 +219,7 @@ const CLI = () => {
     console.log(t.toString());
     console.log('');
     t = new Table(tableFormat);
-    thread.messages.forEach((message) => {
+    thread.messages.reverse().forEach((message) => {
       t.push([message.author.getDisplayName(), message.text, message.timestamp.fromNow()]);
     });
     console.log(t.toString());
@@ -229,6 +230,13 @@ const CLI = () => {
     const client = getClient();
     const seamail = await client.seamail().create(subject, message, ...users);
     console.log(colors.green('Created thread ' + seamail.threads[0].id));
+    console.log('');
+  };
+
+  const doSeamailPost = async (id: string, message: string) => {
+    const client = getClient();
+    const response = await client.seamail().post(id, message);
+    console.log(colors.green('Posted message ' + response.id));
     console.log('');
   };
 
@@ -256,6 +264,10 @@ const CLI = () => {
             }
             case 'create': {
               await doSeamailCreate(args.subject, args.message, args.users);
+              break;
+            }
+            case 'post': {
+              await doSeamailPost(args.id, args.message);
               break;
             }
             default: throw new TwitarrError('Unhandled seamail command: ' + command);

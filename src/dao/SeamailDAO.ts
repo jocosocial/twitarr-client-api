@@ -5,6 +5,7 @@ import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { SeamailResponse } from '../model/SeamailResponse';
 import { TwitarrError } from '../api/TwitarrError';
 import { User } from '../model/User';
+import { SeamailMessage } from '../model/SeamailMessage';
 
 export class SeamailDAO extends AbstractDAO {
   public async get(id: string, skip_mark_read?: boolean) {
@@ -59,6 +60,20 @@ export class SeamailDAO extends AbstractDAO {
     };
     return this.http.post('/api/v2/seamail', options).then((result) => {
       return SeamailResponse.fromRest(result.data);
+    });
+  }
+
+  public async post(id: string, message: string) {
+    const options = new TwitarrHTTPOptions();
+    options.data = { text: message };
+    return this.http.post('/api/v2/seamail/' + id, options).then((result) => {
+      return SeamailMessage.fromRest(result.data.seamail_message);
+    });
+  }
+
+  public async unreadCount() {
+    return this.http.get('/api/v2/user/new_seamail').then((result) => {
+      return result.data.email_count;
     });
   }
 }

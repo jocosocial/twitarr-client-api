@@ -18,6 +18,12 @@ const getError = (method: string, urlObj: any, options?: TwitarrHTTPOptions) => 
   return new Error('Not yet implemented: ' + method + ' ' + urlObj.toString() + ': ' + JSON.stringify(options.parameters) + ' ' + JSON.stringify(options.data));
 };
 
+const jsonOK = (contents: any) => {
+  const ret = TwitarrResult.ok(contents);
+  ret.type = 'application/json';
+  return Promise.resolve(ret);
+};
+
 export class MockHTTP extends AbstractHTTP {
   /** make an HTTP get call -- this should be overridden by the implementation */
   public get(url: string, options?: TwitarrHTTPOptions) {
@@ -28,54 +34,40 @@ export class MockHTTP extends AbstractHTTP {
 
     switch (urlObj.toString()) {
       case 'http://demo.twitarr.com/api/v2/text/welcome': {
-        const result = TwitarrResult.ok(require('../data/welcome.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/welcome.json'));
+      }
+      case '/api/v2/user/new_seamail': {
+        return jsonOK({
+          email_count: 15,
+          status: 'ok',
+        });
       }
       case '/api/v2/seamail': {
-        const result = TwitarrResult.ok(require('../data/seamail.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail.json'));
       }
       case '/api/v2/seamail?unread=true': {
-        const result = TwitarrResult.ok(require('../data/seamail-unread-true.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail-unread-true.json'));
       }
       case '/api/v2/seamail?after=1549827395180': {
-        const result = TwitarrResult.ok(require('../data/seamail-after-epoch.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail-after-epoch.json'));
       }
       case '/api/v2/seamail_threads': {
-        const result = TwitarrResult.ok(require('../data/seamail_threads.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail_threads.json'));
       }
       case '/api/v2/seamail_threads?exclude_read_messages=true': {
-        const result = TwitarrResult.ok(require('../data/seamail_threads-exclude_read_messages-true.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail_threads-exclude_read_messages-true.json'));
       }
       case '/api/v2/seamail_threads?unread=true': {
-        const result = TwitarrResult.ok(require('../data/seamail_threads-unread-true.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail_threads-unread-true.json'));
       }
       case '/api/v2/seamail_threads?after=1549827390000': {
-        const result = TwitarrResult.ok(require('../data/seamail_threads-after-epoch.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail_threads-after-epoch.json'));
       }
       case '/api/v2/seamail/5c607d43ea204f5815755cda': {
-        const result = TwitarrResult.ok(require('../data/seamail-5c607d43ea204f5815755cda.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail-5c607d43ea204f5815755cda.json'));
       }
       case '/api/v2/seamail/5c607d43ea204f5815755cda?skip_mark_read=true': {
-        const result = TwitarrResult.ok(require('../data/seamail-5c607d43ea204f5815755cda.json'));
-        result.type = 'application/json';
-        return Promise.resolve(result);
+        return jsonOK(require('../data/seamail-5c607d43ea204f5815755cda.json'));
       }
     }
 
@@ -110,13 +102,11 @@ export class MockHTTP extends AbstractHTTP {
     switch (urlObj.toString()) {
       case '/api/v2/user/auth': {
         if (options.data.username === 'demo' && options.data.password === 'demo') {
-          const result = TwitarrResult.ok({
+          return jsonOK({
             key: 'demo:12345',
             status: 'ok',
             username: 'demo',
           });
-          result.type = 'application/json';
-          return Promise.resolve(result);
         } else if (options.data.username === 'demo' && options.data.password === 'invalid') {
           const result = this.handleError({
             response: {
@@ -134,9 +124,14 @@ export class MockHTTP extends AbstractHTTP {
       case '/api/v2/seamail': {
         // tslint:disable-next-line max-line-length
         if (options.data.subject === 'Test Subject' && options.data.text === 'Test Message' && options.data.users.length === 2) {
-          const result = TwitarrResult.ok(require('../data/seamail-create-response.json'));
-          result.type = 'application/json';
-          return Promise.resolve(result);
+          return jsonOK(require('../data/seamail-create-response.json'));
+        }
+        break;
+      }
+      case '/api/v2/seamail/5c607d43ea204f5815755cda': {
+        // tslint:disable-next-line max-line-length
+        if (options.data.text === 'another message') {
+          return jsonOK(require('../data/seamail-post.json'));
         }
         break;
       }

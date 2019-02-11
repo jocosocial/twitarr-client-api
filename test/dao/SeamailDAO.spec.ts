@@ -11,6 +11,7 @@ import { Util } from '../../src/internal/Util';
 import { MockHTTP } from '../rest/MockHTTP';
 import { sort } from 'shelljs';
 import { User } from '../../src/model/User';
+import { SeamailMessage } from '../../src/model/SeamailMessage';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
@@ -157,6 +158,22 @@ describe('dao/SeamailDAO', () => {
       dao.create('Test Subject', 'Test Message', 'twitarrteam', 'rangerrick').then((response) => {
         expect(response).toBeDefined();
         expect(response).toBeInstanceOf(SeamailResponse);
+        done();
+      });
+    });
+
+    it('post()', async (done) => {
+      dao.post('5c607d43ea204f5815755cda', 'another message').then((response) => {
+        expect(response).toBeDefined();
+        expect(response).toBeInstanceOf(SeamailMessage);
+        done();
+      });
+    });
+
+    it('unreadCount()', async (done) => {
+      dao.unreadCount().then((response) => {
+        expect(response).toBeDefined();
+        expect(response).toEqual(15);
         done();
       });
     });
