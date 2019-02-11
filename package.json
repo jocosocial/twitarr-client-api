@@ -60,14 +60,13 @@
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-closure-compiler": "^2.1.6",
-    "yargs": "^12.0.0",
+    "yargs": "^12.0.5",
     "yarn": "^1.13.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
     "axios": "^0.18.0",
     "cli-table2": "^0.2.0",
-    "commander": "^2.19.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.startcase": "^4.4.0",
     "moment": "^2.24.0",
