@@ -95,4 +95,16 @@ describe('internal/Util', () => {
       expect(target).toMatchObject({ });
     });
   });
+
+  describe('#isEmpty()', () => {
+    it('undefined', () => expect(Util.isEmpty(undefined)).toBeTruthy());
+    it('undefined, undefined', () => expect(Util.isEmpty(undefined, undefined)).toBeTruthy());
+    it('undefined, null', () => expect(Util.isEmpty(undefined, null)).toBeTruthy());
+    it('undefined, ""', () => expect(Util.isEmpty(undefined, '')).toBeTruthy());
+    it('""', () => expect(Util.isEmpty('')).toBeTruthy());
+    it('"foo"', () => expect(Util.isEmpty('foo')).toBeFalsy());
+    it('"foo", undefined', () => expect(Util.isEmpty('foo', undefined)).toBeFalsy());
+    it('1', () => expect(Util.isEmpty(1)).toBeFalsy());
+    it('1, undefined', () => expect(Util.isEmpty(1, undefined)).toBeFalsy());
+  });
 });

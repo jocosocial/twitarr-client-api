@@ -22,14 +22,22 @@ export class Util {
    * Whether a string is empty.
    * @param value
    */
-  public static isEmpty(value?: any) {
-    if (value === undefined || value === null) {
+  public static isEmpty(...values: any[]) {
+    if (values.length === 0) {
       return true;
     }
-    if (typeof value === 'string') {
-      return value.trim().length === 0;
+    for (const value of values) {
+      if (value !== undefined && value !== null) {
+        if (typeof value === 'string') {
+          if (value.trim().length > 0) {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
     }
-    return false;
+    return true;
   }
 
   /**
