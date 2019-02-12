@@ -12,7 +12,8 @@ export class SeamailDAO extends AbstractDAO {
     if (!id) {
       return Promise.reject(new TwitarrError('id is required!'));
     }
-    const options = new TwitarrHTTPOptions();
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
     if (skip_mark_read) {
       options.parameters.skip_mark_read = 'true';
     }
@@ -22,7 +23,8 @@ export class SeamailDAO extends AbstractDAO {
   }
 
   public async getMetadata(unread?: boolean, after?: Moment) {
-    const options = new TwitarrHTTPOptions();
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
     }
@@ -35,7 +37,8 @@ export class SeamailDAO extends AbstractDAO {
   }
 
   public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: Moment) {
-    const options = new TwitarrHTTPOptions();
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
     }

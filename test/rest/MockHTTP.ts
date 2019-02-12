@@ -42,31 +42,31 @@ export class MockHTTP extends AbstractHTTP {
           status: 'ok',
         });
       }
-      case '/api/v2/seamail': {
+      case '/api/v2/seamail?app=plain': {
         return jsonOK(require('../data/seamail.json'));
       }
-      case '/api/v2/seamail?unread=true': {
+      case '/api/v2/seamail?app=plain&unread=true': {
         return jsonOK(require('../data/seamail-unread-true.json'));
       }
-      case '/api/v2/seamail?after=1549827395180': {
+      case '/api/v2/seamail?app=plain&after=1549827395180': {
         return jsonOK(require('../data/seamail-after-epoch.json'));
       }
-      case '/api/v2/seamail_threads': {
+      case '/api/v2/seamail_threads?app=plain': {
         return jsonOK(require('../data/seamail_threads.json'));
       }
-      case '/api/v2/seamail_threads?exclude_read_messages=true': {
+      case '/api/v2/seamail_threads?app=plain&exclude_read_messages=true': {
         return jsonOK(require('../data/seamail_threads-exclude_read_messages-true.json'));
       }
-      case '/api/v2/seamail_threads?unread=true': {
+      case '/api/v2/seamail_threads?app=plain&unread=true': {
         return jsonOK(require('../data/seamail_threads-unread-true.json'));
       }
-      case '/api/v2/seamail_threads?after=1549827390000': {
+      case '/api/v2/seamail_threads?app=plain&after=1549827390000': {
         return jsonOK(require('../data/seamail_threads-after-epoch.json'));
       }
-      case '/api/v2/seamail/5c607d43ea204f5815755cda': {
+      case '/api/v2/seamail/5c607d43ea204f5815755cda?app=plain': {
         return jsonOK(require('../data/seamail-5c607d43ea204f5815755cda.json'));
       }
-      case '/api/v2/seamail/5c607d43ea204f5815755cda?skip_mark_read=true': {
+      case '/api/v2/seamail/5c607d43ea204f5815755cda?app=plain&skip_mark_read=true': {
         return jsonOK(require('../data/seamail-5c607d43ea204f5815755cda.json'));
       }
     }
