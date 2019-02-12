@@ -71,6 +71,7 @@
     "lodash.startcase": "^4.4.0",
     "moment": "^2.24.0",
     "qs": "^6.6.0",
+    "word-wrap": "^1.2.3",
     "xmldom": "^0.1.27"
   },
   "resolutions": {
@@ -87,6 +88,7 @@
       "test/**/*.{js,jsx,ts,tsx}",
       "!src/API.ts",
       "!src/CLI.ts",
+      "!test/rest/MockHTTP.ts",
       "!**/*.d.ts",
       "!**/node_modules/**",
       "!**/vendor/**"
