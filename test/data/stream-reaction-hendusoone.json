@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "stream_posts": [
+    {
+      "id": "5c630e748605941fd54f54d5",
+      "author": {
+        "username": "erikmendoza",
+        "display_name": "ErikMendoza",
+        "last_photo_updated": 1549899153620
+      },
+      "locked": false,
+      "timestamp": 1549995636184,
+      "text": "Charmanders, reporting for duty!",
+      "reactions": {
+        "like": {
+          "count": 2,
+          "me": false
+        }
+      },
+      "parent_chain": [],
+      "photo": {
+        "id": "5c630e738605949e294f54d4",
+        "animated": false
+      }
+    },
+    {
+      "id": "5c61962ab76d62b592ac940b",
+      "author": {
+        "username": "erikmendoza",
+        "display_name": "ErikMendoza",
+        "last_photo_updated": 1549899153620
+      },
+      "locked": false,
+      "timestamp": 1549899306585,
+      "text": "it has begun!",
+      "reactions": {
+        "like": {
+          "count": 1,
+          "me": false
+        }
+      },
+      "parent_chain": [],
+      "photo": {
+        "id": "5c61962ab76d629f37ac940a",
+        "animated": false
+      }
+    },
+    {
+      "id": "5c60f3522338aa0975799e68",
+      "author": {
+        "username": "stattenf",
+        "display_name": "Keith Stattenfield",
+        "last_photo_updated": 1549857619419
+      },
+      "locked": false,
+      "timestamp": 1549857618720,
+      "text": "FIRST POST?",
+      "reactions": {
+        "like": {
+          "count": 1,
+          "me": false
+        }
+      },
+      "parent_chain": []
+    }
+  ],
+  "has_next_page": false,
+  "next_page": 1549857618719
+}

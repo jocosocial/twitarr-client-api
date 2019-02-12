@@ -1,0 +1,315 @@
+{
+  "status": "ok",
+  "stream_posts": [
+    {
+      "id": "5c6323e6d86b937c6c739cb7",
+      "author": {
+        "username": "rangerrick",
+        "display_name": "RangerRick",
+        "last_photo_updated": 1549854903224
+      },
+      "locked": false,
+      "timestamp": 1550001126722,
+      "text": "This post is a #hashtag #test that uses #lots of #hashtags #hastagapalooza",
+      "reactions": {},
+      "parent_chain": []
+    },
+    {
+      "id": "5c630e748605941fd54f54d5",
+      "author": {
+        "username": "erikmendoza",
+        "display_name": "ErikMendoza",
+        "last_photo_updated": 1549899153620
+      },
+      "locked": false,
+      "timestamp": 1549995636184,
+      "text": "Charmanders, reporting for duty!",
+      "reactions": {
+        "like": {
+          "count": 2,
+          "me": false
+        }
+      },
+      "parent_chain": [],
+      "photo": {
+        "id": "5c630e738605949e294f54d4",
+        "animated": false
+      }
+    },
+    {
+      "id": "5c62646c6e40d212b6311c2c",
+      "author": {
+        "username": "hendusoone",
+        "display_name": "hendusoone",
+        "last_photo_updated": 1549850111371
+      },
+      "locked": false,
+      "timestamp": 1549952108103,
+      "text": "Testing a link to an event: http://twitarrdev.wookieefive.net/#/schedule/event/bb7ae07187ffd9157f5d843dae2a1d52",
+      "reactions": {},
+      "parent_chain": []
+    },
+    {
+      "id": "5c622be943539cbd0e937bc0",
+      "author": {
+        "username": "pneumatic",
+        "display_name": "Mitch Patenaude",
+        "last_photo_updated": 1549901848430
+      },
+      "locked": false,
+      "timestamp": 1549937641203,
+      "text": "@pneumatic Oops... that was two years ago!",
+      "reactions": {},
+      "parent_chain": [
+        "5c622b8f43539c84db937bbf"
+      ]
+    },
+    {
+      "id": "5c622b8f43539c84db937bbf",
+      "author": {
+        "username": "pneumatic",
+        "display_name": "Mitch Patenaude",
+        "last_photo_updated": 1549901848430
+      },
+      "locked": false,
+      "timestamp": 1549937551592,
+      "text": "If we've got last year's schedule, we need last year's announcements too!\n",
+      "reactions": {},
+      "parent_chain": [],
+      "photo": {
+        "id": "5c622b5d43539c84db937bbe",
+        "animated": false
+      }
+    },
+    {
+      "id": "5c6217a9a16f87be0644bf80",
+      "author": {
+        "username": "hendusoone",
+        "display_name": "hendusoone",
+        "last_photo_updated": 1549850111371
+      },
+      "locked": false,
+      "timestamp": 1549932457130,
+      "text": "@rhaje @kate It was definitely an issue in chrome. I just pushed a fix. The link to view a thread is no longer the full tweet's body. It is now the timestamp. While this is a bit less discoverable, it will allow links to work in all browsers, and will hopefully reduce thread view mis-clicks.",
+      "reactions": {
+        "like": {
+          "count": 2,
+          "me": false
+        }
+      },
+      "parent_chain": [
+        "5c61fe65b76d62d54aac94f2"
+      ]
+    },
+    {
+      "id": "5c6210f0b76d62bf4fac9514",
+      "author": {
+        "username": "kate",
+        "display_name": "Kate",
+        "last_photo_updated": 1549899064384
+      },
+      "locked": false,
+      "timestamp": 1549930736933,
+      "text": "@rhaje I am on my laptop, using Firefox. The link shows as underlined and hot for me in the browser. So, I just clicked on it.",
+      "reactions": {},
+      "parent_chain": [
+        "5c61fe65b76d62d54aac94f2"
+      ]
+    },
+    {
+      "id": "5c620918b76d62eee5ac94fe",
+      "author": {
+        "username": "rhaje",
+        "display_name": "Bob",
+        "last_photo_updated": 1549924875620
+      },
+      "locked": false,
+      "timestamp": 1549928728749,
+      "text": "@Kate I have tried Chrome, Firefox, and Safari, all on my Mac, and all it ever does is open the tweet. I cannot open an internal (user profile from a mention) or external link from within tweet text.",
+      "reactions": {},
+      "parent_chain": [
+        "5c61fe65b76d62d54aac94f2",
+        "5c61feaab76d62f718ac94f3",
+        "5c6207cbb76d620b7fac94fd"
+      ]
+    },
+    {
+      "id": "5c6207cbb76d620b7fac94fd",
+      "author": {
+        "username": "kate",
+        "display_name": "Kate",
+        "last_photo_updated": 1549899064384
+      },
+      "locked": false,
+      "timestamp": 1549928395348,
+      "text": "@rhaje Link works for me.",
+      "reactions": {},
+      "parent_chain": [
+        "5c61fe65b76d62d54aac94f2",
+        "5c61feaab76d62f718ac94f3"
+      ]
+    },
+    {
+      "id": "5c620798b76d620b7fac94fa",
+      "author": {
+        "username": "kate",
+        "display_name": "Kate",
+        "last_photo_updated": 1549899064384
+      },
+      "locked": false,
+      "timestamp": 1549928344375,
+      "text": "@rhaje Aw, shucks! :D",
+      "reactions": {},
+      "parent_chain": [
+        "5c61fba9b76d623e9eac94f1"
+      ]
+    },
+    {
+      "id": "5c62016fb76d62b055ac94f6",
+      "author": {
+        "username": "hendusoone",
+        "display_name": "hendusoone",
+        "last_photo_updated": 1549850111371
+      },
+      "locked": false,
+      "timestamp": 1549926767198,
+      "text": "@rhaje Got your bug report, thanks!",
+      "reactions": {},
+      "parent_chain": [
+        "5c61fe65b76d62d54aac94f2"
+      ]
+    },
+    {
+      "id": "5c61feaab76d62f718ac94f3",
+      "author": {
+        "username": "rhaje",
+        "display_name": "Bob",
+        "last_photo_updated": 1549924875620
+      },
+      "locked": false,
+      "timestamp": 1549926058913,
+      "text": "@rhaje Does that link work for anyone? Because it doesn't work for me.",
+      "reactions": {},
+      "parent_chain": [
+        "5c61fe65b76d62d54aac94f2"
+      ]
+    },
+    {
+      "id": "5c61fe65b76d62d54aac94f2",
+      "author": {
+        "username": "rhaje",
+        "display_name": "Bob",
+        "last_photo_updated": 1549924875620
+      },
+      "locked": false,
+      "timestamp": 1549925989388,
+      "text": "Hang on. Something isn't right. https://jococruise.com/",
+      "reactions": {},
+      "parent_chain": []
+    },
+    {
+      "id": "5c61fba9b76d623e9eac94f1",
+      "author": {
+        "username": "rhaje",
+        "display_name": "Bob",
+        "last_photo_updated": 1549924875620
+      },
+      "locked": false,
+      "timestamp": 1549925289962,
+      "text": "I am mentioning @kate because she has no mentions. And that's a shame.",
+      "reactions": {},
+      "parent_chain": []
+    },
+    {
+      "id": "5c61e7f3b76d628e83ac94de",
+      "author": {
+        "username": "hendusoone",
+        "display_name": "hendusoone",
+        "last_photo_updated": 1549850111371
+      },
+      "locked": false,
+      "timestamp": 1549920243293,
+      "text": "@pneumatic Yeah, I've seen it before on the admin user search page. A similar fix will likely resolve it on the search page, too.",
+      "reactions": {},
+      "parent_chain": [
+        "5c61b59db76d62e52eac9484"
+      ]
+    },
+    {
+      "id": "5c61b59db76d62e52eac9484",
+      "author": {
+        "username": "pneumatic",
+        "display_name": "Mitch Patenaude",
+        "last_photo_updated": 1549901848430
+      },
+      "locked": false,
+      "timestamp": 1549907357236,
+      "text": "I created a bug on github, but I thought I'd mention it here as well.  While the search box on the upper right of each page appears to work fine, as does the search box on the search results page, if you select \"Search\" from the menu on the left, the resulting search box is non-funcitonal.  It doesn't seem to trigger either when you hit return or click the \"Go\" button.  I suspect this is an ember issue.\n",
+      "reactions": {},
+      "parent_chain": []
+    },
+    {
+      "id": "5c61b400b76d62c349ac947a",
+      "author": {
+        "username": "kate",
+        "display_name": "Kate",
+        "last_photo_updated": 1549899064384
+      },
+      "locked": false,
+      "timestamp": 1549906944914,
+      "text": "@cajunjoel [Mod] This user has been muted. And unmuted. :)",
+      "reactions": {},
+      "parent_chain": [
+        "5c61b376b76d6288e4ac9479"
+      ]
+    },
+    {
+      "id": "5c61b376b76d6288e4ac9479",
+      "author": {
+        "username": "cajunjoel",
+        "display_name": "Joel R",
+        "last_photo_updated": 1549905981091
+      },
+      "locked": false,
+      "timestamp": 1549906806252,
+      "text": "I'M BEING A TROOOL. I WANNA GET BANNED SO I CAN WHINE ABOUT BEING BANNED.\n",
+      "reactions": {},
+      "parent_chain": []
+    },
+    {
+      "id": "5c61b30cb76d62c0d1ac9478",
+      "author": {
+        "username": "kate",
+        "display_name": "Kate",
+        "last_photo_updated": 1549899064384
+      },
+      "locked": false,
+      "timestamp": 1549906700471,
+      "text": "Twarty twart twart",
+      "reactions": {},
+      "parent_chain": []
+    },
+    {
+      "id": "5c61a9d7b76d62c060ac946c",
+      "author": {
+        "username": "twitarrteam",
+        "display_name": "TwitarrTeam",
+        "last_photo_updated": 1549862653646
+      },
+      "locked": false,
+      "timestamp": 1549904343601,
+      "text": "@ximinez Yes. It will be completely wiped for the boat. The boat instance will be running on a different machine. This beta server will also go offline and be wiped before we board.",
+      "reactions": {
+        "like": {
+          "count": 1,
+          "me": false
+        }
+      },
+      "parent_chain": [
+        "5c61a384b76d627c50ac946a"
+      ]
+    }
+  ],
+  "has_next_page": true,
+  "next_page": 1549904343600
+}

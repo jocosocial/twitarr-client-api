@@ -1,0 +1,20 @@
+{
+  "status": "ok",
+  "stream_posts": [
+    {
+      "id": "5c6323e6d86b937c6c739cb7",
+      "author": {
+        "username": "rangerrick",
+        "display_name": "RangerRick",
+        "last_photo_updated": 1549854903224
+      },
+      "locked": false,
+      "timestamp": 1550001126722,
+      "text": "This post is a #hashtag #test that uses #lots of #hashtags #hastagapalooza",
+      "reactions": {},
+      "parent_chain": []
+    }
+  ],
+  "has_next_page": false,
+  "next_page": 1550001126721
+}

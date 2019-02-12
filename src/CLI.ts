@@ -2,6 +2,7 @@ import { API, Rest, Client } from './API';
 import { Util } from './internal/Util';
 import { TwitarrError } from './api/TwitarrError';
 import { User } from './model/User';
+import { IStreamOptions } from './dao/StreamDAO';
 
 const fakeRequire = require('./__fake_require'); // tslint:disable-line
 
@@ -13,6 +14,7 @@ const CLI = () => {
   const colors = fakeRequire('colors');
   const fs = fakeRequire('fs');
   const path = fakeRequire('path');
+  const wrap = fakeRequire('word-wrap');
   const yargs = fakeRequire('yargs');
 
   const homedir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
@@ -82,6 +84,36 @@ const CLI = () => {
         .command('read <id>', 'read a seamail thread')
         .command('create <subject> <message> <users...>', 'create a new seamail thread')
         .command('post <id> <message>', 'post a message to a thread');
+    })
+    .command('stream', 'read or post to the tweet steram', (sub) => {
+      return sub
+        .command('read', 'read the tweet stream', (y) => {
+          return y
+            .alias('a', 'author')
+            .describe('a', 'filter tweets to those posted by the specified author')
+            .string('a')
+            .alias('h', 'hashtag')
+            .describe('h', 'filter tweets to those containing the specified hashtag')
+            .string('h')
+            .alias('l', 'limit')
+            .describe('l', 'limit the number of tweets returned')
+            .number('l')
+            .alias('m', 'mentions')
+            .describe('m', 'filter tweets to those mentioning the specified user')
+            .string('m')
+            .alias('i', 'include-author')
+            .describe('i', 'when filtering by mentions, include tweets mentioning *or* written by the specified user')
+            .boolean('i')
+            .alias('n', 'newer-than')
+            .describe('n', 'return up to <limit> tweets since the specified date')
+            .string('n')
+            .alias('o', 'older-than')
+            .describe('o', 'return up to <limit> tweets up to the specified date')
+            .string('o')
+            .alias('s', 'starred')
+            .describe('s', 'filter tweets to those posted by users you have starred')
+            ;
+        });
     })
     .argv;
 
@@ -240,6 +272,17 @@ const CLI = () => {
     console.log('');
   };
 
+  const doStreamRead = async (options: IStreamOptions) => {
+    const client = getClient();
+    const response = await client.stream().posts(options);
+    for (const post of response.stream_posts.reverse()) {
+      console.log(post.author.toString());
+      console.log(wrap(post.text.trim(), { indent: '  ', width: 60 }));
+      console.log('  - ' + post.timestamp.fromNow() + ' (id: ' + post.id + ')');
+      console.log('');
+    }
+  };
+
   const processArgs = async (args) => {
     try {
       switch (args._[0]) {
@@ -271,6 +314,32 @@ const CLI = () => {
               break;
             }
             default: throw new TwitarrError('Unhandled seamail command: ' + command);
+          }
+          break;
+        }
+        case 'stream': {
+          const command = args._[1];
+          switch (command) {
+            case 'read': {
+              const options = {
+                author: args.author,
+                hashtag: args.hashtag,
+                limit: args.limit,
+                mentions: args.mentions,
+                include_author: args.includeAuthor,
+                starred: args.starred,
+              } as IStreamOptions;
+              if (args.newerThan) {
+                options.newer_posts = true;
+                options.start = Util.toMoment(args.newerThan);
+              }
+              if (args.olderThan) {
+                options.newer_posts = false;
+                options.start = Util.toMoment(args.olderThan);
+              }
+              await doStreamRead(options);
+              break;
+            }
           }
           break;
         }

@@ -69,6 +69,36 @@ export class MockHTTP extends AbstractHTTP {
       case '/api/v2/seamail/5c607d43ea204f5815755cda?app=plain&skip_mark_read=true': {
         return jsonOK(require('../data/seamail-5c607d43ea204f5815755cda.json'));
       }
+      case '/api/v2/stream?app=plain': {
+        return jsonOK(require('../data/stream.json'));
+      }
+      case '/api/v2/stream?app=plain&limit=5': {
+        return jsonOK(require('../data/stream-limit-5.json'));
+      }
+      case '/api/v2/stream?app=plain&limit=20': {
+        return jsonOK(require('../data/stream.json'));
+      }
+      case '/api/v2/stream?app=plain&hashtag=hashtag': {
+        return jsonOK(require('../data/stream-hashtag.json'));
+      }
+      case '/api/v2/stream?app=plain&newer_posts=true': {
+        return jsonOK(require('../data/stream-empty.json'));
+      }
+      case '/api/v2/stream?app=plain&author=rangerrick': {
+        return jsonOK(require('../data/stream-rangerrick.json'));
+      }
+      case '/api/v2/stream?app=plain&mentions=rangerrick': {
+        return jsonOK(require('../data/stream-mentions-rangerrick.json'));
+      }
+      case '/api/v2/stream?app=plain&include_author=true&mentions=rangerrick': {
+        return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
+      }
+      case '/api/v2/stream?app=plain&start=0': {
+        return jsonOK(require('../data/stream.json'));
+      }
+      case '/api/v2/stream?app=plain&starred=true': {
+        return jsonOK(require('../data/stream-mentions-rangerrick.json'));
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));
