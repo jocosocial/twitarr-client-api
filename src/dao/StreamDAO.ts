@@ -52,4 +52,68 @@ export class StreamDAO extends AbstractDAO {
       return StreamResponse.fromRest(result.data);
     });
   }
+
+  public async thread(id: string, limit?: number, page?: number) {
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
+    if (!Util.isEmpty(limit)) {
+      options.parameters.limit = '' + limit;
+    }
+    if (!Util.isEmpty(page)) {
+      options.parameters.page = '' + page;
+    }
+    return this.http.get('/api/v2/thread/' + id, options).then((result) => {
+      return StreamResponse.fromRest(result.data);
+    });
+  }
+
+  public async mentions(username: string, limit?: number, page?: number, after?: Moment) {
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
+    if (!Util.isEmpty(limit)) {
+      options.parameters.limit = '' + limit;
+    }
+    if (!Util.isEmpty(page)) {
+      options.parameters.page = '' + page;
+    }
+    if (!Util.isEmpty(after)) {
+      options.parameters.after = '' + after.valueOf();
+    }
+    return this.http.get('/api/v2/stream/m/' + username, options).then((result) => {
+      return StreamResponse.fromRest(result.data);
+    });
+  }
+
+  public async hashtag(hashtag: string, limit?: number, page?: number, after?: Moment) {
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
+    if (!Util.isEmpty(limit)) {
+      options.parameters.limit = '' + limit;
+    }
+    if (!Util.isEmpty(page)) {
+      options.parameters.page = '' + page;
+    }
+    if (!Util.isEmpty(after)) {
+      options.parameters.after = '' + after.valueOf();
+    }
+    return this.http.get('/api/v2/stream/h/' + hashtag, options).then((result) => {
+      return StreamResponse.fromRest(result.data);
+    });
+  }
+
+  public async send(message: string, parent?: string, photo?: string) {
+    const options = new TwitarrHTTPOptions()
+      .withData({
+        text: message,
+      });
+    if (!Util.isEmpty(parent)) {
+      options.data.parent = parent;
+    }
+    if (!Util.isEmpty(photo)) {
+      options.data.photo = photo;
+    }
+    return this.http.post('/api/v2/stream', options).then((result) => {
+      return StreamResponse.fromRest(result.data);
+    });
+  }
 }

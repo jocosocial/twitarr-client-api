@@ -113,7 +113,18 @@ const CLI = () => {
             .alias('s', 'starred')
             .describe('s', 'filter tweets to those posted by users you have starred')
             ;
-        });
+        })
+        .command('post <message>', 'post a tweet', (y) => {
+          return y
+            .alias('r', 'reply-to')
+            .describe('r', 'the id of the tweet you are replying to')
+            .string('r')
+            .alias('p', 'photo')
+            .describe('p', 'the photo ID to associate with the tweet')
+            .string('p')
+            ;
+        })
+        ;
     })
     .argv;
 
@@ -275,12 +286,19 @@ const CLI = () => {
   const doStreamRead = async (options: IStreamOptions) => {
     const client = getClient();
     const response = await client.stream().posts(options);
-    for (const post of response.stream_posts.reverse()) {
+    for (const post of response.posts.reverse()) {
       console.log(post.author.toString());
       console.log(wrap(post.text.trim(), { indent: '  ', width: 60 }));
       console.log('  - ' + post.timestamp.fromNow() + ' (id: ' + post.id + ')');
       console.log('');
     }
+  };
+
+  const doStreamPost = async (message: string, parent?: string, photo?: string) => {
+    const client = getClient();
+    const response = await client.stream().send(message, parent, photo);
+    console.log(colors.green('Posted tweet ' + response.post.id));
+    console.log('');
   };
 
   const processArgs = async (args) => {
@@ -338,6 +356,10 @@ const CLI = () => {
                 options.start = Util.toMoment(args.olderThan);
               }
               await doStreamRead(options);
+              break;
+            }
+            case 'post': {
+              await doStreamPost(args.message, args.replyTo, args.photo);
               break;
             }
           }

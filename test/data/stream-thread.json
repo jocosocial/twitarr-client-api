@@ -1,0 +1,43 @@
+{
+  "status": "ok",
+  "post": {
+    "id": "5c63275ad86b930ad6739cb8",
+    "author": {
+      "username": "hendusoone",
+      "display_name": "hendusoone",
+      "last_photo_updated": 1549850111371
+    },
+    "locked": false,
+    "timestamp": 1550002010692,
+    "text": "Aren't #hashtags cool?",
+    "reactions": {},
+    "parent_chain": [],
+    "children": [
+      {
+        "id": "5c6349e4ffef0beb3eae1e78",
+        "author": {
+          "username": "rangerrick",
+          "display_name": "RangerRick",
+          "last_photo_updated": 1549854903224
+        },
+        "locked": false,
+        "timestamp": 1550010852124,
+        "text": "@hendusoone indeed",
+        "reactions": {}
+      },
+      {
+        "id": "5c634ad6ffef0beb3eae1e79",
+        "author": {
+          "username": "rangerrick",
+          "display_name": "RangerRick",
+          "last_photo_updated": 1549854903224
+        },
+        "locked": false,
+        "timestamp": 1550011094331,
+        "text": "@rangerrick adding a reply for reasons",
+        "reactions": {}
+      }
+    ]
+  },
+  "has_next_page": false
+}

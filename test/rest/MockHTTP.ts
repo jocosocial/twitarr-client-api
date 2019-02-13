@@ -12,6 +12,9 @@ import { AbstractHTTP } from '../../src/rest/AbstractHTTP';
 import { TwitarrHTTPOptions } from '../../src/api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../../src/api/TwitarrResult';
 import { POINT_CONVERSION_COMPRESSED } from 'constants';
+import { User } from '../../src/model/User';
+import { Util } from '../../src/internal/Util';
+import { StreamResponse } from '../../src/model/StreamResponse';
 
 const getError = (method: string, urlObj: any, options?: TwitarrHTTPOptions) => {
   // tslint:disable-next-line
@@ -99,6 +102,21 @@ export class MockHTTP extends AbstractHTTP {
       case '/api/v2/stream?app=plain&starred=true': {
         return jsonOK(require('../data/stream-mentions-rangerrick.json'));
       }
+      case '/api/v2/thread/5c63275ad86b930ad6739cb8?app=plain': {
+        return jsonOK(require('../data/stream-thread.json'));
+      }
+      case '/api/v2/thread/5c63275ad86b930ad6739cb8?app=plain&limit=1': {
+        return jsonOK(require('../data/stream-thread-limit.json'));
+      }
+      case '/api/v2/thread/5c63275ad86b930ad6739cb8?app=plain&limit=1&page=1': {
+        return jsonOK(require('../data/stream-thread-limit-page-1.json'));
+      }
+      case '/api/v2/stream/m/rangerrick?app=plain': {
+        return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
+      }
+      case '/api/v2/stream/h/hashtag?app=plain': {
+        return jsonOK(require('../data/stream-hashtag.json'));
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));
@@ -164,6 +182,11 @@ export class MockHTTP extends AbstractHTTP {
           return jsonOK(require('../data/seamail-post.json'));
         }
         break;
+      }
+      case '/api/v2/stream': {
+        if (options.data.text === 'this is a twitter post!' && Util.isEmpty(options.data.parent, options.data.photo)) {
+          return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
+        }
       }
     }
 
