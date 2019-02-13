@@ -85,56 +85,56 @@ const CLI = () => {
         .command('create <subject> <message> <users...>', 'create a new seamail thread')
         .command('post <id> <message>', 'post a message to a thread');
     })
-    .command('stream', 'read or post to the tweet steram', (sub) => {
+    .command('stream', 'read or post to the twarrt stream', (sub) => {
       return sub
-        .command('read', 'read the tweet stream', (y) => {
+        .command('read', 'read the twarrt stream', (y) => {
           return y
             .alias('a', 'author')
-            .describe('a', 'filter tweets to those posted by the specified author')
+            .describe('a', 'filter twarrts to those posted by the specified author')
             .string('a')
             .alias('h', 'hashtag')
-            .describe('h', 'filter tweets to those containing the specified hashtag')
+            .describe('h', 'filter twarrts to those containing the specified hashtag')
             .string('h')
             .alias('l', 'limit')
-            .describe('l', 'limit the number of tweets returned')
+            .describe('l', 'limit the number of twarrts returned')
             .number('l')
             .alias('m', 'mentions')
-            .describe('m', 'filter tweets to those mentioning the specified user')
+            .describe('m', 'filter twarrts to those mentioning the specified user')
             .string('m')
             .alias('i', 'include-author')
-            .describe('i', 'when filtering by mentions, include tweets mentioning *or* written by the specified user')
+            .describe('i', 'when filtering by mentions, include twarrts mentioning *or* written by the specified user')
             .boolean('i')
             .alias('n', 'newer-than')
-            .describe('n', 'return up to <limit> tweets since the specified date')
+            .describe('n', 'return up to <limit> twarrts since the specified date')
             .string('n')
             .alias('o', 'older-than')
-            .describe('o', 'return up to <limit> tweets up to the specified date')
+            .describe('o', 'return up to <limit> twarrts up to the specified date')
             .string('o')
             .alias('s', 'starred')
-            .describe('s', 'filter tweets to those posted by users you have starred')
+            .describe('s', 'filter twarrts to those posted by users you have starred')
             ;
         })
-        .command('post <message>', 'post a tweet', (y) => {
+        .command('post <message>', 'post a twarrt', (y) => {
           return y
             .alias('r', 'reply-to')
-            .describe('r', 'the id of the tweet you are replying to')
+            .describe('r', 'the id of the twarrt you are replying to')
             .string('r')
             .alias('p', 'photo')
-            .describe('p', 'the photo ID to associate with the tweet')
+            .describe('p', 'the photo ID to associate with the twarrt')
             .string('p')
             ;
         })
-        .command('update <id> <message>', 'edit/update an existing tweet', (y) => {
+        .command('update <id> <message>', 'edit/update an existing twarrt', (y) => {
           return y
             .alias('p', 'photo')
-            .describe('p', 'the photo ID to associate with the tweet')
+            .describe('p', 'the photo ID to associate with the twarrt')
             .string('p')
             ;
         })
-        .command('delete <id>', 'delete an existing tweet')
-        .command('lock <id>', 'lock a tweet and its children (requires moderator privileges)')
-        .command('unlock <id>', 'unlock a tweet and its children (requires moderator privileges)')
-        .command('react <id> <reaction>', 'react to a tweet', (y) => {
+        .command('delete <id>', 'delete an existing twarrt')
+        .command('lock <id>', 'lock a twarrt and its children (requires moderator privileges)')
+        .command('unlock <id>', 'unlock a twarrt and its children (requires moderator privileges)')
+        .command('react <id> <reaction>', 'react to a twarrt', (y) => {
           return y
             .alias('r', 'remove')
             .describe('r', 'remove the reaction, rather than adding it')
@@ -314,35 +314,35 @@ const CLI = () => {
   const doStreamPost = async (message: string, parent?: string, photo?: string) => {
     const client = getClient();
     const response = await client.stream().send(message, parent, photo);
-    console.log(colors.green('Posted tweet ' + response.post.id));
+    console.log(colors.green('Posted twarrt ' + response.post.id));
     console.log('');
   };
 
   const doUpdateStreamPost = async (id: string, message: string, photo?: string) => {
     const client = getClient();
     const response = await client.stream().updatePost(id, message, photo);
-    console.log(colors.green('Updated tweet ' + response.post.id));
+    console.log(colors.green('Updated twarrt ' + response.post.id));
     console.log('');
   };
 
   const doDeleteStreamPost = async (id: string) => {
     const client = getClient();
     const response = await client.stream().deletePost(id);
-    console.log(colors.green('Deleted tweet ' + id));
+    console.log(colors.green('Deleted twarrt ' + id));
     console.log('');
   };
 
   const doLockStreamPost = async (id: string) => {
     const client = getClient();
     const response = await client.stream().lockPost(id);
-    console.log(colors.green('Locked tweet ' + id));
+    console.log(colors.green('Locked twarrt ' + id));
     console.log('');
   };
 
   const doUnlockStreamPost = async (id: string) => {
     const client = getClient();
     await client.stream().unlockPost(id);
-    console.log(colors.green('Unlocked tweet ' + id));
+    console.log(colors.green('Unlocked twarrt ' + id));
     console.log('');
   };
 
@@ -350,10 +350,10 @@ const CLI = () => {
     const client = getClient();
     if (del) {
       await client.stream().deleteReact(id, reaction);
-      console.log(colors.green('Removed ' + reaction + ' reaction from tweet ' + id));
+      console.log(colors.green('Removed ' + reaction + ' reaction from twarrt ' + id));
     } else {
       await client.stream().react(id, reaction);
-      console.log(colors.green('Added ' + reaction + ' reaction to tweet ' + id));
+      console.log(colors.green('Added ' + reaction + ' reaction to twarrt ' + id));
     }
     console.log('');
   };
