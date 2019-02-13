@@ -165,4 +165,14 @@ describe('dao/StreamDAO', () => {
       done();
     });
   });
+  describe('#update', () => {
+    it('update(id, message)', async (done) => {
+      const ret = await dao.update('5c63275ad86b930ad6739cb8', 'this is no longer a twitter post!');
+      expect(ret).toBeDefined();
+      expect(ret).toBeInstanceOf(StreamResponse);
+      expect(ret.posts[0]).toBeDefined();
+      expect(ret.posts.length).toEqual(1);
+      done();
+    });
+  });
 });

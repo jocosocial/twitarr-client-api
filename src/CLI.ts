@@ -124,6 +124,13 @@ const CLI = () => {
             .string('p')
             ;
         })
+        .command('update <id> <message>', 'edit/update an existing tweet', (y) => {
+          return y
+            .alias('p', 'photo')
+            .describe('p', 'the photo ID to associate with the tweet')
+            .string('p')
+            ;
+        })
         ;
     })
     .argv;
@@ -301,6 +308,13 @@ const CLI = () => {
     console.log('');
   };
 
+  const doUpdateStreamPost = async (id: string, message: string, photo?: string) => {
+    const client = getClient();
+    const response = await client.stream().update(id, message, photo);
+    console.log(colors.green('Updated tweet ' + response.post.id));
+    console.log('');
+  };
+
   const processArgs = async (args) => {
     try {
       switch (args._[0]) {
@@ -362,6 +376,10 @@ const CLI = () => {
               await doStreamPost(args.message, args.replyTo, args.photo);
               break;
             }
+            case 'update': {
+              await doUpdateStreamPost(args.id, args.message, args.photo);
+              break;
+            }
           }
           break;
         }
@@ -372,7 +390,7 @@ const CLI = () => {
       }
       process.exit(0);
     } catch (err) {
-      console.log(colors.red('Failed: ' + err.message));
+      console.log(colors.red('Failed: ' + (err.toString? err.toString() : err.message)));
       process.exit(1);
     }
   };

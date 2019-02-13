@@ -187,6 +187,10 @@ export class MockHTTP extends AbstractHTTP {
         if (options.data.text === 'this is a twitter post!' && Util.isEmpty(options.data.parent, options.data.photo)) {
           return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
         }
+        break;
+      }
+      case '/api/v2/tweet/5c63275ad86b930ad6739cb8': {
+        return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
       }
     }
 

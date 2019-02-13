@@ -116,4 +116,17 @@ export class StreamDAO extends AbstractDAO {
       return StreamResponse.fromRest(result.data);
     });
   }
+
+  public async update(id: string, message: string, photo?: string) {
+    const options = new TwitarrHTTPOptions()
+      .withData({
+        text: message,
+      });
+    if (!Util.isEmpty(photo)) {
+      options.data.photo = photo;
+    }
+    return this.http.post('/api/v2/tweet/' + id, options).then((result) => {
+      return StreamResponse.fromRest(result.data);
+    });
+  }
 }
