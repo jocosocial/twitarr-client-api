@@ -202,6 +202,18 @@ export class MockHTTP extends AbstractHTTP {
       case '/api/v2/tweet/5c63275ad86b930ad6739cb8': {
         return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
       }
+      case '/api/v2/tweet/5c63275ad86b930ad6739cb8/locked/true': {
+        return jsonOK({
+          locked: true,
+          status: 'ok',
+        });
+      }
+      case '/api/v2/tweet/5c63275ad86b930ad6739cb8/locked/false': {
+        return jsonOK({
+          locked: false,
+          status: 'ok',
+        });
+      }
     }
 
     return Promise.reject(getError('POST', urlObj, options));

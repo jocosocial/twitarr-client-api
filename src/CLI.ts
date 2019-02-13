@@ -132,6 +132,8 @@ const CLI = () => {
             ;
         })
         .command('delete <id>', 'delete an existing tweet')
+        .command('lock <id>', 'lock a tweet and its children (requires moderator privileges)')
+        .command('unlock <id>', 'unlock a tweet and its children (requires moderator privileges)')
         ;
     })
     .argv;
@@ -323,6 +325,20 @@ const CLI = () => {
     console.log('');
   };
 
+  const doLockStreamPost = async (id: string) => {
+    const client = getClient();
+    const response = await client.stream().lockPost(id);
+    console.log(colors.green('Locked tweet ' + id));
+    console.log('');
+  };
+
+  const doUnlockStreamPost = async (id: string) => {
+    const client = getClient();
+    const response = await client.stream().unlockPost(id);
+    console.log(colors.green('Unlocked tweet ' + id));
+    console.log('');
+  };
+
   const processArgs = async (args) => {
     try {
       switch (args._[0]) {
@@ -390,6 +406,14 @@ const CLI = () => {
             }
             case 'delete': {
               await doDeleteStreamPost(args.id);
+              break;
+            }
+            case 'lock': {
+              await doLockStreamPost(args.id);
+              break;
+            }
+            case 'unlock': {
+              await doUnlockStreamPost(args.id);
               break;
             }
           }

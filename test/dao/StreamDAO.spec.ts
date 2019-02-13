@@ -183,4 +183,20 @@ describe('dao/StreamDAO', () => {
       done();
     });
   });
+  describe('#lockPost', () => {
+    it('lockPost(id)', async (done) => {
+      const ret = await dao.lockPost('5c63275ad86b930ad6739cb8');
+      expect(ret).toBeDefined();
+      expect(ret).toBeTruthy();
+      done();
+    });
+  });
+  describe('#unlockPost', () => {
+    it('unlockPost(id)', async (done) => {
+      const ret = await dao.unlockPost('5c63275ad86b930ad6739cb8');
+      expect(ret).toBeDefined();
+      expect(ret).toBeFalsy();
+      done();
+    });
+  });
 });

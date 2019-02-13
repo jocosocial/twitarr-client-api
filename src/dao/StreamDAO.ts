@@ -135,4 +135,16 @@ export class StreamDAO extends AbstractDAO {
       return true;
     });
   }
+
+  public async lockPost(id: string) {
+    return this.http.post('/api/v2/tweet/' + id + '/locked/true').then((result) => {
+      return result.data.locked as boolean;
+    });
+  }
+
+  public async unlockPost(id: string) {
+    return this.http.post('/api/v2/tweet/' + id + '/locked/false').then((result) => {
+      return result.data.locked as boolean;
+    });
+  }
 }
