@@ -18,7 +18,17 @@ import { StreamResponse } from '../../src/model/StreamResponse';
 
 const getError = (method: string, urlObj: any, options?: TwitarrHTTPOptions) => {
   // tslint:disable-next-line
-  return new Error('Not yet implemented: ' + method + ' ' + urlObj.toString() + ': ' + JSON.stringify(options.parameters) + ' ' + JSON.stringify(options.data));
+  let message = 'Net yet implemented: ' + method + ' ' + urlObj.toString();
+  if (options) {
+    message += ': ';
+    if (options.parameters) {
+      message += 'parameters=' + JSON.stringify(options.parameters);
+    }
+    if (options.data) {
+      message += 'data=' + JSON.stringify(options.data);
+    }
+  }
+  return new Error(message);
 };
 
 const jsonOK = (contents: any) => {
