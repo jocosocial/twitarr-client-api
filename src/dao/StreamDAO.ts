@@ -117,7 +117,7 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
-  public async update(id: string, message: string, photo?: string) {
+  public async updatePost(id: string, message: string, photo?: string) {
     const options = new TwitarrHTTPOptions()
       .withData({
         text: message,
@@ -130,7 +130,7 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
-  public async delete(id: string) {
+  public async deletePost(id: string) {
     return this.http.httpDelete('/api/v2/tweet/' + id).then(() => {
       return true;
     });

@@ -165,9 +165,9 @@ describe('dao/StreamDAO', () => {
       done();
     });
   });
-  describe('#update', () => {
-    it('update(id, message)', async (done) => {
-      const ret = await dao.update('5c63275ad86b930ad6739cb8', 'this is no longer a twitter post!');
+  describe('#updatePost', () => {
+    it('updatePost(id, message)', async (done) => {
+      const ret = await dao.updatePost('5c63275ad86b930ad6739cb8', 'this is no longer a twitter post!');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts[0]).toBeDefined();
@@ -175,14 +175,12 @@ describe('dao/StreamDAO', () => {
       done();
     });
   });
-  /*
-  describe('#delete', () => {
-    it('delete(id)', async (done) => {
-      const ret = await dao.delete('5c63275ad86b930ad6739cb8');
+  describe('#deletePost', () => {
+    it('deletePost(id)', async (done) => {
+      const ret = await dao.deletePost('5c63275ad86b930ad6739cb8');
       expect(ret).toBeDefined();
       expect(ret).toBeTruthy();
       done();
     });
   });
-  */
 });

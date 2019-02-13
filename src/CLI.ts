@@ -131,6 +131,7 @@ const CLI = () => {
             .string('p')
             ;
         })
+        .command('delete <id>', 'delete an existing tweet')
         ;
     })
     .argv;
@@ -310,8 +311,15 @@ const CLI = () => {
 
   const doUpdateStreamPost = async (id: string, message: string, photo?: string) => {
     const client = getClient();
-    const response = await client.stream().update(id, message, photo);
+    const response = await client.stream().updatePost(id, message, photo);
     console.log(colors.green('Updated tweet ' + response.post.id));
+    console.log('');
+  };
+
+  const doDeleteStreamPost = async (id: string) => {
+    const client = getClient();
+    const response = await client.stream().deletePost(id);
+    console.log(colors.green('Deleted tweet ' + id));
     console.log('');
   };
 
@@ -378,6 +386,10 @@ const CLI = () => {
             }
             case 'update': {
               await doUpdateStreamPost(args.id, args.message, args.photo);
+              break;
+            }
+            case 'delete': {
+              await doDeleteStreamPost(args.id);
               break;
             }
           }

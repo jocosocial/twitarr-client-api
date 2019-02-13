@@ -209,6 +209,16 @@ export class MockHTTP extends AbstractHTTP {
 
   public httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
     const urlObj = new URI(url);
+    if (options && options.parameters) {
+      urlObj.search(options.parameters);
+    }
+
+    switch (urlObj.toString()) {
+      case '/api/v2/tweet/5c63275ad86b930ad6739cb8': {
+        return Promise.resolve(TwitarrResult.ok(''));
+      }
+    }
+
     return Promise.reject(getError('DELETE', urlObj, options));
   }
 }
