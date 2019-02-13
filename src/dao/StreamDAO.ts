@@ -32,6 +32,9 @@ export interface IStreamOptions {
 }
 
 export class StreamDAO extends AbstractDAO {
+  /**
+   * Retrieve a collection of twarrts.
+   */
   public async posts(streamOptions?: IStreamOptions) {
     const options = new TwitarrHTTPOptions()
       .withParameter('app', 'plain');
@@ -54,6 +57,9 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
+  /**
+   * Retrieve a particular twarrt (including its children).
+   */
   public async thread(id: string, limit?: number, page?: number) {
     const options = new TwitarrHTTPOptions()
       .withParameter('app', 'plain');
@@ -68,6 +74,9 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
+  /**
+   * Retrieve a list of twarrts that mention a particular user.
+   */
   public async mentions(username: string, limit?: number, page?: number, after?: Moment) {
     const options = new TwitarrHTTPOptions()
       .withParameter('app', 'plain');
@@ -85,6 +94,9 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
+  /**
+   * Retrieve a list of twarrts that contain a particular hashtag.
+   */
   public async hashtag(hashtag: string, limit?: number, page?: number, after?: Moment) {
     const options = new TwitarrHTTPOptions()
       .withParameter('app', 'plain');
@@ -102,6 +114,9 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
+  /**
+   * Send a new twarrt.
+   */
   public async send(message: string, parent?: string, photo?: string) {
     const options = new TwitarrHTTPOptions()
       .withData({
@@ -118,6 +133,9 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
+  /**
+   * Edit an existing twarrt.
+   */
   public async updatePost(id: string, message: string, photo?: string) {
     const options = new TwitarrHTTPOptions()
       .withData({
@@ -131,30 +149,54 @@ export class StreamDAO extends AbstractDAO {
     });
   }
 
+  /**
+   * Delete a twarrt.
+   */
   public async deletePost(id: string) {
     return this.http.httpDelete('/api/v2/tweet/' + id).then(() => {
       return true;
     });
   }
 
+  /**
+   * Lock a twarrt.
+   */
   public async lockPost(id: string) {
     return this.http.post('/api/v2/tweet/' + id + '/locked/true').then((result) => {
       return result.data.locked as boolean;
     });
   }
 
+  /**
+   * Unlock a twarrt.
+   */
   public async unlockPost(id: string) {
     return this.http.post('/api/v2/tweet/' + id + '/locked/false').then((result) => {
       return result.data.locked as boolean;
     });
   }
 
+  /**
+   * Retrieve the reactions to a twarrt.
+   */
+  public async reactions(id: string) {
+    return this.http.get('/api/v2/tweet/' + id + '/react').then((result) => {
+      return ReactionsSummary.fromRest(result.data.reactions);
+    });
+  }
+
+  /**
+   * Add a reaction to a twarrt.
+   */
   public async react(id: string, reaction: string) {
     return this.http.post('/api/v2/tweet/' + id + '/react/' + reaction).then((result) => {
       return ReactionsSummary.fromRest(result.data.reactions);
     });
   }
 
+  /**
+   * Remove a reaction from a twarrt.
+   */
   public async deleteReact(id: string, reaction: string) {
     return this.http.httpDelete('/api/v2/tweet/' + id + '/react/' + reaction).then((result) => {
       return ReactionsSummary.fromRest(result.data.reactions);
