@@ -80,6 +80,16 @@ export class TwitarrHTTPOptions {
     return this;
   }
 
+  /**
+   * Set the data to be passed when POSTing.
+   * @param data - the data to POST
+   */
+  public withData(data: any): TwitarrHTTPOptions {
+    this.data = { };
+    Object.assign(this.data, data);
+    return this;
+  }
+
   public toJSON(): object {
     const ret = Object.assign({ }, this);
     if (this[TIMEOUT_PROP]) {
