@@ -134,6 +134,13 @@ const CLI = () => {
         .command('delete <id>', 'delete an existing tweet')
         .command('lock <id>', 'lock a tweet and its children (requires moderator privileges)')
         .command('unlock <id>', 'unlock a tweet and its children (requires moderator privileges)')
+        .command('react <id> <reaction>', 'react to a tweet', (y) => {
+          return y
+            .alias('r', 'remove')
+            .describe('r', 'remove the reaction, rather than adding it')
+            .boolean('r')
+            ;
+          })
         ;
     })
     .argv;
@@ -334,8 +341,20 @@ const CLI = () => {
 
   const doUnlockStreamPost = async (id: string) => {
     const client = getClient();
-    const response = await client.stream().unlockPost(id);
+    await client.stream().unlockPost(id);
     console.log(colors.green('Unlocked tweet ' + id));
+    console.log('');
+  };
+
+  const doReact = async (id: string, reaction: string, del: boolean = false) => {
+    const client = getClient();
+    if (del) {
+      await client.stream().deleteReact(id, reaction);
+      console.log(colors.green('Removed ' + reaction + ' reaction from tweet ' + id));
+    } else {
+      await client.stream().react(id, reaction);
+      console.log(colors.green('Added ' + reaction + ' reaction to tweet ' + id));
+    }
     console.log('');
   };
 
@@ -414,6 +433,10 @@ const CLI = () => {
             }
             case 'unlock': {
               await doUnlockStreamPost(args.id);
+              break;
+            }
+            case 'react': {
+              await doReact(args.id, args.reaction, args.remove);
               break;
             }
           }

@@ -3,6 +3,7 @@ import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { StreamResponse } from '../model/StreamResponse';
 import { Util } from '../internal/Util';
 import { Moment } from 'moment';
+import { ReactionsSummary } from '../model/ReactionsSummary';
 
 export interface IStreamOptions {
   /** limit posts to those written by the specified username */
@@ -145,6 +146,18 @@ export class StreamDAO extends AbstractDAO {
   public async unlockPost(id: string) {
     return this.http.post('/api/v2/tweet/' + id + '/locked/false').then((result) => {
       return result.data.locked as boolean;
+    });
+  }
+
+  public async react(id: string, reaction: string) {
+    return this.http.post('/api/v2/tweet/' + id + '/react/' + reaction).then((result) => {
+      return ReactionsSummary.fromRest(result.data.reactions);
+    });
+  }
+
+  public async deleteReact(id: string, reaction: string) {
+    return this.http.httpDelete('/api/v2/tweet/' + id + '/react/' + reaction).then((result) => {
+      return ReactionsSummary.fromRest(result.data.reactions);
     });
   }
 }

@@ -7,6 +7,7 @@ import { TwitarrServer } from '../../src/api/TwitarrServer';
 import { MockHTTP } from '../rest/MockHTTP';
 import { StreamResponse } from '../../src/model/StreamResponse';
 import { Util } from '../../src/internal/Util';
+import { ReactionsSummary } from '../../src/model/ReactionsSummary';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
@@ -196,6 +197,34 @@ describe('dao/StreamDAO', () => {
       const ret = await dao.unlockPost('5c63275ad86b930ad6739cb8');
       expect(ret).toBeDefined();
       expect(ret).toBeFalsy();
+      done();
+    });
+  });
+  describe('#react', () => {
+    it('react(id, reaction)', async (done) => {
+      const ret = await dao.react('5c63275ad86b930ad6739cb8', 'like');
+      expect(ret).toBeDefined();
+      expect(ret).toBeInstanceOf(ReactionsSummary);
+      expect(ret.reactions).toBeDefined();
+      expect(ret.reactions.like).toBeDefined();
+      expect(ret.reactions.like).toMatchObject({
+        count: 1,
+        me: true,
+      });
+      done();
+    });
+  });
+  describe('#deleteReact', () => {
+    it('deleteReact(id, reaction)', async (done) => {
+      const ret = await dao.deleteReact('5c63275ad86b930ad6739cb8', 'like');
+      expect(ret).toBeDefined();
+      expect(ret).toBeInstanceOf(ReactionsSummary);
+      expect(ret.reactions).toBeDefined();
+      expect(ret.reactions.like).toBeDefined();
+      expect(ret.reactions.like).toMatchObject({
+        count: 0,
+        me: false,
+      });
       done();
     });
   });

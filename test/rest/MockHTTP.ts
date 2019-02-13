@@ -214,6 +214,17 @@ export class MockHTTP extends AbstractHTTP {
           status: 'ok',
         });
       }
+      case '/api/v2/tweet/5c63275ad86b930ad6739cb8/react/like': {
+        return jsonOK({
+          reactions: {
+            like: {
+              count: 1,
+              me: true,
+            },
+          },
+          status: 'ok',
+        });
+      }
     }
 
     return Promise.reject(getError('POST', urlObj, options));
@@ -228,6 +239,17 @@ export class MockHTTP extends AbstractHTTP {
     switch (urlObj.toString()) {
       case '/api/v2/tweet/5c63275ad86b930ad6739cb8': {
         return Promise.resolve(TwitarrResult.ok(''));
+      }
+      case '/api/v2/tweet/5c63275ad86b930ad6739cb8/react/like': {
+        return jsonOK({
+          reactions: {
+            like: {
+              count: 0,
+              me: false,
+            },
+          },
+          status: 'ok',
+        });
       }
     }
 
