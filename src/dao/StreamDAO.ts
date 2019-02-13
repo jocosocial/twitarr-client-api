@@ -129,4 +129,10 @@ export class StreamDAO extends AbstractDAO {
       return StreamResponse.fromRest(result.data);
     });
   }
+
+  public async delete(id: string) {
+    return this.http.httpDelete('/api/v2/tweet/' + id).then(() => {
+      return true;
+    });
+  }
 }

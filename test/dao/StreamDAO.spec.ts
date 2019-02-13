@@ -175,4 +175,14 @@ describe('dao/StreamDAO', () => {
       done();
     });
   });
+  /*
+  describe('#delete', () => {
+    it('delete(id)', async (done) => {
+      const ret = await dao.delete('5c63275ad86b930ad6739cb8');
+      expect(ret).toBeDefined();
+      expect(ret).toBeTruthy();
+      done();
+    });
+  });
+  */
 });
