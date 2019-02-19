@@ -1,0 +1,17 @@
+{
+  "photo": {
+    "animated": false,
+    "id": "5c672f16daf15adc05421b4a",
+    "md5_hash": "b7edc72c0773bb13528dbb391c335e02",
+    "original_filename": "foo.png",
+    "sizes": {
+      "full": "477x477",
+      "medium_thumb": "477x477",
+      "small_thumb": "200x200"
+    },
+    "store_filename": "23289524-d90b-4552-aa92-918744590320.png",
+    "upload_time": 1550266134083,
+    "uploader": "kvort"
+  },
+  "status": "ok"
+}

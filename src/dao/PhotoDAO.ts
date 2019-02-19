@@ -1,7 +1,6 @@
 import { AbstractDAO } from './AbstractDAO';
 import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
-import { TwitarrResult } from '../api/TwitarrResult';
 import { PhotoDetails } from '../model/PhotoDetails';
 
 const URI = require('urijs'); // tslint:disable-line
@@ -15,6 +14,40 @@ if (typeof FormData === 'undefined') {
 require('buffer'); // tslint:disable-line no-var-requires
 
 export class PhotoDAO extends AbstractDAO {
+  /**
+   * Retrieve a photo's metadata.
+   */
+  public async get(id: string) {
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
+
+    return this.http.get('/api/v2/photo/' + id, options).then((result) => {
+      return PhotoDetails.fromRest(result.data.photo);
+    });
+  }
+
+  /**
+   * Update the "original filename" metadata on a photo.
+   */
+  public async put(id: string, newFileName: string) {
+    const options = new TwitarrHTTPOptions()
+      .withParameter('app', 'plain');
+
+    options.data = {
+      original_filename: newFileName,
+    };
+    return this.http.put('/api/v2/photo/' + id, options).then((result) => {
+      return PhotoDetails.fromRest(result.data.photo);
+    });
+  }
+
+  /**
+   * Delete/remove a photo..
+   */
+  public async remove(id: string) {
+    return this.http.httpDelete('/api/v2/photo/' + id);
+  }
+
   /**
    * Post a photo.
    */

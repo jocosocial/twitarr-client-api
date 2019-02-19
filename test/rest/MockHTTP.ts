@@ -31,10 +31,17 @@ const getError = (method: string, urlObj: any, options?: TwitarrHTTPOptions) => 
   return new Error(message);
 };
 
+/** Wrap in a JSON 'ok' result. */
 const jsonOK = (contents: any) => {
   const ret = TwitarrResult.ok(contents);
   ret.type = 'application/json';
   return Promise.resolve(ret);
+};
+
+/** Deep copy. */
+const getJsonFromFile = (file: string) => {
+  const json = require(file);
+  return JSON.parse(JSON.stringify(json));
 };
 
 export class MockHTTP extends AbstractHTTP {
@@ -47,7 +54,7 @@ export class MockHTTP extends AbstractHTTP {
 
     switch (urlObj.toString()) {
       case 'http://demo.twitarr.com/api/v2/text/welcome': {
-        return jsonOK(require('../data/welcome.json'));
+        return jsonOK(getJsonFromFile('../data/welcome.json'));
       }
       case '/api/v2/user/new_seamail': {
         return jsonOK({
@@ -56,76 +63,79 @@ export class MockHTTP extends AbstractHTTP {
         });
       }
       case '/api/v2/seamail?app=plain': {
-        return jsonOK(require('../data/seamail.json'));
+        return jsonOK(getJsonFromFile('../data/seamail.json'));
       }
       case '/api/v2/seamail?app=plain&unread=true': {
-        return jsonOK(require('../data/seamail-unread-true.json'));
+        return jsonOK(getJsonFromFile('../data/seamail-unread-true.json'));
       }
       case '/api/v2/seamail?app=plain&after=1549827395180': {
-        return jsonOK(require('../data/seamail-after-epoch.json'));
+        return jsonOK(getJsonFromFile('../data/seamail-after-epoch.json'));
       }
       case '/api/v2/seamail_threads?app=plain': {
-        return jsonOK(require('../data/seamail_threads.json'));
+        return jsonOK(getJsonFromFile('../data/seamail_threads.json'));
       }
       case '/api/v2/seamail_threads?app=plain&exclude_read_messages=true': {
-        return jsonOK(require('../data/seamail_threads-exclude_read_messages-true.json'));
+        return jsonOK(getJsonFromFile('../data/seamail_threads-exclude_read_messages-true.json'));
       }
       case '/api/v2/seamail_threads?app=plain&unread=true': {
-        return jsonOK(require('../data/seamail_threads-unread-true.json'));
+        return jsonOK(getJsonFromFile('../data/seamail_threads-unread-true.json'));
       }
       case '/api/v2/seamail_threads?app=plain&after=1549827390000': {
-        return jsonOK(require('../data/seamail_threads-after-epoch.json'));
+        return jsonOK(getJsonFromFile('../data/seamail_threads-after-epoch.json'));
       }
       case '/api/v2/seamail/5c607d43ea204f5815755cda?app=plain': {
-        return jsonOK(require('../data/seamail-5c607d43ea204f5815755cda.json'));
+        return jsonOK(getJsonFromFile('../data/seamail-5c607d43ea204f5815755cda.json'));
       }
       case '/api/v2/seamail/5c607d43ea204f5815755cda?app=plain&skip_mark_read=true': {
-        return jsonOK(require('../data/seamail-5c607d43ea204f5815755cda.json'));
+        return jsonOK(getJsonFromFile('../data/seamail-5c607d43ea204f5815755cda.json'));
       }
       case '/api/v2/stream?app=plain': {
-        return jsonOK(require('../data/stream.json'));
+        return jsonOK(getJsonFromFile('../data/stream.json'));
       }
       case '/api/v2/stream?app=plain&limit=5': {
-        return jsonOK(require('../data/stream-limit-5.json'));
+        return jsonOK(getJsonFromFile('../data/stream-limit-5.json'));
       }
       case '/api/v2/stream?app=plain&limit=20': {
-        return jsonOK(require('../data/stream.json'));
+        return jsonOK(getJsonFromFile('../data/stream.json'));
       }
       case '/api/v2/stream?app=plain&hashtag=hashtag': {
-        return jsonOK(require('../data/stream-hashtag.json'));
+        return jsonOK(getJsonFromFile('../data/stream-hashtag.json'));
       }
       case '/api/v2/stream?app=plain&newer_posts=true': {
-        return jsonOK(require('../data/stream-empty.json'));
+        return jsonOK(getJsonFromFile('../data/stream-empty.json'));
       }
       case '/api/v2/stream?app=plain&author=rangerrick': {
-        return jsonOK(require('../data/stream-rangerrick.json'));
+        return jsonOK(getJsonFromFile('../data/stream-rangerrick.json'));
       }
       case '/api/v2/stream?app=plain&mentions=rangerrick': {
-        return jsonOK(require('../data/stream-mentions-rangerrick.json'));
+        return jsonOK(getJsonFromFile('../data/stream-mentions-rangerrick.json'));
       }
       case '/api/v2/stream?app=plain&include_author=true&mentions=rangerrick': {
-        return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
+        return jsonOK(getJsonFromFile('../data/stream-mentions-rangerrick-include-author.json'));
       }
       case '/api/v2/stream?app=plain&start=0': {
-        return jsonOK(require('../data/stream.json'));
+        return jsonOK(getJsonFromFile('../data/stream.json'));
       }
       case '/api/v2/stream?app=plain&starred=true': {
-        return jsonOK(require('../data/stream-mentions-rangerrick.json'));
+        return jsonOK(getJsonFromFile('../data/stream-mentions-rangerrick.json'));
       }
       case '/api/v2/thread/5c63275ad86b930ad6739cb8?app=plain': {
-        return jsonOK(require('../data/stream-thread.json'));
+        return jsonOK(getJsonFromFile('../data/stream-thread.json'));
       }
       case '/api/v2/thread/5c63275ad86b930ad6739cb8?app=plain&limit=1': {
-        return jsonOK(require('../data/stream-thread-limit.json'));
+        return jsonOK(getJsonFromFile('../data/stream-thread-limit.json'));
       }
       case '/api/v2/thread/5c63275ad86b930ad6739cb8?app=plain&limit=1&page=1': {
-        return jsonOK(require('../data/stream-thread-limit-page-1.json'));
+        return jsonOK(getJsonFromFile('../data/stream-thread-limit-page-1.json'));
       }
       case '/api/v2/stream/m/rangerrick?app=plain': {
-        return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
+        return jsonOK(getJsonFromFile('../data/stream-mentions-rangerrick-include-author.json'));
       }
       case '/api/v2/stream/h/hashtag?app=plain': {
-        return jsonOK(require('../data/stream-hashtag.json'));
+        return jsonOK(getJsonFromFile('../data/stream-hashtag.json'));
+      }
+      case '/api/v2/photo/12345?app=plain': {
+        return jsonOK(getJsonFromFile('../data/photo-foo-png.json'));
       }
     }
 
@@ -139,13 +149,11 @@ export class MockHTTP extends AbstractHTTP {
     }
 
     switch (urlObj.toString()) {
-      /*
-      case 'rest/alarms/404725?ack=true': {
-        const result = TwitarrResult.ok('');
-        result.type = 'text/plain';
-        return Promise.resolve(result);
+      case '/api/v2/photo/12345?app=plain': {
+        const ret = getJsonFromFile('../data/photo-foo-png.json');
+        ret.photo.original_filename = options.data.original_filename;
+        return jsonOK(ret);
       }
-      */
     }
 
     return Promise.reject(getError('PUT', urlObj, options));
@@ -181,24 +189,24 @@ export class MockHTTP extends AbstractHTTP {
       }
       case '/api/v2/seamail': {
         if (options.data.subject === 'Test Subject' && options.data.text === 'Test Message' && options.data.users.length === 2) {
-          return jsonOK(require('../data/seamail-create-response.json'));
+          return jsonOK(getJsonFromFile('../data/seamail-create-response.json'));
         }
         break;
       }
       case '/api/v2/seamail/5c607d43ea204f5815755cda': {
         if (options.data.text === 'another message') {
-          return jsonOK(require('../data/seamail-post.json'));
+          return jsonOK(getJsonFromFile('../data/seamail-post.json'));
         }
         break;
       }
       case '/api/v2/stream': {
         if (options.data.text === 'this is a twitter post!' && Util.isEmpty(options.data.parent, options.data.photo)) {
-          return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
+          return jsonOK(getJsonFromFile('../data/stream-mentions-rangerrick-include-author.json'));
         }
         break;
       }
       case '/api/v2/tweet/5c63275ad86b930ad6739cb8': {
-        return jsonOK(require('../data/stream-mentions-rangerrick-include-author.json'));
+        return jsonOK(getJsonFromFile('../data/stream-mentions-rangerrick-include-author.json'));
       }
       case '/api/v2/tweet/5c63275ad86b930ad6739cb8/locked/true': {
         return jsonOK({
@@ -249,6 +257,9 @@ export class MockHTTP extends AbstractHTTP {
           status: 'ok',
         });
       }
+      case '/api/v2/photo/12345': {
+        return Promise.resolve(TwitarrResult.ok(undefined, undefined, 204, undefined));
+      }
     }
 
     return Promise.reject(getError('DELETE', urlObj, options));
@@ -263,23 +274,7 @@ export class MockHTTP extends AbstractHTTP {
     switch (urlObj.toString()) {
       case '/api/v2/photo': {
         if (fileName === 'foo.png') {
-          return jsonOK({
-            photo: {
-              animated: false,
-              id: '5c672f16daf15adc05421b4a',
-              md5_hash: 'b7edc72c0773bb13528dbb391c335e02',
-              original_filename: 'foo.png',
-              sizes: {
-                full: '477x477',
-                medium_thumb: '477x477',
-                small_thumb: '200x200',
-              },
-              store_filename: '23289524-d90b-4552-aa92-918744590320.png',
-              upload_time: 1550266134083,
-              uploader: 'kvort',
-            },
-            status: 'ok',
-          });
+          return jsonOK(getJsonFromFile('../data/photo-foo-png.json'));
         }
       }
     }
