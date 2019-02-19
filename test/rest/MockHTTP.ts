@@ -180,14 +180,12 @@ export class MockHTTP extends AbstractHTTP {
         break;
       }
       case '/api/v2/seamail': {
-        // tslint:disable-next-line max-line-length
         if (options.data.subject === 'Test Subject' && options.data.text === 'Test Message' && options.data.users.length === 2) {
           return jsonOK(require('../data/seamail-create-response.json'));
         }
         break;
       }
       case '/api/v2/seamail/5c607d43ea204f5815755cda': {
-        // tslint:disable-next-line max-line-length
         if (options.data.text === 'another message') {
           return jsonOK(require('../data/seamail-post.json'));
         }
@@ -254,5 +252,38 @@ export class MockHTTP extends AbstractHTTP {
     }
 
     return Promise.reject(getError('DELETE', urlObj, options));
+  }
+
+  public postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
+    const urlObj = new URI(url);
+    if (options && options.parameters) {
+      urlObj.search(options.parameters);
+    }
+
+    switch (urlObj.toString()) {
+      case '/api/v2/photo': {
+        if (fileName === 'foo.png') {
+          return jsonOK({
+            photo: {
+              animated: false,
+              id: '5c672f16daf15adc05421b4a',
+              md5_hash: 'b7edc72c0773bb13528dbb391c335e02',
+              original_filename: 'foo.png',
+              sizes: {
+                full: '477x477',
+                medium_thumb: '477x477',
+                small_thumb: '200x200',
+              },
+              store_filename: '23289524-d90b-4552-aa92-918744590320.png',
+              upload_time: 1550266134083,
+              uploader: 'kvort',
+            },
+            status: 'ok',
+          });
+        }
+      }
+    }
+
+    return Promise.reject(getError('POST (' + fileName + ')', urlObj, options));
   }
 }

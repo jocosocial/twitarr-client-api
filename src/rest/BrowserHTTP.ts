@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { AxiosStatic, AxiosInstance, /*AxiosResponse,*/ AxiosRequestConfig } from 'axios';
-import * as qs from 'qs';
 import * as clonedeep from 'lodash.clonedeep';
+
+if (!fetch) {
+  // @ts-ignore
+  // tslint:disable-next-line
+  var fetch = require('node-fetch');
+}
 
 /** @hidden */
 // tslint:disable-next-line
@@ -18,7 +23,7 @@ import { TwitarrServer } from '../api/TwitarrServer';
  * @module AxiosHTTP
  * @implements ITwitarrHTTP
  */
-export class AxiosHTTP extends AbstractHTTP {
+export class BrowserHTTP extends AbstractHTTP {
   /**
    * The Axios implementation class we'll use for making ReST calls.  This is necessary
    * to make sure we end up with the correct backend (XMLHttpRequest or Node.js 'http')
@@ -159,6 +164,41 @@ export class AxiosHTTP extends AbstractHTTP {
     }).catch((err) => {
       throw this.handleError(err, opts);
     });
+  }
+
+  /** POST a file. */
+  public async postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
+    const opts = this.getOptions(options)
+      .withHeader('content-type', 'multipart/form-data')
+      .withParameter('key', this.getKey());
+
+    const fetchObj = this.getFetchObject(fileName, contentType, data, opts);
+    const u = URI(this.server.url).resource(this.server.resolveURL(url, opts.parameters));
+
+    const fetchOpts = Object.assign({
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      method: 'POST',
+      mode: 'cors',
+      redirect: 'follow',
+    }, fetchObj);
+
+    return fetch(u.toString(), fetchOpts)
+      .then(async (response) => {
+        const json = await response.json();
+        return TwitarrResult.ok(json, undefined, response.status, response.headers['content-type']);
+      });
+  }
+
+  protected getFetchObject(fileName: string, contentType: string, data: Buffer, options: TwitarrHTTPOptions): any {
+    const fd = new FormData();
+    fd.append('name', fileName);
+    fd.append('file', new Blob([data], { type: contentType }), fileName);
+
+    return {
+      body: fd,
+      headers: options.headers,
+    };
   }
 
   /**

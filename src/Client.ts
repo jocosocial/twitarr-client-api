@@ -6,8 +6,9 @@ import { TwitarrError } from './api/TwitarrError';
 
 import { TwitarrServer } from './api/TwitarrServer';
 
-import { AxiosHTTP } from './rest/AxiosHTTP';
+import { BrowserHTTP } from './rest/BrowserHTTP';
 import { UserDAO } from './dao/UserDAO';
+import { PhotoDAO } from './dao/PhotoDAO';
 import { SeamailDAO } from './dao/SeamailDAO';
 import { StreamDAO } from './dao/StreamDAO';
 
@@ -59,7 +60,7 @@ export class Client implements IHasHTTP {
     if (httpImpl) {
       Client.defaultHttp = httpImpl;
     } else {
-      Client.defaultHttp = new AxiosHTTP();
+      Client.defaultHttp = new BrowserHTTP();
     }
     this.http = Client.defaultHttp;
   }
@@ -116,6 +117,13 @@ export class Client implements IHasHTTP {
    */
   public user() {
     return new UserDAO(this);
+  }
+
+  /**
+   * Get a photo DAO.
+   */
+  public photo() {
+    return new PhotoDAO(this);
   }
 
   /**

@@ -44,7 +44,7 @@ export interface ITwitarrHTTP {
    * Perform an HTTP GET to the provided URL.
    * @param url The URL to connect to.
    * @param options The [[TwitarrHTTPOptions]] options to use when connecting.
-   * @returns An [[TwitarrResult]] result object.
+   * @returns A [[TwitarrResult]] result object.
    */
   get(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 
@@ -52,7 +52,7 @@ export interface ITwitarrHTTP {
    * Perform an HTTP PUT to the provided URL.
    * @param url The URL to connect to.
    * @param options The [[TwitarrHTTPOptions]] options to use when connecting.
-   * @returns An [[TwitarrResult]] result object.
+   * @returns A [[TwitarrResult]] result object.
    */
   put(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 
@@ -60,7 +60,7 @@ export interface ITwitarrHTTP {
    * Perform an HTTP POST to the provided URL.
    * @param url The URL to connect to.
    * @param options The [[TwitarrHTTPOptions]] options to use when connecting.
-   * @returns An [[TwitarrResult]] result object.
+   * @returns A [[TwitarrResult]] result object.
    */
   post(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 
@@ -68,7 +68,19 @@ export interface ITwitarrHTTP {
    * Perform an HTTP DELETE to the provided URL.
    * @param url The URL to connect to.
    * @param options The [[TwitarrHTTPOptions]] options to use when connecting.
-   * @returns An [[TwitarrResult]] result object.
+   * @returns A [[TwitarrResult]] result object.
    */
   httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
+
+  /**
+   * Post a file to the provided URL using a `multipart/form-data` request.
+   *
+   * @param url The URL to connect to.
+   * @param fileName The name of the file to be uploaded.
+   * @param contentType The content-type of the file to be uploaded.
+   * @param data The file (as bytes) to send.
+   * @param options The [[TwitarrHTTPOptions]] options to use when connecting.
+   * @returns A [[TwitarrResult]] result object.
+   */
+  postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 }

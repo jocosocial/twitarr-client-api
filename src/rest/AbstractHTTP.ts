@@ -115,6 +115,9 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   /** Make an HTTP DELETE call. This must be overridden by the concrete implementation. */
   public abstract httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 
+  /** POST a file.  This must be overridden by the concrete implementation. */
+  public abstract postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
+
   /**
    * A convenience method for implementers to use to turn JSON into a javascript object.
    * Use this to process a JSON response before returning it in an [[TwitarrResult]] object.
@@ -138,11 +141,11 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    * @hidden
    */
   protected getType(response: any) {
-    if (response.headers['content-type'] === 'application/json') {
+    if (response.headers['content-type'] && response.headers['content-type'].startsWith('application/json')) {
       return 'json';
     } else if (response.config.responseType === 'json') {
       return 'json';
-    } else if (response.config.headers.accept === 'application/json') {
+    } else if (response.config.headers.accept && response.headers.accept.startsWith('application/json')) {
       return 'json';
     } else if (response.responseType === 'json') {
       return 'json';
@@ -192,7 +195,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   }
 
   /**
-   * Create an [[TwitarrError]] from an error response.
+   * Create a [[TwitarrError]] from an error response.
    * @hidden
    */
   protected handleError(err: any, options?: any): TwitarrError {
@@ -200,7 +203,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     const code = AbstractHTTP.extractCode(err);
     const errors = AbstractHTTP.extractError(err);
     const data = AbstractHTTP.extractData(err);
-    return new TwitarrError(message, code, options, errors, data);
+    return new TwitarrError(message, code, errors, options, data);
   }
 
   /* tslint:disable:member-ordering */

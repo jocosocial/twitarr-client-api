@@ -120,14 +120,14 @@ const CLI = () => {
             .describe('r', 'the id of the twarrt you are replying to')
             .string('r')
             .alias('p', 'photo')
-            .describe('p', 'the photo ID to associate with the twarrt')
+            .describe('p', 'the path to a photo to upload along with the twarrt')
             .string('p')
             ;
         })
         .command('update <id> <message>', 'edit/update an existing twarrt', (y) => {
           return y
             .alias('p', 'photo')
-            .describe('p', 'the photo ID to associate with the twarrt')
+            .describe('p', 'the path to a photo to add/replace in the twarrt')
             .string('p')
             ;
         })
@@ -163,7 +163,7 @@ const CLI = () => {
     const config = readConfig();
     const auth = new API.TwitarrAuthConfig(undefined, undefined, config.key);
     const server = new API.TwitarrServer('Twitarr', config.url, auth);
-    const http = new Rest.AxiosHTTP(server);
+    const http = new Rest.NodeHTTP(server);
     return new Client(http);
   };
 
@@ -205,7 +205,7 @@ const CLI = () => {
 
     const auth = new API.TwitarrAuthConfig(username, password);
     const server = new API.TwitarrServer('Twitarr', config.url, auth);
-    const http = new Rest.AxiosHTTP(server);
+    const http = new Rest.NodeHTTP(server);
 
     await Client.checkServer(server, http);
     console.log(colors.green('* Server is valid.'));
@@ -221,7 +221,6 @@ const CLI = () => {
     return config;
   };
 
-  // tslint:disable-next-line max-line-length
   const doProfile = async (displayName?: string, homeLocation?: string, realName?: string, pronouns?: string, roomNumber?: string) => {
     const client = getClient();
     if (Util.isEmpty(displayName, homeLocation, realName, pronouns, roomNumber)) {
@@ -311,16 +310,35 @@ const CLI = () => {
     }
   };
 
+  const postPhotoIfNecessary = async (photo?: string) => {
+    if (photo && fs.existsSync(photo)) {
+      const filename = path.basename(photo);
+      console.log('* uploading ' + filename);
+
+      const buf = fs.readFileSync(photo);
+      const client = getClient();
+      const photoMeta = await client.photo().post(filename, buf);
+      if (photoMeta && photoMeta.id) {
+        console.log('* ' + filename + ' has photo ID ' + photoMeta.id);
+        return photoMeta.id;
+      }
+      throw new TwitarrError('Photo posted, but no metadata was found!');
+    }
+    return photo;
+  };
+
   const doStreamPost = async (message: string, parent?: string, photo?: string) => {
     const client = getClient();
-    const response = await client.stream().send(message, parent, photo);
+    const photoArg = await postPhotoIfNecessary(photo);
+    const response = await client.stream().send(message, parent, photoArg);
     console.log(colors.green('Posted twarrt ' + response.post.id));
     console.log('');
   };
 
   const doUpdateStreamPost = async (id: string, message: string, photo?: string) => {
     const client = getClient();
-    const response = await client.stream().updatePost(id, message, photo);
+    const photoArg = await postPhotoIfNecessary(photo);
+    const response = await client.stream().updatePost(id, message, photoArg);
     console.log(colors.green('Updated twarrt ' + response.post.id));
     console.log('');
   };

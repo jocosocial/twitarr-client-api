@@ -5,6 +5,7 @@ import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
 import { TwitarrResult } from './api/TwitarrResult';
 import { TwitarrServer } from './api/TwitarrServer';
 
+import { PhotoDAO } from './dao/PhotoDAO';
 import { SeamailDAO } from './dao/SeamailDAO';
 import { StreamDAO } from './dao/StreamDAO';
 import { UserDAO } from './dao/UserDAO';
@@ -19,7 +20,8 @@ import { StreamPost } from './model/StreamPost';
 import { StreamResponse } from './model/StreamResponse';
 import { User } from './model/User';
 
-import { AxiosHTTP } from './rest/AxiosHTTP';
+import { BrowserHTTP } from './rest/BrowserHTTP';
+import { NodeHTTP } from './rest/NodeHTTP';
 
 import { Client } from './Client';
 
@@ -38,6 +40,7 @@ const API = Object.freeze({
 
 /** @hidden */
 const DAO = Object.freeze({
+  PhotoDAO,
   SeamailDAO,
   StreamDAO,
   UserDAO,
@@ -58,7 +61,8 @@ const Model = Object.freeze({
 
 /** @hidden */
 const Rest = Object.freeze({
-  AxiosHTTP,
+  BrowserHTTP,
+  NodeHTTP,
 });
 
 /* tslint:enable:object-literal-sort-keys */

@@ -24,7 +24,6 @@ export class UserDAO extends AbstractDAO {
   }
 
   public async getProfile() {
-    // tslint:disable max-line-length
     return this.http.get('/api/v2/user/whoami', new TwitarrHTTPOptions().withParameter('app', 'plain')).then((result) => {
       return this.handleErrors(result).then((data) => {
         return User.fromRest(data.user);

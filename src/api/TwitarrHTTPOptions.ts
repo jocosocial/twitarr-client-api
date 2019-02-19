@@ -69,6 +69,16 @@ export class TwitarrHTTPOptions {
   }
 
   /**
+   * Add a header.  Returns the TwitarrHTTPOptions object so it can be chained.
+   * @param key - the header
+   * @param value - the header value
+   */
+  public withHeader(header: string, value: string): TwitarrHTTPOptions {
+    this.headers[header] = value;
+    return this;
+  }
+
+  /**
    * Add a URL parameter. Returns the TwitarrHTTPOptions object so it can be chained.
    * @param key - the parameter's key
    * @param value - the parameter's value

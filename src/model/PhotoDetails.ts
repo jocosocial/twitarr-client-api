@@ -1,5 +1,6 @@
-import { User } from './User';
 import { Util } from '../internal/Util';
+
+import { Moment } from 'moment';
 
 /**
  * Represents a photo.
@@ -8,7 +9,13 @@ import { Util } from '../internal/Util';
 export class PhotoDetails {
   public static fromRest(data: any) {
     const ret = new PhotoDetails();
-    Object.apply(ret, data);
+    if (!Util.isEmpty(data)) {
+      Util.setProperties(ret, data, 'id', 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader');
+      Util.setDateProperties(ret, data, 'uploader_time');
+      if (data.sizes) {
+        Object.assign(ret.sizes, data.sizes);
+      }
+    }
     return ret;
   }
 
@@ -17,6 +24,24 @@ export class PhotoDetails {
 
   /** Whether the photo is animated. */
   public animated: boolean;
+
+  /** The filename stored on the server. */
+  public store_filename: string;
+
+  /** The photo's MD5 hash. */
+  public md5_hash: string;
+
+  /** The original filename. */
+  public original_filename: string;
+
+  /** The user that uploaded the photo. */
+  public uploader: string;
+
+  /** When the photo was uploaded. */
+  public upload_time: Moment;
+
+  /** The sizes available. */
+  public sizes: { [key: string]: string } = { };
 
   public toJSON() {
     return this;

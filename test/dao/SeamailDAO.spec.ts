@@ -20,7 +20,7 @@ const SERVER_PASSWORD = 'demo';
 
 let dao: SeamailDAO, server, auth, mockHTTP;
 
-/* tslint:disable object-literal-sort-keys max-line-length */
+/* tslint:disable object-literal-sort-keys */
 
 const assertThreadsMatch = (expected, actual) => {
   expect(Object.keys(expected).length).toEqual(actual.threads.length);
