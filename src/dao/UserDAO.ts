@@ -25,8 +25,9 @@ export class UserDAO extends AbstractDAO {
     throw new TwitarrError('No key returned from user auth', result.code, undefined, undefined, result);
   }
 
-  public async profile() {
-    return this.http.get('/api/v2/user/whoami', new TwitarrHTTPOptions().withParameter('app', 'plain')).then(async result => {
+  public async profile(username?: string) {
+    const url = Util.isEmpty(username) ? '/api/v2/user/whoami' : '/api/v2/user/profile/' + username;
+    return this.http.get(url, new TwitarrHTTPOptions().withParameter('app', 'plain')).then(async result => {
       const data = await this.handleErrors(result);
       return UserProfileInfo.fromRest(data);
     });

@@ -55,7 +55,7 @@ const CLI = () => {
     .describe('debug', 'enable debug output')
     .count('debug')
     .command('connect <url> <user> <pass>', 'connect to a Twit-arr server')
-    .command('profile', 'read or edit your profile', sub => {
+    .command('profile [username]', 'read or edit your profile', sub => {
       return sub
         .alias('d', 'display-name')
         .describe('d', 'set your display name')
@@ -195,18 +195,30 @@ const CLI = () => {
     return config;
   };
 
-  const doProfile = async (displayName?: string, email?: string, homeLocation?: string, realName?: string, pronouns?: string, roomNumber?: number) => {
+  const doProfile = async (
+    username?: string,
+    displayName?: string,
+    email?: string,
+    homeLocation?: string,
+    realName?: string,
+    pronouns?: string,
+    roomNumber?: number,
+  ) => {
     const client = getClient();
     let profile;
     if (Util.isEmpty(displayName, email, homeLocation, realName, pronouns, roomNumber)) {
-      profile = await client.user().profile();
+      profile = await client.user().profile(username);
     } else {
       profile = await client.user().update(displayName, email, homeLocation, realName, pronouns, roomNumber);
     }
     const t = new Table(tableFormat);
     for (const key of Object.keys(profile.user)) {
       const name = key ? key.replace(/_/g, ' ') : key;
-      t.push([name + ':', profile.user[key]]);
+      let value = profile.user[key];
+      if (Util.isDateObject(value)) {
+        value = Util.toMoment(value).fromNow();
+      }
+      t.push([name + ':', value]);
     }
     console.log(t.toString());
     console.log('');
@@ -354,7 +366,7 @@ const CLI = () => {
           break;
         }
         case 'profile': {
-          await doProfile(args.displayName, args.email, args.homeLocation, args.realName, args.pronouns, args.roomNumber);
+          await doProfile(args.username, args.displayName, args.email, args.homeLocation, args.realName, args.pronouns, args.roomNumber);
           break;
         }
         case 'seamail': {

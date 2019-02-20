@@ -60,6 +60,11 @@ export class MockHTTP extends AbstractHTTP {
       case '/api/v2/user/whoami?app=plain': {
         return jsonOK(getJsonFromFile('../data/user.json'));
       }
+      case '/api/v2/user/profile/kvort?app=plain': {
+        const json = getJsonFromFile('../data/user.json');
+        json.user.username = 'kvort';
+        return jsonOK(json);
+      }
       case '/api/v2/seamail?app=plain': {
         return jsonOK(getJsonFromFile('../data/seamail.json'));
       }

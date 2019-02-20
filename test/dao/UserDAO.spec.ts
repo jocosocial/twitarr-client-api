@@ -54,6 +54,15 @@ describe('dao/UserDAO', () => {
     });
   });
 
+  it('#profile(user)', done => {
+    dao.profile('kvort').then(res => {
+      expect(res).toBeDefined();
+      expect(res).toBeInstanceOf(UserProfileInfo);
+      expect(res.user.username).toEqual('kvort');
+      done();
+    });
+  });
+
   it('#changePassword', done => {
     dao.changePassword('oldPassword', 'newPassword').then(res => {
       expect(res).toBeDefined();
