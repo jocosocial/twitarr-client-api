@@ -63,6 +63,24 @@ describe('dao/UserDAO', () => {
     });
   });
 
+  it('#comment(user, text)', done => {
+    dao.comment('kvort', 'kvort is awesome').then(res => {
+      expect(res).toBeDefined();
+      expect(res).toBeInstanceOf(UserProfileInfo);
+      expect(res.user.username).toEqual('kvort');
+      expect(res.comment).toEqual('kvort is awesome');
+      done();
+    });
+  });
+
+  it('#toggleStar(user)', async done => {
+    let starred = await dao.toggleStarred('kvort');
+    expect(starred).toBeTruthy();
+    starred = await dao.toggleStarred('kvort');
+    expect(starred).toBeFalsy();
+    done();
+  });
+
   it('#changePassword', done => {
     dao.changePassword('oldPassword', 'newPassword').then(res => {
       expect(res).toBeDefined();

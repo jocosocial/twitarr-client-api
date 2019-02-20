@@ -55,26 +55,32 @@ const CLI = () => {
     .describe('debug', 'enable debug output')
     .count('debug')
     .command('connect <url> <user> <pass>', 'connect to a Twit-arr server')
-    .command('profile [username]', 'read or edit your profile', sub => {
+    .command('profile', 'read, edit, or react to profile', sub => {
       return sub
-        .alias('d', 'display-name')
-        .describe('d', 'set your display name')
-        .string('d')
-        .alias('e', 'email')
-        .describe('e', 'set your email address')
-        .string('e')
-        .alias('h', 'home-location')
-        .describe('h', 'set your home location')
-        .string('h')
-        .alias('r', 'real-name')
-        .describe('r', 'set your real name')
-        .string('r')
-        .alias('p', 'pronouns')
-        .describe('p', 'set your preferred pronouns')
-        .string('p')
-        .alias('n', 'room-number')
-        .describe('r', 'set your room number')
-        .string('r');
+        .command('show [username]', 'view a profile')
+        .command('update', 'update your profile', y => {
+          return y
+            .alias('d', 'display-name')
+            .describe('d', 'set your display name')
+            .string('d')
+            .alias('e', 'email')
+            .describe('e', 'set your email address')
+            .string('e')
+            .alias('h', 'home-location')
+            .describe('h', 'set your home location')
+            .string('h')
+            .alias('r', 'real-name')
+            .describe('r', 'set your real name')
+            .string('r')
+            .alias('p', 'pronouns')
+            .describe('p', 'set your preferred pronouns')
+            .string('p')
+            .alias('n', 'room-number')
+            .describe('r', 'set your room number')
+            .string('r');
+        })
+        .command('comment <username> <comment>', 'add a comment to a user profile')
+        .command('star <username>', "toggle a user's starred status");
     })
     .command('seamail', 'list, read, or create seamail threads', sub => {
       return sub
@@ -195,32 +201,65 @@ const CLI = () => {
     return config;
   };
 
-  const doProfile = async (
-    username?: string,
-    displayName?: string,
-    email?: string,
-    homeLocation?: string,
-    realName?: string,
-    pronouns?: string,
-    roomNumber?: number,
-  ) => {
-    const client = getClient();
-    let profile;
-    if (Util.isEmpty(displayName, email, homeLocation, realName, pronouns, roomNumber)) {
-      profile = await client.user().profile(username);
-    } else {
-      profile = await client.user().update(displayName, email, homeLocation, realName, pronouns, roomNumber);
-    }
+  const printUserProfile = profileInfo => {
     const t = new Table(tableFormat);
-    for (const key of Object.keys(profile.user)) {
+    for (const key of Object.keys(profileInfo.user)) {
+      if (key === 'starred' || key === 'comment') {
+        continue;
+      }
       const name = key ? key.replace(/_/g, ' ') : key;
-      let value = profile.user[key];
+      let value = profileInfo.user[key];
+      if (Util.isEmpty(value)) {
+        continue;
+      }
       if (Util.isDateObject(value)) {
         value = Util.toMoment(value).fromNow();
       }
       t.push([name + ':', value]);
     }
+    if (profileInfo.starred !== undefined) {
+      t.push(['starred:', profileInfo.starred]);
+    }
+    if (profileInfo.comment !== undefined) {
+      t.push(['comment:', profileInfo.comment]);
+    }
     console.log(t.toString());
+    console.log('');
+  };
+
+  const doGetProfile = async (username?: string) => {
+    const profileInfo = await getClient()
+      .user()
+      .profile(username);
+    printUserProfile(profileInfo);
+  };
+
+  const doUpdateProfile = async (displayName?: string, email?: string, homeLocation?: string, realName?: string, pronouns?: string, roomNumber?: number) => {
+    const profileInfo = await getClient()
+      .user()
+      .update(displayName, email, homeLocation, realName, pronouns, roomNumber);
+    printUserProfile(profileInfo);
+  };
+
+  const doComment = async (username: string, comment: string) => {
+    if (Util.isEmpty(username, comment)) {
+      throw new TwitarrError('You must specify a username and a comment!');
+    }
+    const profileInfo = await getClient()
+      .user()
+      .comment(username, comment);
+    printUserProfile(profileInfo);
+  };
+
+  const doStar = async (username: string) => {
+    const starred = await getClient()
+      .user()
+      .toggleStarred(username);
+    if (starred) {
+      console.log(colors.green(username + ' is now starred.'));
+    } else {
+      console.log(colors.red(username + ' is now un-starred.'));
+    }
     console.log('');
   };
 
@@ -366,7 +405,25 @@ const CLI = () => {
           break;
         }
         case 'profile': {
-          await doProfile(args.username, args.displayName, args.email, args.homeLocation, args.realName, args.pronouns, args.roomNumber);
+          const command = args._[1];
+          switch (command) {
+            case 'get': {
+              await doGetProfile(args.username);
+              break;
+            }
+            case 'update': {
+              await doUpdateProfile(args.displayName, args.email, args.homeLocation, args.realName, args.pronouns, args.roomNumber);
+              break;
+            }
+            case 'comment': {
+              await doComment(args.username, args.comment);
+              break;
+            }
+            case 'star': {
+              await doStar(args.username);
+              break;
+            }
+          }
           break;
         }
         case 'seamail': {

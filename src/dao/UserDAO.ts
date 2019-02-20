@@ -59,6 +59,22 @@ export class UserDAO extends AbstractDAO {
     });
   }
 
+  public async comment(username: string, comment: string) {
+    const options = new TwitarrHTTPOptions().withData({
+      comment,
+    });
+    return this.http.post('/api/v2/user/profile/' + username + '/personal_comment', options).then(async result => {
+      const data = await this.handleErrors(result);
+      return UserProfileInfo.fromRest(data);
+    });
+  }
+
+  public async toggleStarred(username: string): Promise<boolean> {
+    return this.http.post('/api/v2/user/profile/' + username + '/star').then(async result => {
+      return result.data.starred;
+    });
+  }
+
   public async createUser(registrationCode: string, username: string, password: string, displayName?: string) {
     const options = new TwitarrHTTPOptions()
       .withParameter('registration_code', registrationCode)

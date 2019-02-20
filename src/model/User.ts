@@ -21,6 +21,8 @@ export class User {
       'empty_password',
       'room_number',
       'real_name',
+      'starred',
+      'comment',
       'pronouns',
       'home_location',
       'unnoticed_alerts',
@@ -74,6 +76,12 @@ export class User {
   /** The number of times the user has been mentioned. */
   public number_of_mentions: number;
 
+  /** Whether this user is starred. */
+  public starred: boolean;
+
+  /** A comment about the user, if any. */
+  public comment: string;
+
   public toJSON() {
     const ret = {} as any;
     Util.setProperties(
@@ -85,6 +93,8 @@ export class User {
       'empty_password',
       'room_number',
       'real_name',
+      'starred',
+      'comment',
       'pronouns',
       'home_location',
       'unnoticed_alerts',

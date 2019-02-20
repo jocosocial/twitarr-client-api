@@ -12,6 +12,8 @@ import { TwitarrHTTPOptions } from '../../src/api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../../src/api/TwitarrResult';
 import { Util } from '../../src/internal/Util';
 
+let kvortStarred = false;
+
 const getError = (method: string, urlObj: any, options?: TwitarrHTTPOptions) => {
   let message = 'Net yet implemented: ' + method + ' ' + urlObj.toString();
   if (options) {
@@ -307,6 +309,22 @@ export class MockHTTP extends AbstractHTTP {
           );
           return Promise.reject(result);
         }
+      }
+      case '/api/v2/user/profile/kvort/personal_comment': {
+        if (options.data.comment) {
+          const json = getJsonFromFile('../data/user.json');
+          json.user.username = 'kvort';
+          json.user.display_name = 'kvort';
+          json.comment = options.data.comment;
+          return jsonOK(json);
+        }
+      }
+      case '/api/v2/user/profile/kvort/star': {
+        kvortStarred = !kvortStarred;
+        return jsonOK({
+          status: 'ok',
+          starred: kvortStarred,
+        });
       }
     }
 
