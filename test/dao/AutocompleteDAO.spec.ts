@@ -36,4 +36,14 @@ describe('dao/SearchDAO', () => {
       done();
     });
   });
+  describe('#users', () => {
+    it('users(ran)', async done => {
+      const ret = await dao.users('ran');
+      expect(ret).toBeDefined();
+      expect(Array.isArray(ret)).toBeTruthy();
+      expect(ret.length).toEqual(2);
+      expect(ret[0].username).toEqual('rangerrick');
+      done();
+    });
+  });
 });

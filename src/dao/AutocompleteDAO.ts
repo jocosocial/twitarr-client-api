@@ -1,6 +1,8 @@
 import { AbstractDAO } from './AbstractDAO';
 
-// import { User } from '../model/User';
+import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
+
+import { User } from '../model/User';
 
 export class AutocompleteDAO extends AbstractDAO {
   /**
@@ -18,6 +20,24 @@ export class AutocompleteDAO extends AbstractDAO {
 
     return this.http.get('/api/v2/hashtag/ac/' + q).then(result => {
       return result.data.values as string[];
+    });
+  }
+
+  /**
+   * Retrieve a list of users that match the given query.
+   */
+  public async users(query: string) {
+    if (!query) {
+      return [];
+    }
+
+    const q = query.replace(/^\#/, '');
+    if (q.length < 3) {
+      return [];
+    }
+
+    return this.http.get('/api/v2/user/ac/' + q, new TwitarrHTTPOptions().withParameter('app', 'plain')).then(result => {
+      return result.data.users.map(user => User.fromRest(user));
     });
   }
 }
