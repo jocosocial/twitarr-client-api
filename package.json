@@ -115,7 +115,7 @@
     "testURL": "http://localhost"
   },
   "scripts": {
-    "precommit": "jest",
+    "precommit": "npm run lint && jest",
     "prepush": "conventional-changelog-lint --from=origin/master && npm run lint",
     "changelog": "standard-changelog -i CHANGELOG.md -s -r 1",
     "build": "webpack --define process.env.NODE_ENV=production --env production",
