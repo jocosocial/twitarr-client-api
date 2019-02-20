@@ -1,5 +1,4 @@
 /** @hidden */
-// tslint:disable-next-line
 const URI = require('urijs');
 
 import { TwitarrAuthConfig } from './TwitarrAuthConfig';
@@ -41,7 +40,7 @@ export class TwitarrServer {
    * @param password - The password to authorize with if a username was
    *                   supplied to the `auth` parameter.
    */
-  constructor(name?: string, url?: string, auth?: TwitarrAuthConfig | string, password?: string) {
+  public constructor(name?: string, url?: string, auth?: TwitarrAuthConfig | string, password?: string) {
     this.id = UUID.generate();
     this.name = name;
     this.url = url;
@@ -72,7 +71,7 @@ export class TwitarrServer {
       uri = uri.segment(forFragment);
     }
     if (withQuery !== undefined) {
-        uri = uri.addQuery(withQuery);
+      uri = uri.addQuery(withQuery);
     }
     return uri.toString();
   }
@@ -89,7 +88,7 @@ export class TwitarrServer {
   /**
    * Get the hostname portion of the URL associated with this server.
    */
-  get host() {
+  public get host() {
     if (!this.url) {
       return undefined;
     }

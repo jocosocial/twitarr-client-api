@@ -6,5 +6,6 @@ import { ErrorMessage } from './ErrorMessage';
  * @interface
  * @module IErrorParameters
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IErrorParameters extends Map<string, ErrorMessage> {
 }

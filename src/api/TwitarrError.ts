@@ -51,33 +51,31 @@ export class TwitarrError extends Error {
    * @param message - The error message.
    * @param code - An optional error code to associate with the error.
    */
-  // tslint:disable-next-line
-  constructor(message?: string, code?: number, errors?: any, options?: any, data?: any) {
-      super(message);
-      const self = this;
-      self.name = self.constructor.name;
-      self.statusCode = code;
-      self.options = options;
-      self.data = data;
+  public constructor(message?: string, code?: number, errors?: any, options?: any, data?: any) {
+    super(message);
+    const self = this;
+    self.name = self.constructor.name;
+    self.statusCode = code;
+    self.options = options;
+    self.data = data;
 
-      if (typeof errors === 'string' || errors instanceof String) {
-        self.errors = new ErrorMessage(errors as string);
-      } else if (Array.isArray(errors)) {
-        self.errors = new ErrorMessage(errors as string[]);
-      } else if (errors && Object.keys(errors).length > 0) {
-        self.errors = errors as IErrorParameters;
-      } else if (errors) {
-        console.warn('Unsure how to decode error response:', errors);
-      }
+    if (typeof errors === 'string' || errors instanceof String) {
+      self.errors = new ErrorMessage(errors as string);
+    } else if (Array.isArray(errors)) {
+      self.errors = new ErrorMessage(errors as string[]);
+    } else if (errors && Object.keys(errors).length > 0) {
+      self.errors = errors as IErrorParameters;
+    } else if (errors) {
+      console.warn('Unsure how to decode error response:', errors);
+    }
 
-       // tslint:disable-next-line
-      if (typeof Error.captureStackTrace === 'function') {
-          Error.captureStackTrace(this, this.constructor);
-      } else {
-          this.stack = (new Error(message)).stack;
-      }
-      // workaround, see http://bit.ly/2vllGdD
-      Object.setPrototypeOf(this, TwitarrError.prototype);
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(this, this.constructor);
+    } else {
+      this.stack = (new Error(message)).stack;
+    }
+    // workaround, see http://bit.ly/2vllGdD
+    Object.setPrototypeOf(this, TwitarrError.prototype);
   }
 
   /**

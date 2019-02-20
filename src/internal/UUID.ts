@@ -1,11 +1,9 @@
 // http://stackoverflow.com/a/8809472
 
-/* tslint:disable:no-bitwise */
-
-  /**
-   * A utility class for generating UUIDs.
-   * @module UUID
-   */
+/**
+ * A utility class for generating UUIDs.
+ * @module UUID
+ */
 export class UUID {
   /**
    * Generates a UUID.  Attempts to use the high-precision timer if possible.

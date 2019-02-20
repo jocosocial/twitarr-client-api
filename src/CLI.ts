@@ -1,16 +1,15 @@
 import { API, Rest, Client } from './API';
 import { Util } from './internal/Util';
 import { TwitarrError } from './api/TwitarrError';
-import { User } from './model/User';
 import { IStreamOptions } from './dao/StreamDAO';
 
-const fakeRequire = require('./__fake_require'); // tslint:disable-line
+const fakeRequire = require('./__fake_require'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 /** @hidden */
 const CLI = () => {
   const version = global.TWITARR_JS_VERSION || require('../package.json').version || 'unknown';
 
-  const Table = fakeRequire('cli-table2'); // tslint:disable-line variable-name
+  const Table = fakeRequire('cli-table2');
   const colors = fakeRequire('colors');
   const fs = fakeRequire('fs');
   const path = fakeRequire('path');
@@ -21,7 +20,6 @@ const CLI = () => {
   const defaultConfigFile = path.join(homedir, '.twitarr.config.json');
 
   const tableFormat = {
-    /* tslint:disable:object-literal-sort-keys */
     head: [],
     colWidths: [],
     chars: {
@@ -112,7 +110,7 @@ const CLI = () => {
             .string('o')
             .alias('s', 'starred')
             .describe('s', 'filter twarrts to those posted by users you have starred')
-            ;
+          ;
         })
         .command('post <message>', 'post a twarrt', (y) => {
           return y
@@ -122,14 +120,14 @@ const CLI = () => {
             .alias('p', 'photo')
             .describe('p', 'the path to a photo to upload along with the twarrt')
             .string('p')
-            ;
+          ;
         })
         .command('update <id> <message>', 'edit/update an existing twarrt', (y) => {
           return y
             .alias('p', 'photo')
             .describe('p', 'the path to a photo to add/replace in the twarrt')
             .string('p')
-            ;
+          ;
         })
         .command('delete <id>', 'delete an existing twarrt')
         .command('lock <id>', 'lock a twarrt and its children (requires moderator privileges)')
@@ -139,9 +137,9 @@ const CLI = () => {
             .alias('r', 'remove')
             .describe('r', 'remove the reaction, rather than adding it')
             .boolean('r')
-            ;
-          })
-        ;
+          ;
+        })
+      ;
     })
     .argv;
 
@@ -167,27 +165,8 @@ const CLI = () => {
     return new Client(http);
   };
 
-  const handleError = (message, err) => {
-    let realError: any = new Error(message);
-    if (err instanceof API.TwitarrResult) {
-      realError = new API.TwitarrError(message + ': ' + err.message, err.code);
-    } else if (err.message) {
-      realError = new API.TwitarrError(message + ': ' + err.message);
-    } else if (Object.prototype.toString.call(err) === '[object String]') {
-      realError = new API.TwitarrError(message + ': ' + err);
-    }
-    if (argv.debug > 0) {
-      console.error(realError.message, realError);
-    } else {
-      console.error(realError.message);
-    }
-    return realError;
-  };
-
-  /* tslint:disable:no-console */
-
   if (argv.debug === 0) {
-    console.debug = () => { }; // tslint:disable-line no-empty
+    console.debug = () => { };
   }
 
   const doConnect = async (url, username, password) => {
@@ -232,7 +211,7 @@ const CLI = () => {
       }
       console.log(t.toString());
       console.log('');
-  } else {
+    } else {
       throw new TwitarrError('Not yet implemented!');
     }
   };
@@ -260,14 +239,9 @@ const CLI = () => {
     console.log('');
   };
 
-  const getUserString = (user: User) => {
-    return Util.isEmpty(user.display_name)? '@' + user.username : user.display_name + ' (@' + user.username + ')';
-  };
-
   const doSeamailRead = async (id: string) => {
     const client = getClient();
     const seamail = await client.seamail().get(id);
-    const format = Object.assign({ }, tableFormat);
 
     let t = new Table(tableFormat);
 
@@ -345,14 +319,14 @@ const CLI = () => {
 
   const doDeleteStreamPost = async (id: string) => {
     const client = getClient();
-    const response = await client.stream().deletePost(id);
+    await client.stream().deletePost(id);
     console.log(colors.green('Deleted twarrt ' + id));
     console.log('');
   };
 
   const doLockStreamPost = async (id: string) => {
     const client = getClient();
-    const response = await client.stream().lockPost(id);
+    await client.stream().lockPost(id);
     console.log(colors.green('Locked twarrt ' + id));
     console.log('');
   };
@@ -414,14 +388,14 @@ const CLI = () => {
           const command = args._[1];
           switch (command) {
             case 'read': {
-              const options = {
+              const options: IStreamOptions = {
                 author: args.author,
                 hashtag: args.hashtag,
                 limit: args.limit,
                 mentions: args.mentions,
                 include_author: args.includeAuthor,
                 starred: args.starred,
-              } as IStreamOptions;
+              };
               if (args.newerThan) {
                 options.newer_posts = true;
                 options.start = Util.toMoment(args.newerThan);
@@ -473,6 +447,7 @@ const CLI = () => {
   };
 
   processArgs(argv);
+  return true;
 };
 
 process.on('unhandledRejection', (reason, p) => {

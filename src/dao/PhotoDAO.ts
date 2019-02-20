@@ -3,9 +3,7 @@ import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { PhotoDetails } from '../model/PhotoDetails';
 
-const URI = require('urijs'); // tslint:disable-line
-
-require('buffer'); // tslint:disable-line no-var-requires
+require('buffer');
 
 export class PhotoDAO extends AbstractDAO {
   /**

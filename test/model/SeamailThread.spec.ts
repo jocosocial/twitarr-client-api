@@ -5,7 +5,6 @@ import { SeamailThread } from '../../src/model/SeamailThread';
 import { User } from '../../src/model/User';
 
 /** @hidden */
-// tslint:disable-next-line
 const moment = require('moment');
 
 /** @hidden */

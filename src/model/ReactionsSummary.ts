@@ -1,5 +1,8 @@
 interface IReactions {
-  [reaction: string]: { count: number, me: boolean };
+  [reaction: string]: {
+    count: number;
+    me: boolean;
+  };
 }
 
 /**

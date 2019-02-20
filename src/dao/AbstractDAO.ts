@@ -14,7 +14,7 @@ export abstract class AbstractDAO {
    * @param impl - The HTTP implementation to use.  It is also legal to pass any object
    *               conforming to the [[IHasHTTP]] interface (like a [[Client]]).
    */
-  constructor(impl: ITwitarrHTTP | IHasHTTP) {
+  public constructor(impl: ITwitarrHTTP | IHasHTTP) {
     if ((impl as IHasHTTP).http) {
       impl = (impl as IHasHTTP).http;
     }

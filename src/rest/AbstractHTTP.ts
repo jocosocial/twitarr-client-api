@@ -1,4 +1,3 @@
-// tslint:disable-next-line
 /// <reference path="../../typings/index.d.ts" />
 
 import { ITwitarrHTTP } from '../api/ITwitarrHTTP';
@@ -23,10 +22,10 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
 
   /** The default set of HTTP options associated with this ReST client. */
   public get options(): TwitarrHTTPOptions {
-    if (this[OPTIONS_PROP]) {
-      return this[OPTIONS_PROP];
+    if (!this[OPTIONS_PROP]) {
+      this[OPTIONS_PROP] = new TwitarrHTTPOptions();
     }
-    return { } as TwitarrHTTPOptions;
+    return this[OPTIONS_PROP];
   }
 
   public set options(o: TwitarrHTTPOptions) {
@@ -55,7 +54,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    * @param server - A server object for immediate configuration.
    * @param timeout - How long to wait until timing out requests.
    */
-  constructor(server?: TwitarrServer, timeout?: number) {
+  public constructor(server?: TwitarrServer, timeout?: number) {
     if (server) {
       this.serverObj = server;
     }
@@ -206,8 +205,6 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     return new TwitarrError(message, code, errors, options, data);
   }
 
-  /* tslint:disable:member-ordering */
-
   /**
    * Attempt to determine an error message from an error response.
    * @hidden
@@ -253,7 +250,6 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    * @hidden
    */
   protected static extractError(err: any): any {
-    // tslint:disable-next-line
     if (err && err.response && err.response.data && err.response.data.status === 'error' && (err.response.data.error || err.response.data.errors)) {
       return err.response.data.error || err.response.data.errors;
     }

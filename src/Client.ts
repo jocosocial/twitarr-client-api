@@ -56,7 +56,7 @@ export class Client implements IHasHTTP {
    *        this will automatically choose the best implementation
    *        based on the environment.
    */
-  constructor(httpImpl?: ITwitarrHTTP) {
+  public constructor(httpImpl?: ITwitarrHTTP) {
     if (httpImpl) {
       Client.defaultHttp = httpImpl;
     } else {

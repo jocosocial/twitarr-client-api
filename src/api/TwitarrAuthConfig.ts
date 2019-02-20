@@ -4,19 +4,19 @@
  */
 export class TwitarrAuthConfig {
   /** The password to authenticate with. */
-  public password: string;
+  public password?: string;
 
   /** The username to connect as. */
-  public username: string;
+  public username?: string;
 
   /** The key to pass to requests. */
-  public key: string;
+  public key?: string;
 
   /**
    * Construct an auth configuration object.
    * @constructor
    */
-  constructor(username: string, password: string, key?: string) {
+  public constructor(username?: string, password?: string, key?: string) {
     this.username = username;
     this.password = password;
     this.key = key;

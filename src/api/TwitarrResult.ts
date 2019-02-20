@@ -38,7 +38,7 @@ export class TwitarrResult<T> {
    * @param code The response code of the response.
    * @param type The request type of the response.
    */
-  constructor(data: T, message?: string, code?: number, type?: string) {
+  public constructor(data: T, message?: string, code?: number, type?: string) {
     this.message = message;
     this.code = code;
     this.type = type;

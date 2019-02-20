@@ -1,7 +1,7 @@
 export class ErrorMessage {
   public messages: string[];
 
-  constructor(data: string | string[]) {
+  public constructor(data: string | string[]) {
     if (data instanceof Array) {
       this.messages = data;
     } else {

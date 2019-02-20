@@ -3,7 +3,6 @@ declare const describe, beforeEach, it, expect, require;
 import { Util } from '../../src/internal/Util';
 
 /** @hidden */
-// tslint:disable-next-line
 const moment = require('moment');
 
 /** @hidden */

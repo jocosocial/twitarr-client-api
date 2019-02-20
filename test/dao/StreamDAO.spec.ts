@@ -16,19 +16,6 @@ const SERVER_PASSWORD = 'demo';
 
 let dao: StreamDAO, server, auth, mockHTTP;
 
-/* tslint:disable object-literal-sort-keys */
-
-const assertThreadsMatch = (expected, actual) => {
-  expect(Object.keys(expected).length).toEqual(actual.threads.length);
-  Object.keys(expected).forEach((threadId, index) => {
-    const actualThread = actual.threads[index];
-    expect(threadId).toEqual(actualThread.id);
-    const messages = actualThread.messages.map((message) => message.id);
-    expect(expected[threadId]).toEqual(expect.arrayContaining(messages));
-    expect(messages).toEqual(expect.arrayContaining(expected[threadId]));
-  });
-};
-
 describe('dao/StreamDAO', () => {
   beforeEach(() => {
     auth = new TwitarrAuthConfig(SERVER_USER, SERVER_PASSWORD);

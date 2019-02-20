@@ -3,7 +3,6 @@ import { TwitarrError } from '../api/TwitarrError';
 import { Moment } from 'moment';
 
 /** @hidden */
-// tslint:disable-next-line
 const moment = require('moment');
 moment.fn.toJSON = () => {
   return this.valueOf();

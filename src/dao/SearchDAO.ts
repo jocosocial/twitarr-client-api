@@ -2,7 +2,7 @@ import { AbstractDAO } from './AbstractDAO';
 import { SearchResponse } from '../model/SearchResponse';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 
-const URI = require('urijs'); // tslint:disable-line
+const URI = require('urijs'); // eslint-disable-line
 
 export class SearchDAO extends AbstractDAO {
   /**

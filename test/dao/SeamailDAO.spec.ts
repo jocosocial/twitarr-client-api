@@ -9,8 +9,6 @@ import { SeamailResponse } from '../../src/model/SeamailResponse';
 import { Util } from '../../src/internal/Util';
 
 import { MockHTTP } from '../rest/MockHTTP';
-import { sort } from 'shelljs';
-import { User } from '../../src/model/User';
 import { SeamailMessage } from '../../src/model/SeamailMessage';
 
 const SERVER_NAME = 'Demo';
@@ -19,8 +17,6 @@ const SERVER_USER = 'demo';
 const SERVER_PASSWORD = 'demo';
 
 let dao: SeamailDAO, server, auth, mockHTTP;
-
-/* tslint:disable object-literal-sort-keys */
 
 const assertThreadsMatch = (expected, actual) => {
   expect(Object.keys(expected).length).toEqual(actual.threads.length);

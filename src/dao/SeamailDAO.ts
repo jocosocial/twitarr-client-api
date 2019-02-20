@@ -4,7 +4,6 @@ import { AbstractDAO } from './AbstractDAO';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { SeamailResponse } from '../model/SeamailResponse';
 import { TwitarrError } from '../api/TwitarrError';
-import { User } from '../model/User';
 import { SeamailMessage } from '../model/SeamailMessage';
 
 export class SeamailDAO extends AbstractDAO {
@@ -55,7 +54,6 @@ export class SeamailDAO extends AbstractDAO {
 
   public async create(subject: string, message: string, ...users: string[]) {
     const options = new TwitarrHTTPOptions();
-    // tslint:disable object-literal-shorthand
     options.data = {
       subject: subject,
       text: message,

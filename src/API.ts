@@ -25,9 +25,6 @@ import { NodeHTTP } from './rest/NodeHTTP';
 
 import { Client } from './Client';
 
-/* tslint:disable:object-literal-sort-keys */
-/* tslint:disable:variable-name */
-
 /** @hidden */
 const API = Object.freeze({
   ErrorMessage,
@@ -64,9 +61,6 @@ const Rest = Object.freeze({
   BrowserHTTP,
   NodeHTTP,
 });
-
-/* tslint:enable:object-literal-sort-keys */
-/* tslint:enable:variable-name */
 
 /** @hidden */
 export { API, DAO, Model, Rest, Client };

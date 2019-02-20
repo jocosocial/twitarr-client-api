@@ -15,8 +15,6 @@ const SERVER_PASSWORD = 'demo';
 
 let dao: PhotoDAO, server, auth, mockHTTP;
 
-/* tslint:disable object-literal-sort-keys */
-
 describe('dao/PhotoDAO', () => {
   beforeEach(() => {
     auth = new TwitarrAuthConfig(SERVER_USER, SERVER_PASSWORD);

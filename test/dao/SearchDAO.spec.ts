@@ -16,8 +16,6 @@ const SERVER_PASSWORD = 'demo';
 
 let dao: SearchDAO, server, auth, mockHTTP;
 
-/* tslint:disable object-literal-sort-keys */
-
 describe('dao/SearchDAO', () => {
   beforeEach(() => {
     auth = new TwitarrAuthConfig(SERVER_USER, SERVER_PASSWORD);

@@ -26,10 +26,10 @@ export class TwitarrHTTPOptions {
 
   /** The authentication config that should be used when no auth is associated with the [[TwitarrServer]]. */
   public get auth(): TwitarrAuthConfig {
-    if (this[AUTH_PROP]) {
-      return this[AUTH_PROP];
+    if (!this[AUTH_PROP]) {
+      this[AUTH_PROP] = new TwitarrAuthConfig();
     }
-    return { } as TwitarrAuthConfig;
+    return this[AUTH_PROP];
   }
 
   public set auth(a: TwitarrAuthConfig) {
@@ -40,10 +40,10 @@ export class TwitarrHTTPOptions {
   public server: TwitarrServer;
 
   /** HTTP headers to be passed to the request. */
-  public headers = { } as IHash<string>;
+  public headers: IHash<string> = { };
 
   /** HTTP parameters to be passed on the URL. */
-  public parameters = { } as IHash<string>;
+  public parameters: IHash<string> = { };
 
   /** HTTP data to be passed when POSTing */
   public data: any;
@@ -56,7 +56,7 @@ export class TwitarrHTTPOptions {
    * Construct a new TwitarrHTTPOptions object.
    * @constructor
    */
-  constructor(timeout?: number, auth?: TwitarrAuthConfig, server?: TwitarrServer) {
+  public constructor(timeout?: number, auth?: TwitarrAuthConfig, server?: TwitarrServer) {
     if (timeout !== undefined) {
       this.timeout = timeout;
     }

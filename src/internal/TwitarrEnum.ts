@@ -11,22 +11,22 @@ export class TwitarrEnum<T> {
   private l: string;
 
   /** get the index/id of this enum entry */
-  get id() {
+  public get id() {
     return this.i;
   }
 
   /** an alias for [[TwitarrEnum.id]] */
-  get index() {
+  public get index() {
     return this.i;
   }
 
   /** get the label of this enum entry */
-  get label() {
+  public get label() {
     return this.l;
   }
 
   /** construct an enum object with an id and label */
-  constructor(id: T, label: string) {
+  public constructor(id: T, label: string) {
     this.i = id;
     this.l = label;
   }

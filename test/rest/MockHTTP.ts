@@ -4,20 +4,15 @@ declare const Promise;
 declare const require;
 
 /** @hidden */
-// tslint:disable-next-line
 const URI = require('urijs');
 
 import { AbstractHTTP } from '../../src/rest/AbstractHTTP';
 
 import { TwitarrHTTPOptions } from '../../src/api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../../src/api/TwitarrResult';
-import { POINT_CONVERSION_COMPRESSED } from 'constants';
-import { User } from '../../src/model/User';
 import { Util } from '../../src/internal/Util';
-import { StreamResponse } from '../../src/model/StreamResponse';
 
 const getError = (method: string, urlObj: any, options?: TwitarrHTTPOptions) => {
-  // tslint:disable-next-line
   let message = 'Net yet implemented: ' + method + ' ' + urlObj.toString();
   if (options) {
     message += ': ';

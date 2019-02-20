@@ -5,7 +5,6 @@ import { SeamailMessage } from '../../src/model/SeamailMessage';
 import { User } from '../../src/model/User';
 
 /** @hidden */
-// tslint:disable-next-line
 const moment = require('moment');
 
 /** @hidden */

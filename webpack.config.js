@@ -129,14 +129,15 @@ function createConfig(options) {
     }));
 
     myconf.module.rules.unshift({
-      // run tslint on typescript files before rendering
+      // run eslint on typescript files before rendering
       enforce: 'pre',
-      test: /\.tsx?$/,
+      test: /\.(js|ts)x?$/,
       use: [
         {
-          loader: 'tslint-loader',
+          loader: 'eslint-loader',
           options: {
-            typeCheck: true
+            cache: true,
+            failOnError: true,
           }
         }
       ],

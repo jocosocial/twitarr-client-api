@@ -1,7 +1,5 @@
 import { Util } from '../internal/Util';
 
-import { Moment } from 'moment';
-
 import { SeamailThread } from './SeamailThread';
 import { StreamPost } from './StreamPost';
 import { User } from './User';

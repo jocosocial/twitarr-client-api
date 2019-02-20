@@ -2,14 +2,12 @@ import axios from 'axios';
 import { AxiosStatic, AxiosInstance, /*AxiosResponse,*/ AxiosRequestConfig } from 'axios';
 import * as clonedeep from 'lodash.clonedeep';
 
-if (!fetch) {
+if (!fetch) { // eslint-disable-line
   // @ts-ignore
-  // tslint:disable-next-line
   var fetch = require('node-fetch');
 }
 
 /** @hidden */
-// tslint:disable-next-line
 const URI = require('urijs');
 
 import { AbstractHTTP } from './AbstractHTTP';
@@ -44,7 +42,7 @@ export class BrowserHTTP extends AbstractHTTP {
    * @param axiosImpl - The Axios implementation class to use.
    * @param timeout - The default timeout for ReST connections.
    */
-  constructor(server?: TwitarrServer, axiosImpl?: AxiosStatic, timeout = 10000) {
+  public constructor(server?: TwitarrServer, axiosImpl?: AxiosStatic, timeout = 10000) {
     super(server, timeout);
     this.axiosImpl = axiosImpl || axios;
   }
@@ -152,15 +150,15 @@ export class BrowserHTTP extends AbstractHTTP {
     opts.url = realUrl;
 
     return this.getImpl(options).request(opts).then((response) => {
-        let type;
-        if (response.headers && response.headers['content-type']) {
-            type = response.headers['content-type'];
-        }
-        const data = this.getData(response);
-        if (data && data.status === 'error') {
-          throw response;
-        }
-        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+      let type;
+      if (response.headers && response.headers['content-type']) {
+        type = response.headers['content-type'];
+      }
+      const data = this.getData(response);
+      if (data && data.status === 'error') {
+        throw response;
+      }
+      return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
     }).catch((err) => {
       throw this.handleError(err, opts);
     });
@@ -217,9 +215,9 @@ export class BrowserHTTP extends AbstractHTTP {
   private getConfig(options?: TwitarrHTTPOptions): AxiosRequestConfig {
     const allOptions = this.getOptions(options);
 
-    const ret = {
+    const ret: AxiosRequestConfig = {
       transformResponse: [], // we do this so we can post-process only on success
-    } as AxiosRequestConfig;
+    };
 
     if (allOptions.auth && allOptions.auth.username && allOptions.auth.password) {
       ret.auth = {
@@ -279,11 +277,11 @@ export class BrowserHTTP extends AbstractHTTP {
       }
       const allOptions = this.getOptions(options);
 
-      const axiosOpts = {
+      const axiosOpts: AxiosRequestConfig = {
         baseURL: server.url,
         timeout: allOptions.timeout,
         withCredentials: true,
-      } as AxiosRequestConfig;
+      };
 
       if (typeof XMLHttpRequest !== 'undefined') {
         axiosOpts.adapter = require('axios/lib/adapters/xhr.js');

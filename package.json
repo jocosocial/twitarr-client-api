@@ -32,6 +32,8 @@
     "@types/lodash": "^4.14.120",
     "@types/node": "^10.12.24",
     "@types/urijs": "^1.15.38",
+    "@typescript-eslint/eslint-plugin": "^1.4.0",
+    "@typescript-eslint/parser": "^1.4.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
@@ -40,6 +42,8 @@
     "chai": "^4.2.0",
     "child_process": "^1.0.2",
     "conventional-changelog-lint": "^2.1.1",
+    "eslint": "^5.14.1",
+    "eslint-loader": "^2.1.2",
     "husky": "^0.14.3",
     "jest": "^24.1.0",
     "jest-environment-node-debug": "^2.0.0",
@@ -49,8 +53,6 @@
     "ts-jest": "^23.10.5",
     "ts-loader": "^5.3.3",
     "ts-node": "^8.0.2",
-    "tslint": "^5.12.1",
-    "tslint-loader": "3.5.4",
     "typedoc": "^0.14.2",
     "typedoc-plugin-external-module-name": "^2.0.0",
     "typedoc-webpack-plugin": "^1.1.4",
@@ -60,8 +62,7 @@
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-closure-compiler": "^2.1.6",
-    "yargs": "^12.0.5",
-    "yarn": "^1.13.0"
+    "yargs": "^12.0.5"
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
@@ -112,18 +113,18 @@
   },
   "scripts": {
     "precommit": "jest",
-    "prepush": "conventional-changelog-lint --from=origin/master && yarn --ignore-engines lint",
+    "prepush": "conventional-changelog-lint --from=origin/master && npm run lint",
     "changelog": "standard-changelog -i CHANGELOG.md -s -r 1",
     "build": "webpack --define process.env.NODE_ENV=production --env production",
     "dev": "webpack --progress --colors",
-    "dist": "yarn --ignore-engines lint && yarn --ignore-engines test && yarn --ignore-engines build",
+    "dist": "npm run lint && npm run test && npm run build",
     "docs": "webpack --env docs",
     "watch": "webpack --progress --colors --watch",
     "test": "jest",
     "watch-test": "jest --watch",
-    "lint": "tslint 'src/**/*.ts'",
+    "lint": "eslint 'src/**/*.ts' && eslint 'test/**/*.ts'",
     "cli": "ts-node src/CLI.ts",
-    "docker-build": "yarn --ignore-engines && yarn --ignore-engines lint && yarn --ignore-engines test && yarn --ignore-engines  build && yarn --ignore-engines changelog && ./fix-ownership.sh",
-    "docker": "docker run --rm --name twitarr-js -v `pwd`:/build -w /build node:carbon yarn --ignore-engines docker-build"
+    "docker-build": "npm install && npm run lint && npm run test && npm run build && npm run changelog && ./fix-ownership.sh",
+    "docker": "docker run --rm --name twitarr-js -v `pwd`:/build -w /build node:carbon npm run docker-build"
   }
 }
