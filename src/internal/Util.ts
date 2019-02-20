@@ -38,6 +38,21 @@ export class Util {
     return true;
   }
 
+  public static assertHasProperties(obj?: any, ...expectedProperties: any[]) {
+    if (Util.isEmpty(obj)) {
+      throw new TwitarrError('Object is empty!');
+    }
+    if (expectedProperties.length === 0) {
+      throw new TwitarrError('At least one property must be specified!');
+    }
+    for (const prop of expectedProperties) {
+      if (Util.isEmpty(obj[prop])) {
+        throw new TwitarrError('Object property "' + prop + '" does not exist or is empty!');
+      }
+    }
+    return true;
+  }
+
   /**
    * Whether or not the passed object is already a date. (Either a [[Moment]] object, or
    * a JavaScript [[Date]] object.)
@@ -77,6 +92,9 @@ export class Util {
     }
   }
 
+  /**
+   * Iterate over a set of (optional) properties on the source object, and apply them to the target.
+   */
   public static setProperties(target: any, source: any, ...props) {
     if (!Util.isEmpty(source)) {
       for (const prop of props) {
@@ -87,6 +105,10 @@ export class Util {
     }
   }
 
+  /**
+   * Iterate over a set of (optional) properties on the source object, and apply them to the target
+   * converting them to @Moment objects in the process.
+   */
   public static setDateProperties(target: any, source: any, ...props) {
     if (!Util.isEmpty(source)) {
       for (const prop of props) {

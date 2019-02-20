@@ -106,4 +106,16 @@ describe('internal/Util', () => {
     it('1', () => expect(Util.isEmpty(1)).toBeFalsy());
     it('1, undefined', () => expect(Util.isEmpty(1, undefined)).toBeFalsy());
   });
+
+  describe('#assertNotEmpty()', () => {
+    it('undefined', () => expect(() => Util.assertHasProperties(undefined)).toThrow());
+    it('null', () => expect(() => Util.assertHasProperties(null)).toThrow());
+    it('""', () => expect(() => Util.assertHasProperties('')).toThrow());
+    it('foo', () => expect(() => Util.assertHasProperties('foo')).toThrow());
+    it('{}', () => expect(() => Util.assertHasProperties({})).toThrow());
+    it('{}, foo', () => expect(() => Util.assertHasProperties({}, 'foo')).toThrow());
+    it('{foo:bar}, baz', () => expect(() => Util.assertHasProperties({ foo: 'bar' }, 'baz')).toThrow());
+    it('{foo:""}, foo', () => expect(() => Util.assertHasProperties({ foo: '' }, 'foo')).toThrow());
+    it('{foo:bar}, foo', () => expect(Util.assertHasProperties({ foo: 'bar' }, 'foo')).toBeTruthy());
+  });
 });
