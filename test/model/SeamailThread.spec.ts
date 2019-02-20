@@ -45,10 +45,10 @@ describe('SeamailThread', () => {
 
   describe('#fromRest', () => {
     it('undefined', () => {
-      expect(SeamailThread.fromRest(undefined)).toMatchObject({});
+      expect(() => SeamailThread.fromRest(undefined)).toThrow();
     });
     it('{}', () => {
-      expect(SeamailThread.fromRest({})).toMatchObject({});
+      expect(() => SeamailThread.fromRest({})).toThrow();
     });
     it('no messages', () => {
       const thread = SeamailThread.fromRest({

@@ -8,13 +8,13 @@ import { Moment } from 'moment';
  */
 export class PhotoDetails {
   public static fromRest(data: any) {
+    Util.assertHasProperties(data, 'id', 'md5_hash');
+
     const ret = new PhotoDetails();
-    if (!Util.isEmpty(data)) {
-      Util.setProperties(ret, data, 'id', 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader');
-      Util.setDateProperties(ret, data, 'uploader_time');
-      if (data.sizes) {
-        Object.assign(ret.sizes, data.sizes);
-      }
+    Util.setProperties(ret, data, 'id', 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader');
+    Util.setDateProperties(ret, data, 'uploader_time');
+    if (data.sizes) {
+      Object.assign(ret.sizes, data.sizes);
     }
     return ret;
   }

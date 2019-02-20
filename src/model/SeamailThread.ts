@@ -11,17 +11,17 @@ import { Moment } from 'moment';
  */
 export class SeamailThread {
   public static fromRest(data: any) {
+    Util.assertHasProperties(data, 'id', 'subject', 'timestamp');
+
     const ret = new SeamailThread();
 
-    if (!Util.isEmpty(data)) {
-      Util.setProperties(ret, data, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
-      Util.setDateProperties(ret, data, 'timestamp');
-      if (!Util.isEmpty(data.users)) {
-        ret.users = data.users.map((user: any) => User.fromRest(user));
-      }
-      if (!Util.isEmpty(data.messages)) {
-        ret.messages = data.messages.map((message: any) => SeamailMessage.fromRest(message));
-      }
+    Util.setProperties(ret, data, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
+    Util.setDateProperties(ret, data, 'timestamp');
+    if (!Util.isEmpty(data.users)) {
+      ret.users = data.users.map((user: any) => User.fromRest(user));
+    }
+    if (!Util.isEmpty(data.messages)) {
+      ret.messages = data.messages.map((message: any) => SeamailMessage.fromRest(message));
     }
 
     return ret;

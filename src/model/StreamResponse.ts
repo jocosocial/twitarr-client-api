@@ -6,23 +6,27 @@ import { TwitarrError } from '../api/TwitarrError';
 
 export class StreamResponse {
   public static fromRest(data: any) {
+    Util.assertHasProperties(data, 'has_next_page');
+
+    if (Util.isEmpty(data.stream_posts, data.stream_post, data.post)) {
+      throw new TwitarrError('At least one of stream_posts, stream_post, or posts is expected on the response!', undefined, undefined, undefined, data);
+    }
+
     const ret = new StreamResponse();
 
-    if (!Util.isEmpty(data)) {
-      Util.setProperties(ret, data, 'has_next_page');
-      Util.setDateProperties(ret, data, 'next_page');
-      if (!Util.isEmpty(data.stream_posts)) {
-        ret.posts = data.stream_posts.map(post => StreamPost.fromRest(post));
-        ret.is_thread = false;
-      }
-      if (!Util.isEmpty(data.stream_post)) {
-        ret.posts = [StreamPost.fromRest(data.stream_post)];
-        ret.is_thread = true;
-      }
-      if (!Util.isEmpty(data.post)) {
-        ret.posts = [StreamPost.fromRest(data.post)];
-        ret.is_thread = true;
-      }
+    Util.setProperties(ret, data, 'has_next_page');
+    Util.setDateProperties(ret, data, 'next_page');
+    if (!Util.isEmpty(data.stream_posts)) {
+      ret.posts = data.stream_posts.map(post => StreamPost.fromRest(post));
+      ret.is_thread = false;
+    }
+    if (!Util.isEmpty(data.stream_post)) {
+      ret.posts = [StreamPost.fromRest(data.stream_post)];
+      ret.is_thread = true;
+    }
+    if (!Util.isEmpty(data.post)) {
+      ret.posts = [StreamPost.fromRest(data.post)];
+      ret.is_thread = true;
     }
 
     return ret;

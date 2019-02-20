@@ -1,7 +1,6 @@
 {
   "status": "ok",
-  "stream_posts": [
-    {
+  "stream_posts": [{
       "id": "5c630e748605941fd54f54d5",
       "author": {
         "username": "erikmendoza",
@@ -20,7 +19,8 @@
       "parent_chain": [],
       "photo": {
         "id": "5c630e738605949e294f54d4",
-        "animated": false
+        "animated": false,
+        "md5_hash": "12345"
       }
     },
     {
@@ -42,7 +42,8 @@
       "parent_chain": [],
       "photo": {
         "id": "5c61962ab76d629f37ac940a",
-        "animated": false
+        "animated": false,
+        "md5_hash": "12345"
       }
     },
     {

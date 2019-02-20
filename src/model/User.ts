@@ -8,7 +8,10 @@ import { Moment } from 'moment';
  */
 export class User {
   public static fromRest(data: any) {
+    Util.assertHasProperties(data, 'username');
+
     const ret = new User();
+
     Util.setProperties(
       ret,
       data,
@@ -25,6 +28,7 @@ export class User {
       'number_of_mentions',
     );
     Util.setDateProperties(ret, data, 'last_login', 'last_photo_updated');
+
     return ret;
   }
 

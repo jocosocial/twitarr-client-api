@@ -1,25 +1,32 @@
 import { Moment } from 'moment';
 
 import { SeamailThread } from './SeamailThread';
+
+import { TwitarrError } from '../api/TwitarrError';
+
 import { Util } from '../internal/Util';
 
 export class SeamailResponse {
   public static fromRest(data: any) {
-    const ret = new SeamailResponse();
+    Util.assertHasProperties(data, 'status');
 
-    if (!Util.isEmpty(data)) {
-      Util.setDateProperties(ret, data, 'last_checked');
-      if (!Util.isEmpty(data.seamail)) {
-        ret.threads = [SeamailThread.fromRest(data.seamail)];
-        ret.is_meta = false;
-      }
-      if (!Util.isEmpty(data.seamail_meta)) {
-        ret.threads = data.seamail_meta.map(thread => SeamailThread.fromRest(thread));
-        ret.is_meta = true;
-      } else if (!Util.isEmpty(data.seamail_threads)) {
-        ret.threads = data.seamail_threads.map(thread => SeamailThread.fromRest(thread));
-        ret.is_meta = false;
-      }
+    if (Util.isEmpty(data.seamail) && Util.isEmpty(data.seamail_meta) && Util.isEmpty(data.seamail_threads)) {
+      throw new TwitarrError('At least one of seamail, seamail_meta, or seamail_threads is expected in the response!', undefined, undefined, data);
+    }
+
+    const ret = new SeamailResponse();
+    Util.setDateProperties(ret, data, 'last_checked');
+
+    if (!Util.isEmpty(data.seamail)) {
+      ret.threads = [SeamailThread.fromRest(data.seamail)];
+      ret.is_meta = false;
+    }
+    if (!Util.isEmpty(data.seamail_meta)) {
+      ret.threads = data.seamail_meta.map(thread => SeamailThread.fromRest(thread));
+      ret.is_meta = true;
+    } else if (!Util.isEmpty(data.seamail_threads)) {
+      ret.threads = data.seamail_threads.map(thread => SeamailThread.fromRest(thread));
+      ret.is_meta = false;
     }
 
     return ret;

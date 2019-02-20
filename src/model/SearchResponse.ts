@@ -1,3 +1,5 @@
+import { TwitarrError } from '../api/TwitarrError';
+
 import { Util } from '../internal/Util';
 
 import { SeamailThread } from './SeamailThread';
@@ -16,34 +18,39 @@ interface ISearchStatus<T> {
  */
 export class SearchResponse {
   public static fromRest(data: any) {
-    const ret = new SearchResponse();
-    if (!Util.isEmpty(data)) {
-      if (data.query && data.query.text) {
-        ret.query = data.query.text;
-      }
-      if (data.users) {
-        Util.setProperties(ret.users, data.users, 'count', 'more');
-        ret.users.matches = data.users.matches.map((user: any) => User.fromRest(user));
-      }
-      if (data.seamails) {
-        Util.setProperties(ret.seamails, data.seamails, 'count', 'more');
-        ret.seamails.matches = data.seamails.matches.map((thread: any) => SeamailThread.fromRest(thread));
-      }
-      if (data.tweets) {
-        Util.setProperties(ret.streamPosts, data.streamPosts, 'count', 'more');
-        ret.streamPosts.matches = data.tweets.matches.map((tweet: any) => StreamPost.fromRest(tweet));
-      }
-      /*
-      if (data.forums) {
-        Util.setProperties(ret.forumThreads, data.forumThreads, 'count', 'more');
-        ret.forumThreads.matches = data.forums.matches.map((thread) => ForumThread.fromRest(thread));
-      }
-      if (data.events) {
-        Util.setProperties(ret.events, data.events, 'count', 'more');
-        ret.events.matches = data.events.matches.map((event) => Event.fromRest(event));
-      }
-      */
+    Util.assertHasProperties(data, 'query');
+
+    if (Util.isEmpty(data.users, data.seamails, data.tweets, data.forums, data.events)) {
+      throw new TwitarrError('At least one of users, seamails, tweets, forums, or events is expected on the response!', undefined, undefined, undefined, data);
     }
+
+    const ret = new SearchResponse();
+    if (data.query && data.query.text) {
+      ret.query = data.query.text;
+    }
+    if (data.users) {
+      Util.setProperties(ret.users, data.users, 'count', 'more');
+      ret.users.matches = data.users.matches.map((user: any) => User.fromRest(user));
+    }
+    if (data.seamails) {
+      Util.setProperties(ret.seamails, data.seamails, 'count', 'more');
+      ret.seamails.matches = data.seamails.matches.map((thread: any) => SeamailThread.fromRest(thread));
+    }
+    if (data.tweets) {
+      Util.setProperties(ret.streamPosts, data.streamPosts, 'count', 'more');
+      ret.streamPosts.matches = data.tweets.matches.map((tweet: any) => StreamPost.fromRest(tweet));
+    }
+    /*
+    if (data.forums) {
+      Util.setProperties(ret.forumThreads, data.forumThreads, 'count', 'more');
+      ret.forumThreads.matches = data.forums.matches.map((thread) => ForumThread.fromRest(thread));
+    }
+    if (data.events) {
+      Util.setProperties(ret.events, data.events, 'count', 'more');
+      ret.events.matches = data.events.matches.map((event) => Event.fromRest(event));
+    }
+    */
+
     return ret;
   }
 

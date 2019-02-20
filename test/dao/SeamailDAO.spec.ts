@@ -153,7 +153,7 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('get(id)', async done => {
+    it('get(id, true)', async done => {
       dao.get('5c607d43ea204f5815755cda', true).then(thread => {
         expect(thread).toBeDefined();
         expect(thread.threads).toBeDefined();

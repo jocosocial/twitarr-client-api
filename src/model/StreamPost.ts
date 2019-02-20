@@ -12,26 +12,26 @@ import { PhotoDetails } from './PhotoDetails';
  */
 export class StreamPost {
   public static fromRest(data: any) {
+    Util.assertHasProperties(data, 'author', 'id', 'text', 'timestamp');
+
     const ret = new StreamPost();
 
-    if (!Util.isEmpty(data)) {
-      Util.setProperties(ret, data, 'id', 'locked', 'text');
-      Util.setDateProperties(ret, data, 'timestamp');
-      if (!Util.isEmpty(data.author)) {
-        ret.author = User.fromRest(data.author);
-      }
-      if (!Util.isEmpty(data.reactions)) {
-        ret.reactions = ReactionsSummary.fromRest(data.reactions);
-      }
-      if (!Util.isEmpty(data.photo)) {
-        ret.photo = PhotoDetails.fromRest(data.photo);
-      }
-      if (!Util.isEmpty(data.parent_chain) && Array.isArray(data.parent_chain)) {
-        ret.parent_chain = data.parent_chain;
-      }
-      if (!Util.isEmpty(data.children) && Array.isArray(data.children)) {
-        ret.children = data.children.map(child => StreamPost.fromRest(child));
-      }
+    Util.setProperties(ret, data, 'id', 'locked', 'text');
+    Util.setDateProperties(ret, data, 'timestamp');
+    if (!Util.isEmpty(data.author)) {
+      ret.author = User.fromRest(data.author);
+    }
+    if (!Util.isEmpty(data.reactions)) {
+      ret.reactions = ReactionsSummary.fromRest(data.reactions);
+    }
+    if (!Util.isEmpty(data.photo)) {
+      ret.photo = PhotoDetails.fromRest(data.photo);
+    }
+    if (!Util.isEmpty(data.parent_chain) && Array.isArray(data.parent_chain)) {
+      ret.parent_chain = data.parent_chain;
+    }
+    if (!Util.isEmpty(data.children) && Array.isArray(data.children)) {
+      ret.children = data.children.map(child => StreamPost.fromRest(child));
     }
 
     return ret;

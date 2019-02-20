@@ -1,7 +1,6 @@
 {
   "status": "ok",
-  "stream_posts": [
-    {
+  "stream_posts": [{
       "id": "5c6323e6d86b937c6c739cb7",
       "author": {
         "username": "rangerrick",
@@ -33,7 +32,8 @@
       "parent_chain": [],
       "photo": {
         "id": "5c630e738605949e294f54d4",
-        "animated": false
+        "animated": false,
+        "md5_hash": "12345"
       }
     },
     {
@@ -78,7 +78,8 @@
       "parent_chain": [],
       "photo": {
         "id": "5c622b5d43539c84db937bbe",
-        "animated": false
+        "animated": false,
+        "md5_hash": "12345"
       }
     },
     {

@@ -29,10 +29,10 @@ describe('SeamailMessage', () => {
 
   describe('#fromRest', () => {
     it('undefined', () => {
-      expect(SeamailMessage.fromRest(undefined)).toMatchObject({});
+      expect(() => SeamailMessage.fromRest(undefined)).toThrow();
     });
     it('{}', () => {
-      expect(SeamailMessage.fromRest({})).toMatchObject({});
+      expect(() => SeamailMessage.fromRest({})).toThrow();
     });
     it('no users', () => {
       const message = SeamailMessage.fromRest({
