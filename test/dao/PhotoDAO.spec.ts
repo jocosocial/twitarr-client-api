@@ -42,7 +42,7 @@ describe('dao/PhotoDAO', () => {
   });
   describe('#post', () => {
     it('post()', async done => {
-      const ret = await dao.post('foo.png', new Buffer([]));
+      const ret = await dao.post('foo.png', Buffer.from([]));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(PhotoDetails);
       expect(ret.original_filename).toEqual('foo.png');
