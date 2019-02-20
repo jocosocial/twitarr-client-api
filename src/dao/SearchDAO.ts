@@ -2,27 +2,7 @@ import { AbstractDAO } from './AbstractDAO';
 import { SearchResponse } from '../model/SearchResponse';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 
-const URI = require('urijs'); // eslint-disable-line
-
 export class SearchDAO extends AbstractDAO {
-  /**
-   * Retrieve a list of hashtags that match the given query.
-   */
-  public async hashtags(query: string) {
-    if (!query) {
-      return [];
-    }
-
-    const q = query.replace(/^\#/, '');
-    if (q.length < 3) {
-      return [];
-    }
-
-    return this.http.get('/api/v2/hashtag/ac/' + q).then(result => {
-      return result.data.values as string[];
-    });
-  }
-
   /**
    * Search all metadata (seamail, twarrts, etc.)
    */

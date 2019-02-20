@@ -68,7 +68,7 @@ export class Client implements IHasHTTP {
   public async isLoggedIn(): Promise<boolean> {
     try {
       return this.user()
-        .getProfile()
+        .profile()
         .then(() => {
           return true;
         });
@@ -96,7 +96,7 @@ export class Client implements IHasHTTP {
 
     if (self.server.auth.key) {
       try {
-        const profile = await this.user().getProfile();
+        const profile = await this.user().profile();
         console.debug('found auth key:', self.server.auth.key, profile);
         return self;
       } catch (err) {

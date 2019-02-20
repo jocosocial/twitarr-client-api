@@ -23,21 +23,6 @@ describe('dao/SearchDAO', () => {
     mockHTTP = new MockHTTP(server);
     dao = new SearchDAO(mockHTTP);
   });
-  describe('#hashtags', () => {
-    it('hashtags(h)', async done => {
-      const ret = await dao.hashtags('h');
-      expect(ret).toBeDefined();
-      expect(ret.length).toEqual(0);
-      done();
-    });
-    it('hashtags(hash)', async done => {
-      const ret = await dao.hashtags('hash');
-      expect(ret).toBeDefined();
-      expect(ret.length).toEqual(2);
-      expect(ret[0]).toEqual('hashtag');
-      done();
-    });
-  });
   describe('#all', () => {
     it('all(rangerrick)', async done => {
       const ret = await dao.all('rangerrick');

@@ -60,6 +60,9 @@ const CLI = () => {
         .alias('d', 'display-name')
         .describe('d', 'set your display name')
         .string('d')
+        .alias('e', 'email')
+        .describe('e', 'set your email address')
+        .string('e')
         .alias('h', 'home-location')
         .describe('h', 'set your home location')
         .string('h')
@@ -192,20 +195,21 @@ const CLI = () => {
     return config;
   };
 
-  const doProfile = async (displayName?: string, homeLocation?: string, realName?: string, pronouns?: string, roomNumber?: string) => {
+  const doProfile = async (displayName?: string, email?: string, homeLocation?: string, realName?: string, pronouns?: string, roomNumber?: number) => {
     const client = getClient();
-    if (Util.isEmpty(displayName, homeLocation, realName, pronouns, roomNumber)) {
-      const profile = await client.user().getProfile();
-      const t = new Table(tableFormat);
-      for (const key of Object.keys(profile)) {
-        const name = key ? key.replace(/_/g, ' ') : key;
-        t.push([name + ':', profile[key]]);
-      }
-      console.log(t.toString());
-      console.log('');
+    let profile;
+    if (Util.isEmpty(displayName, email, homeLocation, realName, pronouns, roomNumber)) {
+      profile = await client.user().profile();
     } else {
-      throw new TwitarrError('Not yet implemented!');
+      profile = await client.user().update(displayName, undefined, homeLocation, realName, pronouns, roomNumber);
     }
+    const t = new Table(tableFormat);
+    for (const key of Object.keys(profile)) {
+      const name = key ? key.replace(/_/g, ' ') : key;
+      t.push([name + ':', profile[key]]);
+    }
+    console.log(t.toString());
+    console.log('');
   };
 
   const doSeamailList = async (n = false) => {
@@ -350,7 +354,7 @@ const CLI = () => {
           break;
         }
         case 'profile': {
-          await doProfile(args.displayName, args.homeLocation, args.realName, args.pronouns, args.roomNumber);
+          await doProfile(args.displayName, args.email, args.homeLocation, args.realName, args.pronouns, args.roomNumber);
           break;
         }
         case 'seamail': {
