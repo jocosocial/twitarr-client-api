@@ -4,6 +4,7 @@ import { TwitarrError } from '../api/TwitarrError';
 
 import { Util } from '../internal/Util';
 
+import { User } from '../model/User';
 import { UserProfileInfo } from '../model/UserProfileInfo';
 
 import { AbstractDAO } from './AbstractDAO';
@@ -75,6 +76,12 @@ export class UserDAO extends AbstractDAO {
     });
   }
 
+  public async starred() {
+    return this.http.get('/api/v2/user/starred', new TwitarrHTTPOptions().withParameter('app', 'plain')).then(async result => {
+      const data = await this.handleErrors(result);
+      return data.users.map(user => User.fromRest(user));
+    });
+  }
   public async createUser(registrationCode: string, username: string, password: string, displayName?: string) {
     const options = new TwitarrHTTPOptions()
       .withParameter('registration_code', registrationCode)

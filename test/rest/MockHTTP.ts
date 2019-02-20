@@ -171,6 +171,17 @@ export class MockHTTP extends AbstractHTTP {
           ],
         });
       }
+      case '/api/v2/user/starred?app=plain': {
+        return jsonOK({
+          status: 'ok',
+          users: [
+            {
+              username: 'randall',
+              display_name: 'The Wrangler',
+            },
+          ],
+        });
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));

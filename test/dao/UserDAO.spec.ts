@@ -7,6 +7,7 @@ import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
 import { TwitarrResult } from '../../src/api/TwitarrResult';
 import { TwitarrServer } from '../../src/api/TwitarrServer';
 
+import { User } from '../../src/model/User';
 import { UserProfileInfo } from '../../src/model/UserProfileInfo';
 
 import { MockHTTP } from '../rest/MockHTTP';
@@ -79,6 +80,17 @@ describe('dao/UserDAO', () => {
     starred = await dao.toggleStarred('kvort');
     expect(starred).toBeFalsy();
     done();
+  });
+
+  it('#starred', done => {
+    dao.starred().then(res => {
+      expect(res).toBeDefined();
+      expect(Array.isArray(res)).toBeTruthy();
+      expect(res.length).toEqual(1);
+      expect(res[0]).toBeInstanceOf(User);
+      expect(res[0].username).toEqual('randall');
+      done();
+    });
   });
 
   it('#changePassword', done => {
