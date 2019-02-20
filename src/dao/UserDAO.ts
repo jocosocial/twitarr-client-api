@@ -93,6 +93,18 @@ export class UserDAO extends AbstractDAO {
     return this.http.post('/api/v2/user/reset_password', options);
   }
 
+  public async getMentions(): Promise<number> {
+    return this.http.get('/api/v2/user/mentions').then(res => {
+      return res.data.mentions;
+    });
+  }
+
+  public async resetMentions(): Promise<number> {
+    return this.http.httpDelete('/api/v2/user/mentions').then(res => {
+      return res.data.mentions;
+    });
+  }
+
   private async handleErrors(result: TwitarrResult<any>) {
     if (result.isSuccess()) {
       const status = result.data && result.data.status ? result.data.status : 'ok';

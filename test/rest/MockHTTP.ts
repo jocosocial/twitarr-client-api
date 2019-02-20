@@ -140,6 +140,12 @@ export class MockHTTP extends AbstractHTTP {
       case '/api/v2/search/all/rangerrick?app=plain': {
         return jsonOK(getJsonFromFile('../data/search-rangerrick.json'));
       }
+      case '/api/v2/user/mentions': {
+        return jsonOK({
+          status: 'ok',
+          mentions: 3,
+        });
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));
@@ -307,6 +313,12 @@ export class MockHTTP extends AbstractHTTP {
       }
       case '/api/v2/photo/12345': {
         return Promise.resolve(TwitarrResult.ok(undefined, undefined, 204, undefined));
+      }
+      case '/api/v2/user/mentions': {
+        return jsonOK({
+          status: 'ok',
+          mentions: 0,
+        });
       }
     }
 

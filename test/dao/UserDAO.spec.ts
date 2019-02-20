@@ -82,4 +82,18 @@ describe('dao/UserDAO', () => {
       done();
     });
   });
+
+  it('#getMentions', done => {
+    dao.getMentions().then(res => {
+      expect(res).toEqual(3);
+      done();
+    });
+  });
+
+  it('#resetMentions', done => {
+    dao.resetMentions().then(res => {
+      expect(res).toEqual(0);
+      done();
+    });
+  });
 });
