@@ -1,12 +1,15 @@
 declare const describe, beforeEach, it, expect;
 
+import { TwitarrError } from '../../src/api/TwitarrError';
+
 import { UserDAO } from '../../src/dao/UserDAO';
 import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
 import { TwitarrResult } from '../../src/api/TwitarrResult';
 import { TwitarrServer } from '../../src/api/TwitarrServer';
 
+import { UserProfileInfo } from '../../src/model/UserProfileInfo';
+
 import { MockHTTP } from '../rest/MockHTTP';
-import { TwitarrError } from '../../src/api/TwitarrError';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
@@ -38,6 +41,15 @@ describe('dao/UserDAO', () => {
       expect(err).toBeInstanceOf(TwitarrError);
       expect(err.message).toEqual('invalid username or password');
       expect(err.code).toEqual(401);
+      done();
+    });
+  });
+
+  it('#profile', done => {
+    dao.profile().then(res => {
+      expect(res).toBeDefined();
+      expect(res).toBeInstanceOf(UserProfileInfo);
+      expect(res.user.username).toEqual('rangerrick');
       done();
     });
   });

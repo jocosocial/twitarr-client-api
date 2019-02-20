@@ -201,12 +201,12 @@ const CLI = () => {
     if (Util.isEmpty(displayName, email, homeLocation, realName, pronouns, roomNumber)) {
       profile = await client.user().profile();
     } else {
-      profile = await client.user().update(displayName, undefined, homeLocation, realName, pronouns, roomNumber);
+      profile = await client.user().update(displayName, email, homeLocation, realName, pronouns, roomNumber);
     }
     const t = new Table(tableFormat);
-    for (const key of Object.keys(profile)) {
+    for (const key of Object.keys(profile.user)) {
       const name = key ? key.replace(/_/g, ' ') : key;
-      t.push([name + ':', profile[key]]);
+      t.push([name + ':', profile.user[key]]);
     }
     console.log(t.toString());
     console.log('');

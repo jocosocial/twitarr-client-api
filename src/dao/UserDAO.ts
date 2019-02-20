@@ -4,7 +4,7 @@ import { TwitarrError } from '../api/TwitarrError';
 
 import { Util } from '../internal/Util';
 
-import { User } from '../model/User';
+import { UserProfileInfo } from '../model/UserProfileInfo';
 
 import { AbstractDAO } from './AbstractDAO';
 
@@ -28,7 +28,7 @@ export class UserDAO extends AbstractDAO {
   public async profile() {
     return this.http.get('/api/v2/user/whoami', new TwitarrHTTPOptions().withParameter('app', 'plain')).then(async result => {
       const data = await this.handleErrors(result);
-      return User.fromRest(data.user);
+      return UserProfileInfo.fromRest(data);
     });
   }
 
@@ -52,8 +52,9 @@ export class UserDAO extends AbstractDAO {
     if (room_number) {
       options.parameters.room_number = '' + room_number;
     }
-    return this.http.post('/api/v2/user/profile', options).then(result => {
-      return User.fromRest(result.data.user);
+    return this.http.post('/api/v2/user/profile', options).then(async result => {
+      const data = await this.handleErrors(result);
+      return UserProfileInfo.fromRest(data);
     });
   }
 
