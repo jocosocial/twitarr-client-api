@@ -9,7 +9,7 @@ import { Moment } from 'moment';
 export class User {
   public static fromRest(data: any) {
     const ret = new User();
-    Util.setProperties(ret, data, 'username', 'email', 'display_name', 'empty_password', 'unnoticed_alerts');
+    Util.setProperties(ret, data, 'username', 'email', 'display_name', 'empty_password', 'room_number', 'real_name', 'pronouns', 'home_location', 'unnoticed_alerts', 'number_of_tweets', 'number_of_mentions');
     Util.setDateProperties(ret, data, 'last_login', 'last_photo_updated');
     return ret;
   }
@@ -29,18 +29,36 @@ export class User {
   /** Whether the user has an empty password. */
   public empty_password: boolean;
 
-  /** Whether the user has un-noticed alerts. */
-  public unnoticed_alerts: boolean;
-
   /** The last time the user logged in. */
   public last_login: Moment;
 
   /** The last time the user's photo was updated. */
   public last_photo_updated: Moment;
 
+  /** The user's room number. */
+  public room_number: number;
+
+  /** The user's real name. */
+  public real_name: string;
+
+  /** The user's preferred pronouns. */
+  public pronouns: string;
+
+  /** The user's home location. */
+  public home_location: string;
+
+  /** Whether the user has un-noticed alerts. */
+  public unnoticed_alerts: boolean;
+
+  /** The number of tweets the user has posted. */
+  public number_of_tweets: number;
+
+  /** The number of times the user has been mentioned. */
+  public number_of_mentions: number;
+
   public toJSON() {
     const ret = { } as any;
-    Util.setProperties(ret, this, 'username', 'role', 'email', 'display_name', 'empty_password', 'unnoticed_alerts');
+    Util.setProperties(ret, this, 'username', 'email', 'display_name', 'empty_password', 'room_number', 'real_name', 'pronouns', 'home_location', 'unnoticed_alerts', 'number_of_tweets', 'number_of_mentions');
     if (!Util.isEmpty(this.last_login)) {
       ret.last_login = this.last_login.valueOf();
     }

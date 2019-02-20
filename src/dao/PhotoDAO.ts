@@ -5,12 +5,6 @@ import { PhotoDetails } from '../model/PhotoDetails';
 
 const URI = require('urijs'); // tslint:disable-line
 
-let inNode = false;
-if (typeof FormData === 'undefined') {
-  // var FormData = require('formdata-node').default; // tslint:disable-line
-  var FormData = require('form-data'); // tslint:disable-line
-  inNode = true;
-}
 require('buffer'); // tslint:disable-line no-var-requires
 
 export class PhotoDAO extends AbstractDAO {

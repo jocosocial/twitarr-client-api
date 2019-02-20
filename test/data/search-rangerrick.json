@@ -1,0 +1,67 @@
+{
+  "status": "ok",
+  "query": {
+    "text": "rangerrick"
+  },
+  "users": {
+    "count": 1,
+    "more": false,
+    "matches": [
+      {
+        "username": "rangerrick",
+        "display_name": "RangerRick",
+        "last_photo_updated": 1549854903224
+      }
+    ]
+  },
+  "seamails": {
+    "count": 1,
+    "more": false,
+    "matches": [
+      {
+        "id": "5c607d43ea204f5815755cda",
+        "users": [
+          {
+            "username": "james",
+            "display_name": "james",
+            "last_photo_updated": 1549598100329
+          },
+          {
+            "username": "rob",
+            "display_name": "Manager Rob",
+            "last_photo_updated": 1549826231532
+          },
+          {
+            "username": "rangerrick",
+            "display_name": "rangerrick",
+            "last_photo_updated": 1549827517608
+          }
+        ],
+        "subject": "Meet up before the concert?",
+        "message_count": 1,
+        "timestamp": 1549827395180,
+        "is_unread": false,
+        "count_is_unread": false
+      }
+    ]
+  },
+  "tweets": {
+    "count": 1,
+    "more": false,
+    "matches": [
+      {
+        "id": "5c6323e6d86b937c6c739cb7",
+        "author": {
+          "username": "rangerrick",
+          "display_name": "RangerRick",
+          "last_photo_updated": 1549854903224
+        },
+        "locked": false,
+        "timestamp": 1550001126722,
+        "text": "This post is a #hashtag #test that uses #lots of #hashtags #hastagapalooza",
+        "reactions": {},
+        "parent_chain": []
+      }
+    ]
+  }
+}

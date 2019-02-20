@@ -137,6 +137,14 @@ export class MockHTTP extends AbstractHTTP {
       case '/api/v2/photo/12345?app=plain': {
         return jsonOK(getJsonFromFile('../data/photo-foo-png.json'));
       }
+      case '/api/v2/hashtag/ac/hash': {
+        return jsonOK({
+          values: ['hashtag', 'hashtags'],
+        });
+      }
+      case '/api/v2/search/all/rangerrick?app=plain': {
+        return jsonOK(getJsonFromFile('../data/search-rangerrick.json'));
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));
