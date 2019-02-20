@@ -87,11 +87,11 @@ describe('internal/Util', () => {
   describe('#setProperties()', () => {
     let target: any;
     beforeEach(() => {
-      target = { };
+      target = {};
     });
     it('undefined', () => {
       Util.setProperties(target, undefined, 'foo', 'bar');
-      expect(target).toMatchObject({ });
+      expect(target).toMatchObject({});
     });
   });
 

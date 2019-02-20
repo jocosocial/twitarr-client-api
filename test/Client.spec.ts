@@ -22,12 +22,12 @@ describe('Client', () => {
   });
   describe('* default object', () => {
     it('* server = undefined', () => {
-      expect((twitarr).server).toBeUndefined();
+      expect(twitarr.server).toBeUndefined();
     });
     it('#checkServer', () => {
       const ret = Client.checkServer(server, mockHTTP);
       expect(ret).toBeDefined();
-      return ret.then((result) => {
+      return ret.then(result => {
         expect(result).toBeDefined();
         expect(result).toEqual(true);
       });
@@ -36,7 +36,7 @@ describe('Client', () => {
       auth.password = 'invalid';
       const ret = Client.checkServer(server, mockHTTP);
       expect(ret).toBeDefined();
-      return ret.then((result) => {
+      return ret.then(result => {
         expect(result).toBeDefined();
         expect(result).toEqual(true);
       });
@@ -44,7 +44,7 @@ describe('Client', () => {
     it('#connect', () => {
       const ret = twitarr.connect(SERVER_NAME, SERVER_URL, SERVER_USER, SERVER_PASSWORD);
       expect(ret).toBeDefined();
-      return ret.then((result) => {
+      return ret.then(result => {
         expect(result).toBeDefined();
         expect(result).toEqual('demo:12345');
       });

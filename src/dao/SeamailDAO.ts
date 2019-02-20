@@ -11,33 +11,30 @@ export class SeamailDAO extends AbstractDAO {
     if (!id) {
       return Promise.reject(new TwitarrError('id is required!'));
     }
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (skip_mark_read) {
       options.parameters.skip_mark_read = 'true';
     }
-    return this.http.get('/api/v2/seamail/' + id, options).then((result) => {
+    return this.http.get('/api/v2/seamail/' + id, options).then(result => {
       return SeamailResponse.fromRest(result.data);
     });
   }
 
   public async getMetadata(unread?: boolean, after?: Moment) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
     }
     if (after) {
       options.parameters.after = '' + after.valueOf();
     }
-    return this.http.get('/api/v2/seamail', options).then((result) => {
+    return this.http.get('/api/v2/seamail', options).then(result => {
       return SeamailResponse.fromRest(result.data);
     });
   }
 
   public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: Moment) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
     }
@@ -47,7 +44,7 @@ export class SeamailDAO extends AbstractDAO {
     if (after) {
       options.parameters.after = '' + after.valueOf();
     }
-    return this.http.get('/api/v2/seamail_threads', options).then((result) => {
+    return this.http.get('/api/v2/seamail_threads', options).then(result => {
       return SeamailResponse.fromRest(result.data);
     });
   }
@@ -59,7 +56,7 @@ export class SeamailDAO extends AbstractDAO {
       text: message,
       users: users,
     };
-    return this.http.post('/api/v2/seamail', options).then((result) => {
+    return this.http.post('/api/v2/seamail', options).then(result => {
       return SeamailResponse.fromRest(result.data);
     });
   }
@@ -67,13 +64,13 @@ export class SeamailDAO extends AbstractDAO {
   public async post(id: string, message: string) {
     const options = new TwitarrHTTPOptions();
     options.data = { text: message };
-    return this.http.post('/api/v2/seamail/' + id, options).then((result) => {
+    return this.http.post('/api/v2/seamail/' + id, options).then(result => {
       return SeamailMessage.fromRest(result.data.seamail_message);
     });
   }
 
   public async unreadCount() {
-    return this.http.get('/api/v2/user/new_seamail').then((result) => {
+    return this.http.get('/api/v2/user/new_seamail').then(result => {
       return result.data.email_count;
     });
   }

@@ -61,19 +61,22 @@ export class BrowserHTTP extends AbstractHTTP {
     opts.method = 'get';
     opts.url = realUrl;
 
-    return this.getImpl(options).request(opts).then((response) => {
-      let type;
-      if (response.headers && response.headers['content-type']) {
-        type = response.headers['content-type'];
-      }
-      const data = this.getData(response);
-      if (data && data.status === 'error') {
-        throw response;
-      }
-      return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
-    }).catch((err) => {
-      throw this.handleError(err, opts);
-    });
+    return this.getImpl(options)
+      .request(opts)
+      .then(response => {
+        let type;
+        if (response.headers && response.headers['content-type']) {
+          type = response.headers['content-type'];
+        }
+        const data = this.getData(response);
+        if (data && data.status === 'error') {
+          throw response;
+        }
+        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+      })
+      .catch(err => {
+        throw this.handleError(err, opts);
+      });
   }
 
   /**
@@ -87,23 +90,26 @@ export class BrowserHTTP extends AbstractHTTP {
     urlObj.search(opts.params);
     console.debug('PUT ' + urlObj.toString());
 
-    opts.data = Object.apply({ }, opts.params);
+    opts.data = Object.apply({}, opts.params);
     opts.method = 'put';
     opts.url = realUrl;
 
-    return this.getImpl(options).request(opts).then((response) => {
-      let type;
-      if (response.headers && response.headers['content-type']) {
-        type = response.headers['content-type'];
-      }
-      const data = this.getData(response);
-      if (data && data.status === 'error') {
-        throw response;
-      }
-      return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
-    }).catch((err) => {
-      throw this.handleError(err, opts);
-    });
+    return this.getImpl(options)
+      .request(opts)
+      .then(response => {
+        let type;
+        if (response.headers && response.headers['content-type']) {
+          type = response.headers['content-type'];
+        }
+        const data = this.getData(response);
+        if (data && data.status === 'error') {
+          throw response;
+        }
+        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+      })
+      .catch(err => {
+        throw this.handleError(err, opts);
+      });
   }
 
   /**
@@ -120,19 +126,22 @@ export class BrowserHTTP extends AbstractHTTP {
     opts.method = 'post';
     opts.url = realUrl;
 
-    return this.getImpl(options).request(opts).then((response) => {
-      let type;
-      if (response.headers && response.headers['content-type']) {
-        type = response.headers['content-type'];
-      }
-      const data = this.getData(response);
-      if (data && data.status === 'error') {
-        throw response;
-      }
-      return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
-    }).catch((err) => {
-      throw this.handleError(err, opts);
-    });
+    return this.getImpl(options)
+      .request(opts)
+      .then(response => {
+        let type;
+        if (response.headers && response.headers['content-type']) {
+          type = response.headers['content-type'];
+        }
+        const data = this.getData(response);
+        if (data && data.status === 'error') {
+          throw response;
+        }
+        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+      })
+      .catch(err => {
+        throw this.handleError(err, opts);
+      });
   }
 
   /**
@@ -149,19 +158,22 @@ export class BrowserHTTP extends AbstractHTTP {
     opts.method = 'delete';
     opts.url = realUrl;
 
-    return this.getImpl(options).request(opts).then((response) => {
-      let type;
-      if (response.headers && response.headers['content-type']) {
-        type = response.headers['content-type'];
-      }
-      const data = this.getData(response);
-      if (data && data.status === 'error') {
-        throw response;
-      }
-      return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
-    }).catch((err) => {
-      throw this.handleError(err, opts);
-    });
+    return this.getImpl(options)
+      .request(opts)
+      .then(response => {
+        let type;
+        if (response.headers && response.headers['content-type']) {
+          type = response.headers['content-type'];
+        }
+        const data = this.getData(response);
+        if (data && data.status === 'error') {
+          throw response;
+        }
+        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+      })
+      .catch(err => {
+        throw this.handleError(err, opts);
+      });
   }
 
   /** POST a file. */
@@ -173,19 +185,21 @@ export class BrowserHTTP extends AbstractHTTP {
     const fetchObj = this.getFetchObject(fileName, contentType, data, opts);
     const u = URI(this.server.url).resource(this.server.resolveURL(url, opts.parameters));
 
-    const fetchOpts = Object.assign({
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      method: 'POST',
-      mode: 'cors',
-      redirect: 'follow',
-    }, fetchObj);
+    const fetchOpts = Object.assign(
+      {
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        method: 'POST',
+        mode: 'cors',
+        redirect: 'follow',
+      },
+      fetchObj,
+    );
 
-    return fetch(u.toString(), fetchOpts)
-      .then(async (response) => {
-        const json = await response.json();
-        return TwitarrResult.ok(json, undefined, response.status, response.headers['content-type']);
-      });
+    return fetch(u.toString(), fetchOpts).then(async response => {
+      const json = await response.json();
+      return TwitarrResult.ok(json, undefined, response.status, response.headers['content-type']);
+    });
   }
 
   protected getFetchObject(fileName: string, contentType: string, data: Buffer, options: TwitarrHTTPOptions): any {
@@ -233,7 +247,7 @@ export class BrowserHTTP extends AbstractHTTP {
     if (allOptions.headers) {
       ret.headers = clonedeep(allOptions.headers);
     } else {
-      ret.headers = { };
+      ret.headers = {};
     }
 
     if (!ret.headers.accept) {
@@ -293,5 +307,4 @@ export class BrowserHTTP extends AbstractHTTP {
     }
     return this.axiosObj;
   }
-
 }

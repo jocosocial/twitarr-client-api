@@ -18,7 +18,7 @@ export class SearchDAO extends AbstractDAO {
       return [];
     }
 
-    return this.http.get('/api/v2/hashtag/ac/' + q).then((result) => {
+    return this.http.get('/api/v2/hashtag/ac/' + q).then(result => {
       return result.data.values as string[];
     });
   }
@@ -70,17 +70,16 @@ export class SearchDAO extends AbstractDAO {
   }
 
   protected async doSearch(url: string, limit?: number, page?: number) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
 
     if (limit && limit > 0) {
-      options.parameters.limit = ''+limit;
+      options.parameters.limit = '' + limit;
     }
     if (page !== undefined) {
-      options.parameters.page = ''+page;
+      options.parameters.page = '' + page;
     }
 
-    return this.http.get(url, options).then((result) => {
+    return this.http.get(url, options).then(result => {
       return SearchResponse.fromRest(result.data);
     });
   }

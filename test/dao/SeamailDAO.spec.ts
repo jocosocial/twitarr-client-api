@@ -23,7 +23,7 @@ const assertThreadsMatch = (expected, actual) => {
   Object.keys(expected).forEach((threadId, index) => {
     const actualThread = actual.threads[index];
     expect(threadId).toEqual(actualThread.id);
-    const messages = actualThread.messages.map((message) => message.id);
+    const messages = actualThread.messages.map(message => message.id);
     expect(expected[threadId]).toEqual(expect.arrayContaining(messages));
     expect(messages).toEqual(expect.arrayContaining(expected[threadId]));
   });
@@ -37,21 +37,21 @@ describe('dao/SeamailDAO', () => {
     dao = new SeamailDAO(mockHTTP);
   });
   describe('#getMetadata', () => {
-    it('no arguments', async (done) => {
+    it('no arguments', async done => {
       const ret = await dao.getMetadata();
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
       expect(ret.threads[0].is_unread).toBeFalsy();
       done();
     });
-    it('unread=true', async (done) => {
+    it('unread=true', async done => {
       const ret = await dao.getMetadata(true);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
       expect(ret.threads[0].is_unread).toBeTruthy();
       done();
     });
-    it('after=<date>', async (done) => {
+    it('after=<date>', async done => {
       const ret = await dao.getMetadata(undefined, Util.toMoment(1549827395180));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -60,7 +60,7 @@ describe('dao/SeamailDAO', () => {
     });
   });
   describe('#getThreads', () => {
-    it('no arguments', async (done) => {
+    it('no arguments', async done => {
       const ret = await dao.getThreads();
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -69,14 +69,17 @@ describe('dao/SeamailDAO', () => {
       expect(ret.threads[0].messages.length).toEqual(1);
       expect(ret.threads[0].is_unread).toBeFalsy();
       expect(ret.threads[0].count_is_unread).toBeFalsy();
-      assertThreadsMatch({
-        '5c607d43ea204f5815755cda': ['5c607d43ea204f5815755cdb'],
-        '5c5cfd9f1fca877544f927da': ['5c5cfd9f1fca877544f927dc', '5c5cfd9f1fca877544f927db'],
-        '5c5cfd9f1fca877544f927d6': ['5c5cfd9f1fca877544f927d9', '5c5cfd9f1fca877544f927d8', '5c5cfd9f1fca877544f927d7'],
-      }, ret);
+      assertThreadsMatch(
+        {
+          '5c607d43ea204f5815755cda': ['5c607d43ea204f5815755cdb'],
+          '5c5cfd9f1fca877544f927da': ['5c5cfd9f1fca877544f927dc', '5c5cfd9f1fca877544f927db'],
+          '5c5cfd9f1fca877544f927d6': ['5c5cfd9f1fca877544f927d9', '5c5cfd9f1fca877544f927d8', '5c5cfd9f1fca877544f927d7'],
+        },
+        ret,
+      );
       done();
     });
-    it('exclude_read_messages=true', async (done) => {
+    it('exclude_read_messages=true', async done => {
       const ret = await dao.getThreads(false, true);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -85,14 +88,17 @@ describe('dao/SeamailDAO', () => {
       expect(ret.threads[0].messages.length).toEqual(0);
       expect(ret.threads[0].is_unread).toBeFalsy();
       expect(ret.threads[0].count_is_unread).toBeFalsy();
-      assertThreadsMatch({
-        '5c607d43ea204f5815755cda': [],
-        '5c5cfd9f1fca877544f927da': ['5c5cfd9f1fca877544f927dc', '5c5cfd9f1fca877544f927db'],
-        '5c5cfd9f1fca877544f927d6': ['5c5cfd9f1fca877544f927d9', '5c5cfd9f1fca877544f927d7'],
-      }, ret);
+      assertThreadsMatch(
+        {
+          '5c607d43ea204f5815755cda': [],
+          '5c5cfd9f1fca877544f927da': ['5c5cfd9f1fca877544f927dc', '5c5cfd9f1fca877544f927db'],
+          '5c5cfd9f1fca877544f927d6': ['5c5cfd9f1fca877544f927d9', '5c5cfd9f1fca877544f927d7'],
+        },
+        ret,
+      );
       done();
     });
-    it('unread=true', async (done) => {
+    it('unread=true', async done => {
       const ret = await dao.getThreads(true);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -101,13 +107,16 @@ describe('dao/SeamailDAO', () => {
       expect(ret.threads[0].messages.length).toEqual(2);
       expect(ret.threads[0].is_unread).toBeTruthy();
       expect(ret.threads[0].count_is_unread).toBeTruthy();
-      assertThreadsMatch({
-        '5c5cfd9f1fca877544f927da': ['5c5cfd9f1fca877544f927dc', '5c5cfd9f1fca877544f927db'],
-        '5c5cfd9f1fca877544f927d6': ['5c5cfd9f1fca877544f927d9', '5c5cfd9f1fca877544f927d7'],
-      }, ret);
+      assertThreadsMatch(
+        {
+          '5c5cfd9f1fca877544f927da': ['5c5cfd9f1fca877544f927dc', '5c5cfd9f1fca877544f927db'],
+          '5c5cfd9f1fca877544f927d6': ['5c5cfd9f1fca877544f927d9', '5c5cfd9f1fca877544f927d7'],
+        },
+        ret,
+      );
       done();
     });
-    it('after=<date>', async (done) => {
+    it('after=<date>', async done => {
       const ret = await dao.getThreads(undefined, undefined, Util.toMoment(1549827390000));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -116,24 +125,27 @@ describe('dao/SeamailDAO', () => {
       expect(ret.threads[0].messages.length).toEqual(1);
       expect(ret.threads[0].is_unread).toBeFalsy();
       expect(ret.threads[0].count_is_unread).toBeFalsy();
-      assertThreadsMatch({
-        '5c607d43ea204f5815755cda': ['5c607d43ea204f5815755cdb'],
-      }, ret);
+      assertThreadsMatch(
+        {
+          '5c607d43ea204f5815755cda': ['5c607d43ea204f5815755cdb'],
+        },
+        ret,
+      );
       done();
     });
   });
 
   describe('#get', () => {
-    it('no arguments', async (done) => {
-      dao.get(undefined).catch((err) => {
+    it('no arguments', async done => {
+      dao.get(undefined).catch(err => {
         expect(err).toBeDefined();
         expect(err.message).toBe('id is required!');
         done();
       });
     });
 
-    it('get(id)', async (done) => {
-      dao.get('5c607d43ea204f5815755cda').then((thread) => {
+    it('get(id)', async done => {
+      dao.get('5c607d43ea204f5815755cda').then(thread => {
         expect(thread).toBeDefined();
         expect(thread.threads).toBeDefined();
         expect(thread.threads.length).toEqual(1);
@@ -141,8 +153,8 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('get(id)', async (done) => {
-      dao.get('5c607d43ea204f5815755cda', true).then((thread) => {
+    it('get(id)', async done => {
+      dao.get('5c607d43ea204f5815755cda', true).then(thread => {
         expect(thread).toBeDefined();
         expect(thread.threads).toBeDefined();
         expect(thread.threads.length).toEqual(1);
@@ -150,24 +162,24 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('create()', async (done) => {
-      dao.create('Test Subject', 'Test Message', 'twitarrteam', 'rangerrick').then((response) => {
+    it('create()', async done => {
+      dao.create('Test Subject', 'Test Message', 'twitarrteam', 'rangerrick').then(response => {
         expect(response).toBeDefined();
         expect(response).toBeInstanceOf(SeamailResponse);
         done();
       });
     });
 
-    it('post()', async (done) => {
-      dao.post('5c607d43ea204f5815755cda', 'another message').then((response) => {
+    it('post()', async done => {
+      dao.post('5c607d43ea204f5815755cda', 'another message').then(response => {
         expect(response).toBeDefined();
         expect(response).toBeInstanceOf(SeamailMessage);
         done();
       });
     });
 
-    it('unreadCount()', async (done) => {
-      dao.unreadCount().then((response) => {
+    it('unreadCount()', async done => {
+      dao.unreadCount().then(response => {
         expect(response).toBeDefined();
         expect(response).toEqual(15);
         done();

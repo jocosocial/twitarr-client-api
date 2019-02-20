@@ -41,7 +41,7 @@ export class PhotoDetails {
   public upload_time: Moment;
 
   /** The sizes available. */
-  public sizes: { [key: string]: string } = { };
+  public sizes: { [key: string]: string } = {};
 
   public toJSON() {
     return this;

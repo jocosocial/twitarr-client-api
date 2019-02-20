@@ -30,7 +30,7 @@ export class StreamPost {
         ret.parent_chain = data.parent_chain;
       }
       if (!Util.isEmpty(data.children) && Array.isArray(data.children)) {
-        ret.children = data.children.map((child) => StreamPost.fromRest(child));
+        ret.children = data.children.map(child => StreamPost.fromRest(child));
       }
     }
 
@@ -67,12 +67,12 @@ export class StreamPost {
   public toJSON() {
     return {
       author: this.author.toJSON(),
-      children: this.children.map((child) => child.toJSON()),
+      children: this.children.map(child => child.toJSON()),
       id: this.id,
       locked: this.locked,
       parent_chain: this.parent_chain,
-      photo: this.photo? this.photo.toJSON() : undefined,
-      reactions: this.reactions? this.reactions.toJSON() : undefined,
+      photo: this.photo ? this.photo.toJSON() : undefined,
+      reactions: this.reactions ? this.reactions.toJSON() : undefined,
       text: this.text,
       timestamp: this.timestamp,
     };

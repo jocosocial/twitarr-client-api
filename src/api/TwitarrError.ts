@@ -72,7 +72,7 @@ export class TwitarrError extends Error {
     if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, this.constructor);
     } else {
-      this.stack = (new Error(message)).stack;
+      this.stack = new Error(message).stack;
     }
     // workaround, see http://bit.ly/2vllGdD
     Object.setPrototypeOf(this, TwitarrError.prototype);
@@ -87,7 +87,7 @@ export class TwitarrError extends Error {
       let stringified = JSON.stringify(this.errors);
       stringified = stringified.replace(/\\"/g, '\uFFFF');
       stringified = stringified.replace(/\"([^"]+)\"/g, '$1').replace(/\uFFFF/g, '\\"');
-      message = (message? message + ': ' : '') + stringified;
+      message = (message ? message + ': ' : '') + stringified;
     }
     if (this.code) {
       return 'Error ' + this.code + ': ' + message;

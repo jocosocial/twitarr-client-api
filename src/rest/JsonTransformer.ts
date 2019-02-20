@@ -11,7 +11,7 @@ export class JsonTransformer {
   public transform(data: any) {
     if (typeof data === 'string') {
       if (data.length < 1) {
-        return { };
+        return {};
       } else {
         try {
           return JSON.parse(data);

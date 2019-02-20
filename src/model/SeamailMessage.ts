@@ -21,7 +21,7 @@ export class SeamailMessage {
       }
 
       if (!Util.isEmpty(data.read_users)) {
-        ret.read_users = data.read_users.map((user) => User.fromRest(user));
+        ret.read_users = data.read_users.map(user => User.fromRest(user));
       }
     }
 
@@ -47,7 +47,7 @@ export class SeamailMessage {
     return {
       author: this.author.toJSON(),
       id: this.id,
-      read_users: this.read_users.map((user) => user.toJSON()),
+      read_users: this.read_users.map(user => user.toJSON()),
       text: this.text,
       timestamp: this.timestamp,
     };

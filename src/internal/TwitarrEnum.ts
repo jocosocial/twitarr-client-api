@@ -1,4 +1,3 @@
-
 /**
  * Represents an enumerated type.
  * @module TwitarrEnum
@@ -56,7 +55,7 @@ export function forId(collection: any, id: any) {
   for (const type in collection) {
     if (collection.hasOwnProperty(type)) {
       const collectionId = collection[type].id;
-      if (('' + collectionId) === ('' + id)) {
+      if ('' + collectionId === '' + id) {
         return collection[type];
       }
     }

@@ -24,10 +24,9 @@ export class UserDAO extends AbstractDAO {
   }
 
   public async getProfile() {
-    return this.http.get('/api/v2/user/whoami', new TwitarrHTTPOptions().withParameter('app', 'plain')).then((result) => {
-      return this.handleErrors(result).then((data) => {
-        return User.fromRest(data.user);
-      });
+    return this.http.get('/api/v2/user/whoami', new TwitarrHTTPOptions().withParameter('app', 'plain')).then(async result => {
+      const data = await this.handleErrors(result);
+      return User.fromRest(data.user);
     });
   }
 
@@ -49,9 +48,9 @@ export class UserDAO extends AbstractDAO {
       options.parameters.pronouns = pronouns;
     }
     if (room_number) {
-      options.parameters.room_number = ''+room_number;
+      options.parameters.room_number = '' + room_number;
     }
-    return this.http.post('/api/v2/user/profile', options).then((result) => {
+    return this.http.post('/api/v2/user/profile', options).then(result => {
       return User.fromRest(result.data.user);
     });
   }
@@ -71,7 +70,7 @@ export class UserDAO extends AbstractDAO {
 
   private async handleErrors(result: TwitarrResult<any>) {
     if (result.isSuccess()) {
-      const status = result.data && result.data.status? result.data.status : 'ok';
+      const status = result.data && result.data.status ? result.data.status : 'ok';
       if (status === 'ok') {
         // console.debug('result was ok:', result);
         return Promise.resolve(result.data);

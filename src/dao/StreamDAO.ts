@@ -36,23 +36,14 @@ export class StreamDAO extends AbstractDAO {
    * Retrieve a collection of twarrts.
    */
   public async posts(streamOptions?: IStreamOptions) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (streamOptions) {
-      Util.setProperties(options.parameters, streamOptions,
-        'author',
-        'hashtag',
-        'include_author',
-        'limit',
-        'mentions',
-        'newer_posts',
-        'starred',
-      );
+      Util.setProperties(options.parameters, streamOptions, 'author', 'hashtag', 'include_author', 'limit', 'mentions', 'newer_posts', 'starred');
       if (streamOptions.start) {
         options.parameters.start = '' + streamOptions.start.valueOf();
       }
     }
-    return this.http.get('/api/v2/stream', options).then((result) => {
+    return this.http.get('/api/v2/stream', options).then(result => {
       return StreamResponse.fromRest(result.data);
     });
   }
@@ -61,15 +52,14 @@ export class StreamDAO extends AbstractDAO {
    * Retrieve a particular twarrt (including its children).
    */
   public async thread(id: string, limit?: number, page?: number) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (!Util.isEmpty(limit)) {
       options.parameters.limit = '' + limit;
     }
     if (!Util.isEmpty(page)) {
       options.parameters.page = '' + page;
     }
-    return this.http.get('/api/v2/thread/' + id, options).then((result) => {
+    return this.http.get('/api/v2/thread/' + id, options).then(result => {
       return StreamResponse.fromRest(result.data);
     });
   }
@@ -78,8 +68,7 @@ export class StreamDAO extends AbstractDAO {
    * Retrieve a list of twarrts that mention a particular user.
    */
   public async mentions(username: string, limit?: number, page?: number, after?: Moment) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (!Util.isEmpty(limit)) {
       options.parameters.limit = '' + limit;
     }
@@ -89,7 +78,7 @@ export class StreamDAO extends AbstractDAO {
     if (!Util.isEmpty(after)) {
       options.parameters.after = '' + after.valueOf();
     }
-    return this.http.get('/api/v2/stream/m/' + username, options).then((result) => {
+    return this.http.get('/api/v2/stream/m/' + username, options).then(result => {
       return StreamResponse.fromRest(result.data);
     });
   }
@@ -98,8 +87,7 @@ export class StreamDAO extends AbstractDAO {
    * Retrieve a list of twarrts that contain a particular hashtag.
    */
   public async hashtag(hashtag: string, limit?: number, page?: number, after?: Moment) {
-    const options = new TwitarrHTTPOptions()
-      .withParameter('app', 'plain');
+    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (!Util.isEmpty(limit)) {
       options.parameters.limit = '' + limit;
     }
@@ -109,7 +97,7 @@ export class StreamDAO extends AbstractDAO {
     if (!Util.isEmpty(after)) {
       options.parameters.after = '' + after.valueOf();
     }
-    return this.http.get('/api/v2/stream/h/' + hashtag, options).then((result) => {
+    return this.http.get('/api/v2/stream/h/' + hashtag, options).then(result => {
       return StreamResponse.fromRest(result.data);
     });
   }
@@ -118,17 +106,16 @@ export class StreamDAO extends AbstractDAO {
    * Send a new twarrt.
    */
   public async send(message: string, parent?: string, photo?: string) {
-    const options = new TwitarrHTTPOptions()
-      .withData({
-        text: message,
-      });
+    const options = new TwitarrHTTPOptions().withData({
+      text: message,
+    });
     if (!Util.isEmpty(parent)) {
       options.data.parent = parent;
     }
     if (!Util.isEmpty(photo)) {
       options.data.photo = photo;
     }
-    return this.http.post('/api/v2/stream', options).then((result) => {
+    return this.http.post('/api/v2/stream', options).then(result => {
       return StreamResponse.fromRest(result.data);
     });
   }
@@ -137,14 +124,13 @@ export class StreamDAO extends AbstractDAO {
    * Edit an existing twarrt.
    */
   public async updatePost(id: string, message: string, photo?: string) {
-    const options = new TwitarrHTTPOptions()
-      .withData({
-        text: message,
-      });
+    const options = new TwitarrHTTPOptions().withData({
+      text: message,
+    });
     if (!Util.isEmpty(photo)) {
       options.data.photo = photo;
     }
-    return this.http.post('/api/v2/tweet/' + id, options).then((result) => {
+    return this.http.post('/api/v2/tweet/' + id, options).then(result => {
       return StreamResponse.fromRest(result.data);
     });
   }
@@ -162,7 +148,7 @@ export class StreamDAO extends AbstractDAO {
    * Lock a twarrt.
    */
   public async lockPost(id: string) {
-    return this.http.post('/api/v2/tweet/' + id + '/locked/true').then((result) => {
+    return this.http.post('/api/v2/tweet/' + id + '/locked/true').then(result => {
       return result.data.locked as boolean;
     });
   }
@@ -171,7 +157,7 @@ export class StreamDAO extends AbstractDAO {
    * Unlock a twarrt.
    */
   public async unlockPost(id: string) {
-    return this.http.post('/api/v2/tweet/' + id + '/locked/false').then((result) => {
+    return this.http.post('/api/v2/tweet/' + id + '/locked/false').then(result => {
       return result.data.locked as boolean;
     });
   }
@@ -180,7 +166,7 @@ export class StreamDAO extends AbstractDAO {
    * Retrieve the reactions to a twarrt.
    */
   public async reactions(id: string) {
-    return this.http.get('/api/v2/tweet/' + id + '/react').then((result) => {
+    return this.http.get('/api/v2/tweet/' + id + '/react').then(result => {
       return ReactionsSummary.fromRest(result.data.reactions);
     });
   }
@@ -189,7 +175,7 @@ export class StreamDAO extends AbstractDAO {
    * Add a reaction to a twarrt.
    */
   public async react(id: string, reaction: string) {
-    return this.http.post('/api/v2/tweet/' + id + '/react/' + reaction).then((result) => {
+    return this.http.post('/api/v2/tweet/' + id + '/react/' + reaction).then(result => {
       return ReactionsSummary.fromRest(result.data.reactions);
     });
   }
@@ -198,7 +184,7 @@ export class StreamDAO extends AbstractDAO {
    * Remove a reaction from a twarrt.
    */
   public async deleteReact(id: string, reaction: string) {
-    return this.http.httpDelete('/api/v2/tweet/' + id + '/react/' + reaction).then((result) => {
+    return this.http.httpDelete('/api/v2/tweet/' + id + '/react/' + reaction).then(result => {
       return ReactionsSummary.fromRest(result.data.reactions);
     });
   }

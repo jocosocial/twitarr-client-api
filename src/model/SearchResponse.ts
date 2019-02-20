@@ -23,15 +23,15 @@ export class SearchResponse {
       }
       if (data.users) {
         Util.setProperties(ret.users, data.users, 'count', 'more');
-        ret.users.matches = data.users.matches.map((user) => User.fromRest(user));
+        ret.users.matches = data.users.matches.map((user: any) => User.fromRest(user));
       }
       if (data.seamails) {
         Util.setProperties(ret.seamails, data.seamails, 'count', 'more');
-        ret.seamails.matches = data.seamails.matches.map((thread) => SeamailThread.fromRest(thread));
+        ret.seamails.matches = data.seamails.matches.map((thread: any) => SeamailThread.fromRest(thread));
       }
       if (data.tweets) {
         Util.setProperties(ret.streamPosts, data.streamPosts, 'count', 'more');
-        ret.streamPosts.matches = data.tweets.matches.map((tweet) => StreamPost.fromRest(tweet));
+        ret.streamPosts.matches = data.tweets.matches.map((tweet: any) => StreamPost.fromRest(tweet));
       }
       /*
       if (data.forums) {

@@ -16,25 +16,25 @@ const CLI = () => {
   const wrap = fakeRequire('word-wrap');
   const yargs = fakeRequire('yargs');
 
-  const homedir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+  const homedir = process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
   const defaultConfigFile = path.join(homedir, '.twitarr.config.json');
 
   const tableFormat = {
     head: [],
     colWidths: [],
     chars: {
-      'middle': '  ',
-      'top': '',
+      middle: '  ',
+      top: '',
       'top-mid': '',
       'top-left': '',
       'top-right': '',
-      'left': '',
+      left: '',
       'left-mid': '',
-      'mid': '',
+      mid: '',
       'mid-mid': '',
-      'right': '',
+      right: '',
       'right-mid': '',
-      'bottom': '',
+      bottom: '',
       'bottom-mid': '',
       'bottom-left': '',
       'bottom-right': '',
@@ -46,7 +46,8 @@ const CLI = () => {
     wordWrap: true,
   };
 
-  const argv = yargs.usage('$0 <cmd> [args]')
+  const argv = yargs
+    .usage('$0 <cmd> [args]')
     .version(version)
     .alias('c', 'config')
     .describe('c', 'specify a configuration file (default: ~/.twitarr-config.json)')
@@ -54,7 +55,7 @@ const CLI = () => {
     .describe('debug', 'enable debug output')
     .count('debug')
     .command('connect <url> <user> <pass>', 'connect to a Twit-arr server')
-    .command('profile', 'read or edit your profile', (sub) => {
+    .command('profile', 'read or edit your profile', sub => {
       return sub
         .alias('d', 'display-name')
         .describe('d', 'set your display name')
@@ -72,20 +73,18 @@ const CLI = () => {
         .describe('r', 'set your room number')
         .string('r');
     })
-    .command('seamail', 'list, read, or create seamail threads', (sub) => {
+    .command('seamail', 'list, read, or create seamail threads', sub => {
       return sub
-        .command('list', 'list seamail threads', (y) => {
-          return y
-            .alias('n', 'new')
-            .describe('n', 'list new threads and threads with new messages');
+        .command('list', 'list seamail threads', y => {
+          return y.alias('n', 'new').describe('n', 'list new threads and threads with new messages');
         })
         .command('read <id>', 'read a seamail thread')
         .command('create <subject> <message> <users...>', 'create a new seamail thread')
         .command('post <id> <message>', 'post a message to a thread');
     })
-    .command('stream', 'read or post to the twarrt stream', (sub) => {
+    .command('stream', 'read or post to the twarrt stream', sub => {
       return sub
-        .command('read', 'read the twarrt stream', (y) => {
+        .command('read', 'read the twarrt stream', y => {
           return y
             .alias('a', 'author')
             .describe('a', 'filter twarrts to those posted by the specified author')
@@ -109,39 +108,33 @@ const CLI = () => {
             .describe('o', 'return up to <limit> twarrts up to the specified date')
             .string('o')
             .alias('s', 'starred')
-            .describe('s', 'filter twarrts to those posted by users you have starred')
-          ;
+            .describe('s', 'filter twarrts to those posted by users you have starred');
         })
-        .command('post <message>', 'post a twarrt', (y) => {
+        .command('post <message>', 'post a twarrt', y => {
           return y
             .alias('r', 'reply-to')
             .describe('r', 'the id of the twarrt you are replying to')
             .string('r')
             .alias('p', 'photo')
             .describe('p', 'the path to a photo to upload along with the twarrt')
-            .string('p')
-          ;
+            .string('p');
         })
-        .command('update <id> <message>', 'edit/update an existing twarrt', (y) => {
+        .command('update <id> <message>', 'edit/update an existing twarrt', y => {
           return y
             .alias('p', 'photo')
             .describe('p', 'the path to a photo to add/replace in the twarrt')
-            .string('p')
-          ;
+            .string('p');
         })
         .command('delete <id>', 'delete an existing twarrt')
         .command('lock <id>', 'lock a twarrt and its children (requires moderator privileges)')
         .command('unlock <id>', 'unlock a twarrt and its children (requires moderator privileges)')
-        .command('react <id> <reaction>', 'react to a twarrt', (y) => {
+        .command('react <id> <reaction>', 'react to a twarrt', y => {
           return y
             .alias('r', 'remove')
             .describe('r', 'remove the reaction, rather than adding it')
-            .boolean('r')
-          ;
-        })
-      ;
-    })
-    .argv;
+            .boolean('r');
+        });
+    }).argv;
 
   const readConfig = () => {
     const configfile = argv.config || defaultConfigFile;
@@ -166,12 +159,11 @@ const CLI = () => {
   };
 
   if (argv.debug === 0) {
-    console.debug = () => { };
+    console.debug = () => {};
   }
 
   const doConnect = async (url, username, password) => {
-    console.log(colors.red('WARNING: This command saves your login'
-    + ' information to ~/.twitarr.config.json in clear text.'));
+    console.log(colors.red('WARNING: This command saves your login' + ' information to ~/.twitarr.config.json in clear text.'));
     const config = readConfig();
     if (url) {
       // the user is passing a URL, reset the config
@@ -206,7 +198,7 @@ const CLI = () => {
       const profile = await client.user().getProfile();
       const t = new Table(tableFormat);
       for (const key of Object.keys(profile)) {
-        const name = key? key.replace(/_/g, ' ') : key;
+        const name = key ? key.replace(/_/g, ' ') : key;
         t.push([name + ':', profile[key]]);
       }
       console.log(t.toString());
@@ -220,8 +212,8 @@ const CLI = () => {
     const client = getClient();
     const seamail = await client.seamail().getMetadata(n);
 
-    const format = Object.assign({ }, tableFormat);
-    format.head = [ 'ID', 'Subject', 'Last Updated'];
+    const format = Object.assign({}, tableFormat);
+    format.head = ['ID', 'Subject', 'Last Updated'];
     if (!n) {
       format.head.unshift('New');
     }
@@ -230,7 +222,7 @@ const CLI = () => {
     for (const thread of seamail.threads) {
       const row = [thread.id, thread.subject, thread.timestamp.fromNow()];
       if (!n) {
-        row.unshift(thread.is_unread? '*' : '');
+        row.unshift(thread.is_unread ? '*' : '');
       }
       t.push(row);
     }
@@ -248,11 +240,11 @@ const CLI = () => {
     const thread = seamail.threads[0];
     t.push(['Subject:', thread.subject]);
     t.push(['Last Updated:', thread.timestamp.fromNow()]);
-    t.push(['Participants:', thread.users.map((user) => user.toString()).join('\n')]);
+    t.push(['Participants:', thread.users.map(user => user.toString()).join('\n')]);
     console.log(t.toString());
     console.log('');
     t = new Table(tableFormat);
-    thread.messages.reverse().forEach((message) => {
+    thread.messages.reverse().forEach(message => {
       t.push([message.author.getDisplayName(), message.text, message.timestamp.fromNow()]);
     });
     console.log(t.toString());
@@ -350,7 +342,7 @@ const CLI = () => {
     console.log('');
   };
 
-  const processArgs = async (args) => {
+  const processArgs = async args => {
     try {
       switch (args._[0]) {
         case 'connect': {
@@ -380,7 +372,8 @@ const CLI = () => {
               await doSeamailPost(args.id, args.message);
               break;
             }
-            default: throw new TwitarrError('Unhandled seamail command: ' + command);
+            default:
+              throw new TwitarrError('Unhandled seamail command: ' + command);
           }
           break;
         }
@@ -441,7 +434,7 @@ const CLI = () => {
       }
       process.exit(0);
     } catch (err) {
-      console.log(colors.red('Failed: ' + (err.toString? err.toString() : err.message)));
+      console.log(colors.red('Failed: ' + (err.toString ? err.toString() : err.message)));
       process.exit(1);
     }
   };

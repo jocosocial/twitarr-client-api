@@ -44,8 +44,10 @@ export class TwitarrResult<T> {
     this.type = type;
 
     this.data = data;
-    if (!this.isSuccess() || (this.data && (this.data as any).status) && (this.data as any).status === 'error') {
-      const errors = this.data && (this.data as any).errors? (this.data as any).errors : undefined;
+    const errors = this.data && (this.data as any).errors ? (this.data as any).errors : undefined;
+    const status = this.data && (this.data as any).status ? (this.data as any).status : undefined;
+
+    if (!this.isSuccess() || errors || status === 'error') {
       this.error = new TwitarrError(message, code, errors, undefined, this.data);
     }
   }

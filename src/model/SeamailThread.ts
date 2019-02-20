@@ -17,10 +17,10 @@ export class SeamailThread {
       Util.setProperties(ret, data, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
       Util.setDateProperties(ret, data, 'timestamp');
       if (!Util.isEmpty(data.users)) {
-        ret.users = data.users.map((user) => User.fromRest(user));
+        ret.users = data.users.map((user: any) => User.fromRest(user));
       }
       if (!Util.isEmpty(data.messages)) {
-        ret.messages = data.messages.map((message) => SeamailMessage.fromRest(message));
+        ret.messages = data.messages.map((message: any) => SeamailMessage.fromRest(message));
       }
     }
 
@@ -52,10 +52,10 @@ export class SeamailThread {
   public is_unread: false;
 
   public toJSON() {
-    const ret = { } as any;
+    const ret = {} as any;
     Util.setProperties(ret, this, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
-    ret.users = this.users.map((user) => user.toJSON());
-    ret.messages = this.messages.map((message) => message.toJSON());
+    ret.users = this.users.map(user => user.toJSON());
+    ret.messages = this.messages.map(message => message.toJSON());
     ret.timestamp = this.timestamp.valueOf();
     return ret;
   }

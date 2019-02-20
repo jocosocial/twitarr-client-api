@@ -31,5 +31,4 @@ export abstract class AbstractDAO {
   public set http(impl: ITwitarrHTTP) {
     this.httpImpl = impl;
   }
-
 }

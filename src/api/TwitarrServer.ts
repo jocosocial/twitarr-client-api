@@ -80,7 +80,7 @@ export class TwitarrServer {
    * Create a new server object from this existing one.
    */
   public clone() {
-    const auth = (this.auth ? this.auth.clone() : undefined);
+    const auth = this.auth ? this.auth.clone() : undefined;
     const ret = new TwitarrServer(this.name, this.url, auth);
     return ret;
   }

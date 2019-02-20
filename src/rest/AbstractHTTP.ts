@@ -64,7 +64,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   }
 
   public getUsername() {
-    return this.server && this.server.auth? this.server.auth.username : null;
+    return this.server && this.server.auth ? this.server.auth.username : null;
   }
 
   public setUsername(username: string) {
@@ -77,7 +77,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   }
 
   public getPassword() {
-    return this.server && this.server.auth? this.server.auth.password : null;
+    return this.server && this.server.auth ? this.server.auth.password : null;
   }
 
   public setPassword(password: string) {
@@ -90,7 +90,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   }
 
   public getKey() {
-    return this.server && this.server.auth? this.server.auth.key : null;
+    return this.server && this.server.auth ? this.server.auth.key : null;
   }
 
   public setKey(key: string): ITwitarrHTTP {
@@ -266,5 +266,4 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     }
     return undefined;
   }
-
 }

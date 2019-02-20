@@ -14,13 +14,12 @@ export class SeamailResponse {
         ret.is_meta = false;
       }
       if (!Util.isEmpty(data.seamail_meta)) {
-        ret.threads = data.seamail_meta.map((thread) => SeamailThread.fromRest(thread));
+        ret.threads = data.seamail_meta.map(thread => SeamailThread.fromRest(thread));
         ret.is_meta = true;
       } else if (!Util.isEmpty(data.seamail_threads)) {
-        ret.threads = data.seamail_threads.map((thread) => SeamailThread.fromRest(thread));
+        ret.threads = data.seamail_threads.map(thread => SeamailThread.fromRest(thread));
         ret.is_meta = false;
       }
-
     }
 
     return ret;

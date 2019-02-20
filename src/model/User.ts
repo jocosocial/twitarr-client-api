@@ -9,7 +9,21 @@ import { Moment } from 'moment';
 export class User {
   public static fromRest(data: any) {
     const ret = new User();
-    Util.setProperties(ret, data, 'username', 'email', 'display_name', 'empty_password', 'room_number', 'real_name', 'pronouns', 'home_location', 'unnoticed_alerts', 'number_of_tweets', 'number_of_mentions');
+    Util.setProperties(
+      ret,
+      data,
+      'username',
+      'email',
+      'display_name',
+      'empty_password',
+      'room_number',
+      'real_name',
+      'pronouns',
+      'home_location',
+      'unnoticed_alerts',
+      'number_of_tweets',
+      'number_of_mentions',
+    );
     Util.setDateProperties(ret, data, 'last_login', 'last_photo_updated');
     return ret;
   }
@@ -57,8 +71,22 @@ export class User {
   public number_of_mentions: number;
 
   public toJSON() {
-    const ret = { } as any;
-    Util.setProperties(ret, this, 'username', 'email', 'display_name', 'empty_password', 'room_number', 'real_name', 'pronouns', 'home_location', 'unnoticed_alerts', 'number_of_tweets', 'number_of_mentions');
+    const ret = {} as any;
+    Util.setProperties(
+      ret,
+      this,
+      'username',
+      'email',
+      'display_name',
+      'empty_password',
+      'room_number',
+      'real_name',
+      'pronouns',
+      'home_location',
+      'unnoticed_alerts',
+      'number_of_tweets',
+      'number_of_mentions',
+    );
     if (!Util.isEmpty(this.last_login)) {
       ret.last_login = this.last_login.valueOf();
     }
@@ -69,10 +97,10 @@ export class User {
   }
 
   public getDisplayName() {
-    return Util.isEmpty(this.display_name)? '@' + this.username : this.display_name;
+    return Util.isEmpty(this.display_name) ? '@' + this.username : this.display_name;
   }
 
   public toString() {
-    return '@' + this.username + (Util.isEmpty(this.display_name)? '' : ' (' + this.display_name + ')');
+    return '@' + this.username + (Util.isEmpty(this.display_name) ? '' : ' (' + this.display_name + ')');
   }
 }

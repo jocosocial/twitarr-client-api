@@ -16,7 +16,6 @@ const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
  * @module Util
  */
 export class Util {
-
   /**
    * Whether a string is empty.
    * @param value
@@ -57,11 +56,10 @@ export class Util {
       return undefined;
     } else if (moment.isMoment(date)) {
       return (date as Moment).utc();
-    } else if (typeof(date) === 'number' || date instanceof Date
-      || typeof(date) === 'string' || date instanceof String) {
+    } else if (typeof date === 'number' || date instanceof Date || typeof date === 'string' || date instanceof String) {
       return moment(date).utc();
     } else {
-      throw new TwitarrError('Unable to parse type "' + typeof(date) + '" as a date.');
+      throw new TwitarrError('Unable to parse type "' + typeof date + '" as a date.');
     }
   }
 

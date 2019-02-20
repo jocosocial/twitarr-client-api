@@ -23,16 +23,16 @@ describe('dao/UserDAO', () => {
     mockHTTP.server = server;
   });
 
-  it('#login', (done) => {
-    dao.login().then((res) => {
+  it('#login', done => {
+    dao.login().then(res => {
       expect(res).toBeTruthy();
       done();
     });
   });
 
-  it('#login (invalid)', (done) => {
+  it('#login (invalid)', done => {
     auth.password = 'invalid';
-    dao.login().catch((err) => {
+    dao.login().catch(err => {
       expect(err).toBeDefined();
       expect(err).toBeInstanceOf(TwitarrError);
       expect(err.message).toEqual('invalid username or password');

@@ -67,9 +67,11 @@ export class Client implements IHasHTTP {
 
   public async isLoggedIn(): Promise<boolean> {
     try {
-      return this.user().getProfile().then(() => {
-        return true;
-      });
+      return this.user()
+        .getProfile()
+        .then(() => {
+          return true;
+        });
     } catch (err) {
       return false;
     }

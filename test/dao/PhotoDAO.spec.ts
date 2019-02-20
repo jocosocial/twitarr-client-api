@@ -23,7 +23,7 @@ describe('dao/PhotoDAO', () => {
     dao = new PhotoDAO(mockHTTP);
   });
   describe('#get', () => {
-    it('get(id)', async (done) => {
+    it('get(id)', async done => {
       const ret = await dao.get('12345');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(PhotoDetails);
@@ -32,7 +32,7 @@ describe('dao/PhotoDAO', () => {
     });
   });
   describe('#put', () => {
-    it('put(id, filename)', async (done) => {
+    it('put(id, filename)', async done => {
       const ret = await dao.put('12345', 'bar.png');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(PhotoDetails);
@@ -41,7 +41,7 @@ describe('dao/PhotoDAO', () => {
     });
   });
   describe('#post', () => {
-    it('post()', async (done) => {
+    it('post()', async done => {
       const ret = await dao.post('foo.png', new Buffer([]));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(PhotoDetails);
@@ -50,7 +50,7 @@ describe('dao/PhotoDAO', () => {
     });
   });
   describe('#remove', () => {
-    it('remove(id)', async (done) => {
+    it('remove(id)', async done => {
       const ret = await dao.remove('12345');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(TwitarrResult);

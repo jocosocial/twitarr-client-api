@@ -12,7 +12,7 @@ export class StreamResponse {
       Util.setProperties(ret, data, 'has_next_page');
       Util.setDateProperties(ret, data, 'next_page');
       if (!Util.isEmpty(data.stream_posts)) {
-        ret.posts = data.stream_posts.map((post) => StreamPost.fromRest(post));
+        ret.posts = data.stream_posts.map(post => StreamPost.fromRest(post));
         ret.is_thread = false;
       }
       if (!Util.isEmpty(data.stream_post)) {
@@ -48,7 +48,7 @@ export class StreamResponse {
   public is_thread: boolean = false;
 
   public toJSON() {
-    const ret = { } as any;
+    const ret = {} as any;
     ret.has_next_page = this.has_next_page;
     ret.next_page = this.next_page;
     if (ret.is_thread) {

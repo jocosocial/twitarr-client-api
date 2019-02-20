@@ -25,7 +25,7 @@ const otherUser = {
 const firstMessage = {
   author: testUser,
   id: '1',
-  read_users: [ otherUser ],
+  read_users: [otherUser],
   text: 'message 1',
   timestamp: ARBITRARY_EPOCH,
 };
@@ -40,15 +40,15 @@ const secondMessage = {
 
 describe('SeamailThread', () => {
   it('empty constructor', () => {
-    expect(new SeamailThread()).toMatchObject({ });
+    expect(new SeamailThread()).toMatchObject({});
   });
 
   describe('#fromRest', () => {
     it('undefined', () => {
-      expect(SeamailThread.fromRest(undefined)).toMatchObject({ });
+      expect(SeamailThread.fromRest(undefined)).toMatchObject({});
     });
     it('{}', () => {
-      expect(SeamailThread.fromRest({ })).toMatchObject({ });
+      expect(SeamailThread.fromRest({})).toMatchObject({});
     });
     it('no messages', () => {
       const thread = SeamailThread.fromRest({
@@ -56,7 +56,7 @@ describe('SeamailThread', () => {
         message_count: 0,
         subject: 'messages',
         timestamp: ARBITRARY_EPOCH,
-        users: [ testUser, otherUser ],
+        users: [testUser, otherUser],
       });
       expect(thread.id).toEqual('1234');
       expect(thread.message_count).toEqual(0);
@@ -74,10 +74,7 @@ describe('SeamailThread', () => {
       const thread = SeamailThread.fromRest({
         id: '1234',
         message_count: 0,
-        messages: [
-          firstMessage,
-          secondMessage,
-        ],
+        messages: [firstMessage, secondMessage],
         subject: 'messages',
         timestamp: ARBITRARY_EPOCH,
         users: [],

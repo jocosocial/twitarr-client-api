@@ -40,10 +40,10 @@ export class TwitarrHTTPOptions {
   public server: TwitarrServer;
 
   /** HTTP headers to be passed to the request. */
-  public headers: IHash<string> = { };
+  public headers: IHash<string> = {};
 
   /** HTTP parameters to be passed on the URL. */
-  public parameters: IHash<string> = { };
+  public parameters: IHash<string> = {};
 
   /** HTTP data to be passed when POSTing */
   public data: any;
@@ -95,13 +95,13 @@ export class TwitarrHTTPOptions {
    * @param data - the data to POST
    */
   public withData(data: any): TwitarrHTTPOptions {
-    this.data = { };
+    this.data = {};
     Object.assign(this.data, data);
     return this;
   }
 
   public toJSON(): object {
-    const ret = Object.assign({ }, this);
+    const ret = Object.assign({}, this);
     if (this[TIMEOUT_PROP]) {
       ret.timeout = this.timeout;
       delete ret[TIMEOUT_PROP];
