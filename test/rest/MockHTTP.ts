@@ -234,6 +234,51 @@ export class MockHTTP extends AbstractHTTP {
           status: 'ok',
         });
       }
+      case '/api/v2/user/change_password': {
+        if (options.data.current_password === 'oldPassword') {
+          return jsonOK({
+            status: 'ok',
+          });
+        } else if (options.data.current_password === 'badPassword') {
+          const result = this.handleError(
+            {
+              response: {
+                code: 400,
+                data: {
+                  status: 'error',
+                  message: 'Current password is incorrect.',
+                },
+              },
+            },
+            options,
+          );
+          return Promise.reject(result);
+        }
+      }
+      case '/api/v2/user/reset_password': {
+        if (options.data.username === 'rangerrick' && options.data.registration_code === '123456') {
+          return jsonOK({
+            status: 'ok',
+            message: 'Your password has been changed.',
+          });
+        } else if (options.data.username === 'rangerrick' && options.data.registration_code !== '123456') {
+          const result = this.handleError(
+            {
+              response: {
+                code: 400,
+                data: {
+                  status: 'error',
+                  errors: {
+                    username: ['Username and registration code combination not found.'],
+                  },
+                },
+              },
+            },
+            options,
+          );
+          return Promise.reject(result);
+        }
+      }
     }
 
     return Promise.reject(getError('POST', urlObj, options));

@@ -2,6 +2,8 @@ import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrError } from '../api/TwitarrError';
 
+import { Util } from '../internal/Util';
+
 import { User } from '../model/User';
 
 import { AbstractDAO } from './AbstractDAO';
@@ -66,6 +68,29 @@ export class UserDAO extends AbstractDAO {
     }
 
     return this.http.post('/api/v2/user/new', options);
+  }
+
+  public async changePassword(currentPassword: string, newPassword: string) {
+    if (Util.isEmpty(newPassword)) {
+      throw new TwitarrError('password must not be blank!');
+    }
+    const options = new TwitarrHTTPOptions().withData({
+      current_password: currentPassword,
+      new_password: newPassword,
+    });
+    return this.http.post('/api/v2/user/change_password', options);
+  }
+
+  public async resetPassword(username: string, registrationCode: string, newPassword: string) {
+    if (Util.isEmpty(newPassword)) {
+      throw new TwitarrError('password must not be blank!');
+    }
+    const options = new TwitarrHTTPOptions().withData({
+      username: username,
+      registration_code: registrationCode,
+      new_password: newPassword,
+    });
+    return this.http.post('/api/v2/user/reset_password', options);
   }
 
   private async handleErrors(result: TwitarrResult<any>) {

@@ -2,6 +2,7 @@ declare const describe, beforeEach, it, expect;
 
 import { UserDAO } from '../../src/dao/UserDAO';
 import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
+import { TwitarrResult } from '../../src/api/TwitarrResult';
 import { TwitarrServer } from '../../src/api/TwitarrServer';
 
 import { MockHTTP } from '../rest/MockHTTP';
@@ -37,6 +38,47 @@ describe('dao/UserDAO', () => {
       expect(err).toBeInstanceOf(TwitarrError);
       expect(err.message).toEqual('invalid username or password');
       expect(err.code).toEqual(401);
+      done();
+    });
+  });
+
+  it('#changePassword', done => {
+    dao.changePassword('oldPassword', 'newPassword').then(res => {
+      expect(res).toBeDefined();
+      expect(res).toBeInstanceOf(TwitarrResult);
+      expect(res.isSuccess()).toBeTruthy();
+      done();
+    });
+  });
+
+  it('#changePassword', done => {
+    dao.changePassword('badPassword', 'newPassword').catch(err => {
+      expect(err).toBeDefined();
+      expect(err).toBeInstanceOf(TwitarrError);
+      expect(err.message).toEqual('Current password is incorrect.');
+      expect(err.code).toEqual(400);
+      done();
+    });
+  });
+
+  it('#resetPassword', done => {
+    dao.resetPassword('rangerrick', '123456', 'newPassword').then(res => {
+      expect(res).toBeDefined();
+      expect(res).toBeInstanceOf(TwitarrResult);
+      expect(res.message).toEqual('Your password has been changed.');
+      expect(res.isSuccess()).toBeTruthy();
+      done();
+    });
+  });
+
+  it('#resetPassword', done => {
+    dao.resetPassword('rangerrick', '123465', 'newPassword').catch(err => {
+      expect(err).toBeDefined();
+      expect(err).toBeInstanceOf(TwitarrError);
+      expect(err.errors).toBeDefined();
+      expect(err.errors['username']).toBeDefined();
+      expect(err.errors['username'][0]).toEqual('Username and registration code combination not found.');
+      expect(err.code).toEqual(400);
       done();
     });
   });

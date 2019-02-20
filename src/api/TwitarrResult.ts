@@ -7,7 +7,7 @@ import { TwitarrError } from './TwitarrError';
 export class TwitarrResult<T> {
   /** Create a new success result. */
   public static ok(response: any, message?: string, code?: number, type?: string) {
-    return new TwitarrResult(response, message || 'OK', code || 200, type);
+    return new TwitarrResult(response, message, code || 200, type);
   }
 
   /** Create a new "No Content" result. */
@@ -47,8 +47,12 @@ export class TwitarrResult<T> {
     const errors = this.data && (this.data as any).errors ? (this.data as any).errors : undefined;
     const status = this.data && (this.data as any).status ? (this.data as any).status : undefined;
 
+    if (!message && this.data && (this.data as any).message) {
+      this.message = (this.data as any).message;
+    }
+
     if (!this.isSuccess() || errors || status === 'error') {
-      this.error = new TwitarrError(message, code, errors, undefined, this.data);
+      this.error = new TwitarrError(message, code, errors, undefined, data);
     }
   }
 
