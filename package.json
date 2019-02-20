@@ -95,6 +95,7 @@
       "test/**/*.{js,jsx,ts,tsx}",
       "!src/API.ts",
       "!src/CLI.ts",
+      "!src/__fake_require.js",
       "!test/rest/MockHTTP.ts",
       "!**/*.d.ts",
       "!**/node_modules/**",
