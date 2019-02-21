@@ -1,17 +1,19 @@
 import { IHasHTTP } from './api/IHasHTTP';
 import { ITwitarrHTTP } from './api/ITwitarrHTTP';
-
 import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
 import { TwitarrError } from './api/TwitarrError';
-
 import { TwitarrServer } from './api/TwitarrServer';
 
-import { BrowserHTTP } from './rest/BrowserHTTP';
+import { AutocompleteDAO } from './dao/AutocompleteDAO';
 import { EventDAO } from './dao/EventDAO';
 import { UserDAO } from './dao/UserDAO';
 import { PhotoDAO } from './dao/PhotoDAO';
 import { SeamailDAO } from './dao/SeamailDAO';
+import { SearchDAO } from './dao/SearchDAO';
 import { StreamDAO } from './dao/StreamDAO';
+import { TextDAO } from './dao/TextDAO';
+
+import { BrowserHTTP } from './rest/BrowserHTTP';
 
 /**
  * The Twitarr client.  This is the primary interface to Twitarr servers.
@@ -116,10 +118,10 @@ export class Client implements IHasHTTP {
   }
 
   /**
-   * Get a user DAO.
+   * Get an autocomplete DAO.
    */
-  public user() {
-    return new UserDAO(this);
+  public autocomplete() {
+    return new AutocompleteDAO(this);
   }
 
   /**
@@ -144,9 +146,30 @@ export class Client implements IHasHTTP {
   }
 
   /**
+   * Get a search DAO.
+   */
+  public search() {
+    return new SearchDAO(this);
+  }
+
+  /**
    * Get a stream DAO.
    */
   public stream() {
     return new StreamDAO(this);
+  }
+
+  /**
+   * Get a text DAO.
+   */
+  public text() {
+    return new TextDAO(this);
+  }
+
+  /**
+   * Get a user DAO.
+   */
+  public user() {
+    return new UserDAO(this);
   }
 }

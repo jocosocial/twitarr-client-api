@@ -176,6 +176,13 @@ const CLI = () => {
         })
         .command('favorite <id>', 'favorite an event')
         .command('unfavorite <id>', 'un-favorite an event');
+    })
+    .command('misc', 'retrieve various miscellaneous data from the server', sub => {
+      return sub
+        .command('text <document>', 'print a document from the server')
+        .command('time', 'print the current server time')
+        .command('reactions', 'get the list of valid reactions')
+        .command('announcements', 'print all active announcements');
     }).argv;
 
   const readConfig = () => {
@@ -494,6 +501,53 @@ const CLI = () => {
     console.log(colors.red('Un-favorited event ' + id));
   };
 
+  const doPrintText = async (filename: string) => {
+    const contents = await getClient()
+      .text()
+      .getFile(filename);
+    for (const section of contents.sections) {
+      if (section.header) {
+        console.log('### ' + section.header + ' ###');
+      } else {
+        console.log('#####');
+      }
+      console.log('');
+      for (const paragraph of section.paragraphs) {
+        console.log(wrap(paragraph.text, { indent: '  ', width: 50 }));
+        console.log('');
+      }
+    }
+  };
+
+  const doPrintServerTime = async () => {
+    const ret = await getClient()
+      .text()
+      .serverTime();
+    console.log(ret.display);
+    console.log('');
+  };
+
+  const doPrintReactions = async () => {
+    const reactions = await getClient()
+      .text()
+      .reactions();
+    for (const reaction of reactions) {
+      console.log('* ' + reaction);
+    }
+    console.log('');
+  };
+
+  const doPrintAnnouncements = async () => {
+    const announcements = await getClient()
+      .text()
+      .announcements();
+    for (const announcement of announcements) {
+      console.log(announcement.timestamp.fromNow() + ' - ' + announcement.author.toString());
+      console.log(wrap(announcement.text, { indent: '  ', size: 50 }));
+      console.log('');
+    }
+  };
+
   const processArgs = async args => {
     try {
       switch (args._[0]) {
@@ -623,9 +677,31 @@ const CLI = () => {
           }
           break;
         }
+        case 'misc': {
+          const command = args._[1];
+          switch (command) {
+            case 'text': {
+              await doPrintText(args.document);
+              break;
+            }
+            case 'time': {
+              await doPrintServerTime();
+              break;
+            }
+            case 'reactions': {
+              await doPrintReactions();
+              break;
+            }
+            case 'announcements': {
+              await doPrintAnnouncements();
+              break;
+            }
+          }
+          break;
+        }
         default: {
-          console.error('Unhandled argument:', args);
-          throw new TwitarrError('Unhandled argument: ' + args._[0]);
+          console.error('Unhandled argument:', args._);
+          throw new TwitarrError('Unhandled argument: ' + args._.join(' '));
         }
       }
       process.exit(0);
