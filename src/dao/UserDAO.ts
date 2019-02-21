@@ -1,5 +1,4 @@
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
-import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrError } from '../api/TwitarrError';
 
 import { Util } from '../internal/Util';
@@ -18,7 +17,7 @@ export class UserDAO extends AbstractDAO {
     };
 
     const result = await this.http.post('/api/v2/user/auth', options);
-    const data = await this.handleErrors(result);
+    const data = this.handleErrors(result);
     if (data && data.key) {
       this.http.setKey(data.key);
       return data.key;
@@ -28,10 +27,12 @@ export class UserDAO extends AbstractDAO {
 
   public async profile(username?: string) {
     const url = Util.isEmpty(username) ? '/api/v2/user/whoami' : '/api/v2/user/profile/' + username;
-    return this.http.get(url, new TwitarrHTTPOptions().withParameter('app', 'plain')).then(async result => {
-      const data = await this.handleErrors(result);
-      return UserProfileInfo.fromRest(data);
-    });
+    return this.http
+      .get(url, new TwitarrHTTPOptions().withParameter('app', 'plain'))
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return UserProfileInfo.fromRest(data);
+      });
   }
 
   public async update(display_name?: string, email?: string, home_location?: string, real_name?: string, pronouns?: string, room_number?: number) {
@@ -54,33 +55,42 @@ export class UserDAO extends AbstractDAO {
     if (room_number) {
       options.parameters.room_number = '' + room_number;
     }
-    return this.http.post('/api/v2/user/profile', options).then(async result => {
-      const data = await this.handleErrors(result);
-      return UserProfileInfo.fromRest(data);
-    });
+    return this.http
+      .post('/api/v2/user/profile', options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return UserProfileInfo.fromRest(data);
+      });
   }
 
   public async comment(username: string, comment: string) {
     const options = new TwitarrHTTPOptions().withData({
       comment,
     });
-    return this.http.post('/api/v2/user/profile/' + username + '/personal_comment', options).then(async result => {
-      const data = await this.handleErrors(result);
-      return UserProfileInfo.fromRest(data);
-    });
+    return this.http
+      .post('/api/v2/user/profile/' + username + '/personal_comment', options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return UserProfileInfo.fromRest(data);
+      });
   }
 
   public async toggleStarred(username: string): Promise<boolean> {
-    return this.http.post('/api/v2/user/profile/' + username + '/star').then(async result => {
-      return result.data.starred;
-    });
+    return this.http
+      .post('/api/v2/user/profile/' + username + '/star')
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return data.starred;
+      });
   }
 
   public async starred() {
-    return this.http.get('/api/v2/user/starred', new TwitarrHTTPOptions().withParameter('app', 'plain')).then(async result => {
-      const data = await this.handleErrors(result);
-      return data.users.map(user => User.fromRest(user));
-    });
+    return this.http
+      .get('/api/v2/user/starred', new TwitarrHTTPOptions().withParameter('app', 'plain'))
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return data.users.map(user => User.fromRest(user));
+      });
   }
   public async createUser(registrationCode: string, username: string, password: string, displayName?: string) {
     const options = new TwitarrHTTPOptions()
@@ -128,16 +138,5 @@ export class UserDAO extends AbstractDAO {
     return this.http.httpDelete('/api/v2/user/mentions').then(res => {
       return res.data.mentions;
     });
-  }
-
-  private async handleErrors(result: TwitarrResult<any>) {
-    if (result.isSuccess()) {
-      const status = result.data && result.data.status ? result.data.status : 'ok';
-      if (status === 'ok') {
-        // console.debug('result was ok:', result);
-        return Promise.resolve(result.data);
-      }
-    }
-    throw new TwitarrError('Failed to parse result.', result.code, undefined, undefined, result.data);
   }
 }

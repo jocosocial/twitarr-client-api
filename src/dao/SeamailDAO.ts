@@ -9,15 +9,18 @@ import { SeamailMessage } from '../model/SeamailMessage';
 export class SeamailDAO extends AbstractDAO {
   public async get(id: string, skip_mark_read?: boolean) {
     if (!id) {
-      return Promise.reject(new TwitarrError('id is required!'));
+      throw new TwitarrError('id is required!');
     }
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (skip_mark_read) {
       options.parameters.skip_mark_read = 'true';
     }
-    return this.http.get('/api/v2/seamail/' + id, options).then(result => {
-      return SeamailResponse.fromRest(result.data);
-    });
+    return this.http
+      .get('/api/v2/seamail/' + id, options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return SeamailResponse.fromRest(data);
+      });
   }
 
   public async getMetadata(unread?: boolean, after?: Moment) {
@@ -28,9 +31,12 @@ export class SeamailDAO extends AbstractDAO {
     if (after) {
       options.parameters.after = '' + after.valueOf();
     }
-    return this.http.get('/api/v2/seamail', options).then(result => {
-      return SeamailResponse.fromRest(result.data);
-    });
+    return this.http
+      .get('/api/v2/seamail', options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return SeamailResponse.fromRest(data);
+      });
   }
 
   public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: Moment) {

@@ -12,9 +12,12 @@ export class PhotoDAO extends AbstractDAO {
   public async get(id: string) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
 
-    return this.http.get('/api/v2/photo/' + id, options).then(result => {
-      return PhotoDetails.fromRest(result.data.photo);
-    });
+    return this.http
+      .get('/api/v2/photo/' + id, options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return PhotoDetails.fromRest(data.photo);
+      });
   }
 
   /**
@@ -26,9 +29,12 @@ export class PhotoDAO extends AbstractDAO {
     options.data = {
       original_filename: newFileName,
     };
-    return this.http.put('/api/v2/photo/' + id, options).then(result => {
-      return PhotoDetails.fromRest(result.data.photo);
-    });
+    return this.http
+      .put('/api/v2/photo/' + id, options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return PhotoDetails.fromRest(data.photo);
+      });
   }
 
   /**
@@ -55,8 +61,11 @@ export class PhotoDAO extends AbstractDAO {
       throw new TwitarrError('Unable to determine mime-type from filename: ' + fileName);
     }
 
-    return this.http.postFile('/api/v2/photo', fileName, mimeType, photoData, options).then(result => {
-      return PhotoDetails.fromRest(result.data.photo);
-    });
+    return this.http
+      .postFile('/api/v2/photo', fileName, mimeType, photoData, options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return PhotoDetails.fromRest(data.photo);
+      });
   }
 }

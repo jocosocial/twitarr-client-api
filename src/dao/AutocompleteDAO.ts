@@ -18,9 +18,12 @@ export class AutocompleteDAO extends AbstractDAO {
       return [];
     }
 
-    return this.http.get('/api/v2/hashtag/ac/' + q).then(result => {
-      return result.data.values as string[];
-    });
+    return this.http
+      .get('/api/v2/hashtag/ac/' + q)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return data.values as string[];
+      });
   }
 
   /**
@@ -36,8 +39,11 @@ export class AutocompleteDAO extends AbstractDAO {
       return [];
     }
 
-    return this.http.get('/api/v2/user/ac/' + q, new TwitarrHTTPOptions().withParameter('app', 'plain')).then(result => {
-      return result.data.users.map(user => User.fromRest(user));
-    });
+    return this.http
+      .get('/api/v2/user/ac/' + q, new TwitarrHTTPOptions().withParameter('app', 'plain'))
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return data.users.map(user => User.fromRest(user));
+      });
   }
 }

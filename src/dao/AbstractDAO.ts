@@ -1,5 +1,7 @@
 import { IHasHTTP } from '../api/IHasHTTP';
 import { ITwitarrHTTP } from '../api/ITwitarrHTTP';
+import { TwitarrError } from '../api/TwitarrError';
+import { TwitarrResult } from '../api/TwitarrResult';
 
 export abstract class AbstractDAO {
   /**
@@ -30,5 +32,16 @@ export abstract class AbstractDAO {
 
   public set http(impl: ITwitarrHTTP) {
     this.httpImpl = impl;
+  }
+
+  protected handleErrors(result: TwitarrResult<any>) {
+    if (result.isSuccess()) {
+      const status = result.data && result.data.status ? result.data.status : 'ok';
+      if (status === 'ok') {
+        // console.debug('result was ok:', result);
+        return result.data;
+      }
+    }
+    throw new TwitarrError('Failed to parse result.', result.code, undefined, undefined, result.data);
   }
 }
