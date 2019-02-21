@@ -182,6 +182,9 @@ export class MockHTTP extends AbstractHTTP {
           ],
         });
       }
+      case '/api/v2/event?app=plain': {
+        return jsonOK(getJsonFromFile('../data/events-all.json'));
+      }
     }
 
     return Promise.reject(getError('GET', urlObj, options));

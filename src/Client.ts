@@ -7,6 +7,7 @@ import { TwitarrError } from './api/TwitarrError';
 import { TwitarrServer } from './api/TwitarrServer';
 
 import { BrowserHTTP } from './rest/BrowserHTTP';
+import { EventDAO } from './dao/EventDAO';
 import { UserDAO } from './dao/UserDAO';
 import { PhotoDAO } from './dao/PhotoDAO';
 import { SeamailDAO } from './dao/SeamailDAO';
@@ -119,6 +120,13 @@ export class Client implements IHasHTTP {
    */
   public user() {
     return new UserDAO(this);
+  }
+
+  /**
+   * Get an event DAO.
+   */
+  public events() {
+    return new EventDAO(this);
   }
 
   /**

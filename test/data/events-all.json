@@ -1,0 +1,35 @@
+{
+  "status": "ok",
+  "total_count": 3,
+  "events": [{
+      "id": "2",
+      "title": "Today!  Things!",
+      "start_time": 1550759285492,
+      "official": true,
+      "description": "Things are happening today."
+    },
+    {
+      "id": "1",
+      "title": "Yesterday!  Things!",
+      "start_time": 1550759285490,
+      "official": true,
+      "description": "Things were happening yesterday."
+    },
+    {
+      "id": "4",
+      "title": "Tomorrow!  More Things!",
+      "start_time": 1550759285494,
+      "end_time": 1550759285496,
+      "official": false,
+      "description": "Even more things will be happening tomorrow."
+    },
+    {
+      "id": "3",
+      "title": "Tomorrow!  Things!",
+      "start_time": 1550759285494,
+      "end_time": 1550759285495,
+      "official": false,
+      "description": "Things will be happening tomorrow."
+    }
+  ]
+}

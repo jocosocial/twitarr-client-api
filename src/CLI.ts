@@ -143,6 +143,39 @@ const CLI = () => {
             .describe('r', 'remove the reaction, rather than adding it')
             .boolean('r');
         });
+    })
+    .command('events', 'read or update events', sub => {
+      return sub
+        .command('list', 'list events', y => {
+          return y
+            .alias('m', 'mine')
+            .describe('m', 'list only favorited events (implies --today)')
+            .boolean('m')
+            .alias('t', 'today')
+            .describe('t', "limit to today's events")
+            .boolean('t');
+        })
+        .command('delete <id>', 'delete an event (admin only)')
+        .command('update <id>', 'update an event (admin only)', y => {
+          return y
+            .alias('t', 'title')
+            .describe('t', 'the event title')
+            .string('t')
+            .alias('d', 'description')
+            .describe('d', 'the event description')
+            .string('d')
+            .alias('l', 'location')
+            .describe('l', 'the event location')
+            .string('l')
+            .alias('s', 'start-time')
+            .describe('s', 'the event starting time')
+            .string('s')
+            .alias('e', 'end-time')
+            .describe('e', 'the event ending time')
+            .string('e');
+        })
+        .command('favorite <id>', 'favorite an event')
+        .command('unfavorite <id>', 'un-favorite an event');
     }).argv;
 
   const readConfig = () => {
@@ -397,6 +430,70 @@ const CLI = () => {
     console.log('');
   };
 
+  const printEvent = (event: any) => {
+    const prefix = '           ';
+    const startTime = event.start_time.format('hh:mm a');
+    console.log(startTime + ' ' + (event.following ? '* ' : '  ') + event.title + (event.official ? '' : ' (shadow)'));
+    if (event.location) console.log(prefix + event.location);
+    if (event.end_time) console.log(prefix + 'ends: ' + event.end_time.format('hh:mm a'));
+    if (event.description) console.log(wrap(event.description.trim(), { indent: prefix, width: 50 }));
+    console.log(prefix + 'id: ' + event.id);
+    console.log('');
+  };
+
+  const doListEvents = async (mine?: boolean, today?: boolean) => {
+    const client = getClient();
+    const now = Util.toMoment(new Date().getTime());
+    let events;
+    if (mine || today) {
+      events = await client.events().getDay(now, mine);
+    } else {
+      events = await client.events().all();
+    }
+    let lastDay;
+    for (const event of events) {
+      let day = event.start_time.format('ddd, MMM Do');
+      if (day !== lastDay) {
+        console.log('[ ' + day + ' ]');
+        lastDay = day;
+      }
+      printEvent(event);
+    }
+  };
+
+  const doDeleteEvent = async (id: string) => {
+    await getClient()
+      .events()
+      .remove(id);
+    console.log(colors.red('Removed event ' + id));
+    console.log('');
+  };
+
+  const doUpdateEvent = async (id: string, title?: string, description?: string, location?: string, startTime?: string, endTime?: string) => {
+    const start = startTime ? Util.toMoment(startTime) : undefined;
+    const end = endTime ? Util.toMoment(endTime) : undefined;
+    const event = await getClient()
+      .events()
+      .update(id, title, description, location, start, end);
+    let day = event.start_time.format('ddd, MMM Do');
+    console.log('[ ' + day + ' ]');
+    printEvent(event);
+  };
+
+  const doFavoriteEvent = async (id: string) => {
+    await getClient()
+      .events()
+      .favorite(id);
+    console.log(colors.green('Favorited event ' + id));
+  };
+
+  const doUnfavoriteEvent = async (id: string) => {
+    await getClient()
+      .events()
+      .unfavorite(id);
+    console.log(colors.red('Un-favorited event ' + id));
+  };
+
   const processArgs = async args => {
     try {
       switch (args._[0]) {
@@ -495,6 +592,32 @@ const CLI = () => {
             }
             case 'react': {
               await doReact(args.id, args.reaction, args.remove);
+              break;
+            }
+          }
+          break;
+        }
+        case 'events': {
+          const command = args._[1];
+          switch (command) {
+            case 'list': {
+              await doListEvents(args.mine, args.today);
+              break;
+            }
+            case 'delete': {
+              await doDeleteEvent(args.id);
+              break;
+            }
+            case 'update': {
+              await doUpdateEvent(args.id, args.title, args.description, args.location, args.startTime, args.endTime);
+              break;
+            }
+            case 'favorite': {
+              await doFavoriteEvent(args.id);
+              break;
+            }
+            case 'unfavorite': {
+              await doUnfavoriteEvent(args.id);
               break;
             }
           }
