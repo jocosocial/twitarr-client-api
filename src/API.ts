@@ -5,6 +5,7 @@ import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
 import { TwitarrResult } from './api/TwitarrResult';
 import { TwitarrServer } from './api/TwitarrServer';
 
+import { AlertDAO } from './dao/AlertDAO';
 import { AutocompleteDAO } from './dao/AutocompleteDAO';
 import { EventDAO } from './dao/EventDAO';
 import { PhotoDAO } from './dao/PhotoDAO';
@@ -14,6 +15,7 @@ import { StreamDAO } from './dao/StreamDAO';
 import { TextDAO } from './dao/TextDAO';
 import { UserDAO } from './dao/UserDAO';
 
+import { AlertResponse } from './model/AlertResponse';
 import { Announcement } from './model/Announcement';
 import { Event } from './model/Event';
 import { PhotoDetails } from './model/PhotoDetails';
@@ -45,6 +47,7 @@ const API = Object.freeze({
 
 /** @hidden */
 const DAO = Object.freeze({
+  AlertDAO,
   AutocompleteDAO,
   EventDAO,
   PhotoDAO,
@@ -57,6 +60,7 @@ const DAO = Object.freeze({
 
 /** @hidden */
 const Model = Object.freeze({
+  AlertResponse,
   Announcement,
   Event,
   PhotoDetails,

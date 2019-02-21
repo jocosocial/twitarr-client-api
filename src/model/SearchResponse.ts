@@ -2,6 +2,7 @@ import { TwitarrError } from '../api/TwitarrError';
 
 import { Util } from '../internal/Util';
 
+import { Event } from './Event';
 import { SeamailThread } from './SeamailThread';
 import { StreamPost } from './StreamPost';
 import { User } from './User';
@@ -45,11 +46,11 @@ export class SearchResponse {
       Util.setProperties(ret.forumThreads, data.forumThreads, 'count', 'more');
       ret.forumThreads.matches = data.forums.matches.map((thread) => ForumThread.fromRest(thread));
     }
+    */
     if (data.events) {
       Util.setProperties(ret.events, data.events, 'count', 'more');
-      ret.events.matches = data.events.matches.map((event) => Event.fromRest(event));
+      ret.events.matches = data.events.matches.map(event => Event.fromRest(event));
     }
-    */
 
     return ret;
   }
@@ -81,13 +82,13 @@ export class SearchResponse {
     matches: [],
     more: false,
   };
+  */
 
   public events: ISearchStatus<Event> = {
     count: 0,
     matches: [],
     more: false,
   };
-  */
 
   public toJSON() {
     return this;

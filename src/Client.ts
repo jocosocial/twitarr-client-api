@@ -4,6 +4,7 @@ import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
 import { TwitarrError } from './api/TwitarrError';
 import { TwitarrServer } from './api/TwitarrServer';
 
+import { AlertDAO } from './dao/AlertDAO';
 import { AutocompleteDAO } from './dao/AutocompleteDAO';
 import { EventDAO } from './dao/EventDAO';
 import { UserDAO } from './dao/UserDAO';
@@ -115,6 +116,13 @@ export class Client implements IHasHTTP {
       }
       throw new TwitarrError('unexpected error: ' + err.message, err.code, err.options, err.errors, err.data);
     }
+  }
+
+  /**
+   * Get an alerts DAO.
+   */
+  public alerts() {
+    return new AlertDAO(this);
   }
 
   /**
