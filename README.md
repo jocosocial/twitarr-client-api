@@ -42,6 +42,7 @@ Then you can run npm to build or test the project:
 * `npm test` - run the tests
 * `npm watch-test` - continuously run the tests
 * `npm cli -- <arguments>` - run the CLI test tool (try `--help` for options)
+* `npm release` - do a release build, regenerating `dist/`, and updating the changelog.
 
 # Reporting Bugs or Feature Requests
 
