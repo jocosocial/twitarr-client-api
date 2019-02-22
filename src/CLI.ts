@@ -3,6 +3,7 @@ import { Util } from './internal/Util';
 import { TwitarrError } from './api/TwitarrError';
 import { IStreamOptions } from './dao/StreamDAO';
 
+/** @hidden */
 const fakeRequire = require('./__fake_require'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 /** @hidden */

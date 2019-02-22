@@ -6,6 +6,7 @@ import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 
 import { Event } from '../model/Event';
 
+/** @hidden */
 const sortEvents = (a: Event, b: Event) => {
   let ret = 0;
   if (a) {

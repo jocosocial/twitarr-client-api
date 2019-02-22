@@ -2,6 +2,7 @@ import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 
 import { BrowserHTTP } from './BrowserHTTP';
 
+/** @hidden */
 const FormData = require('form-data'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 export class NodeHTTP extends BrowserHTTP {

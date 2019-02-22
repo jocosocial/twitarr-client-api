@@ -10,6 +10,7 @@ import { JsonTransformer } from './JsonTransformer';
 /** @hidden */
 const jsonTransformer = new JsonTransformer();
 
+/** @hidden */
 const OPTIONS_PROP = Symbol.for('options');
 
 /**

@@ -2,9 +2,13 @@ import { TwitarrAuthConfig } from './TwitarrAuthConfig';
 import { TwitarrServer } from './TwitarrServer';
 import { IHash } from '../internal/IHash';
 
+/** @hidden */
 const DEFAULT_TIMEOUT = 10000;
 
+/** @hidden */
 const TIMEOUT_PROP = Symbol.for('timeout');
+
+/** @hidden */
 const AUTH_PROP = Symbol.for('auth');
 
 /**
