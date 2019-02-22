@@ -30462,7 +30462,7 @@ var fakeRequire = __webpack_require__(/*! ./__fake_require */ "./src/__fake_requ
 
 
 var CLI = function CLI() {
-  var version = "0.1.0" || false || false;
+  var version = "0.1.1" || false || false;
   var Table = fakeRequire('cli-table2');
   var colors = fakeRequire('colors');
   var fs = fakeRequire('fs');

@@ -1,5 +1,15 @@
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/RangerRick/twitarr-client-api/compare/v0.1.0...v0.1.1) (2019-02-22)
+
+
+### Bug Fixes
+
+* **publish:** bump version and clear .cache-loader dir ([396e5af](https://github.com/RangerRick/twitarr-client-api/commit/396e5af))
+
+
+
 <a name="0.1.0"></a>
-# 0.1.0 (2019-02-22)
+# [0.1.0](https://github.com/RangerRick/twitarr-client-api/compare/7bad7c5...v0.1.0) (2019-02-22)
 
 
 ### Bug Fixes
@@ -52,7 +62,6 @@
 * **model:** fix toString() on User ([9ad9a47](https://github.com/RangerRick/twitarr-client-api/commit/9ad9a47))
 * **rest:** add unread=true and after=epoch to seamail ([566de10](https://github.com/RangerRick/twitarr-client-api/commit/566de10))
 * **seamail:** add seamail list support ([b93f155](https://github.com/RangerRick/twitarr-client-api/commit/b93f155))
-
 
 
 

@@ -118,7 +118,7 @@
   "scripts": {
     "precommit": "npm run lint && jest",
     "prepush": "conventional-changelog-lint --from=origin/master && npm run lint",
-    "changelog": "standard-changelog -i CHANGELOG.md -s -r 1",
+    "changelog": "standard-changelog -i CHANGELOG.md -s -r 1 -f",
     "build": "webpack --define process.env.NODE_ENV=production --env production",
     "dev": "webpack --progress --colors",
     "dist": "npm run lint && npm run test && npm run build",
@@ -128,7 +128,7 @@
     "watch-test": "jest --watch",
     "lint": "eslint 'src/**/*.ts' && eslint 'test/**/*.ts'",
     "cli": "ts-node src/CLI.ts",
-    "release-build": "rm -rf dist/* && npm install && npm run dist && npm run changelog && ./fix-ownership.sh",
+    "release-build": "rm -rf dist/* && npm install && npm run dist && npm run changelog && rm -rf dist/coverage && ./fix-ownership.sh",
     "release": "docker run --rm --name twitarr-js -v `pwd`:/build -w /build node:carbon npm run release-build"
   }
 }
