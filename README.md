@@ -34,15 +34,15 @@ To build this project, run `npm install` to install all dependencies.
 
 Then you can run npm to build or test the project:
 
-* `npm dist` - run tests and lint, and build the complete tree in `dist/`
-* `npm dev` - build a development version of the API in `dist/twitarr.js` and `dist/twitarr.node.js`
-* `npm build` - build the development and production versions of the API in `dist/`
-* `npm docs` - build the docs in `dist/docs/`
-* `npm watch` - continuously build the development version in `dist/twitarr.js`
-* `npm test` - run the tests
-* `npm watch-test` - continuously run the tests
-* `npm cli -- <arguments>` - run the CLI test tool (try `--help` for options)
-* `npm release` - do a release build, regenerating `dist/`, and updating the changelog.
+* `npm run dist` - run tests and lint, and build the complete tree in `dist/`
+* `npm run dev` - build a development version of the API in `dist/twitarr.js` and `dist/twitarr.node.js`
+* `npm run build` - build the development and production versions of the API in `dist/`
+* `npm run docs` - build the docs in `dist/docs/`
+* `npm run watch` - continuously build the development version in `dist/twitarr.js`
+* `npm run test` - run the tests
+* `npm run watch-test` - continuously run the tests
+* `npm run cli -- <arguments>` - run the CLI test tool (try `--help` for options)
+* `npm run release` - do a release build, regenerating `dist/`, and updating the changelog.
 
 # Reporting Bugs or Feature Requests
 

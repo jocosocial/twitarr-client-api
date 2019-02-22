@@ -1,2 +1,3 @@
 node_modules
 fix-ownership.sh
+.cache-loader

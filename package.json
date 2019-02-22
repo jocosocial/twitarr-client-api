@@ -1,6 +1,6 @@
 {
   "name": "twitarr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Client API for Twitarr",
   "main": "dist/twitarr.js",
   "bin": {
@@ -128,7 +128,7 @@
     "watch-test": "jest --watch",
     "lint": "eslint 'src/**/*.ts' && eslint 'test/**/*.ts'",
     "cli": "ts-node src/CLI.ts",
-    "release-build": "rm -rf CHANGELOG.md dist/* && npm install && npm run dist && npm run changelog && ./fix-ownership.sh",
+    "release-build": "rm -rf dist/* && npm install && npm run dist && npm run changelog && ./fix-ownership.sh",
     "release": "docker run --rm --name twitarr-js -v `pwd`:/build -w /build node:carbon npm run release-build"
   }
 }
