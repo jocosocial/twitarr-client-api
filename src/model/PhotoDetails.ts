@@ -8,7 +8,7 @@ import { Moment } from 'moment';
  */
 export class PhotoDetails {
   public static fromRest(data: any) {
-    Util.assertHasProperties(data, 'id', 'md5_hash');
+    Util.assertHasProperties(data, 'id');
 
     const ret = new PhotoDetails();
     Util.setProperties(ret, data, 'id', 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader');

@@ -8,6 +8,7 @@ import { TwitarrServer } from './api/TwitarrServer';
 import { AlertDAO } from './dao/AlertDAO';
 import { AutocompleteDAO } from './dao/AutocompleteDAO';
 import { EventDAO } from './dao/EventDAO';
+import { ForumDAO } from './dao/ForumDAO';
 import { PhotoDAO } from './dao/PhotoDAO';
 import { SeamailDAO } from './dao/SeamailDAO';
 import { SearchDAO } from './dao/SearchDAO';
@@ -18,6 +19,9 @@ import { UserDAO } from './dao/UserDAO';
 import { AlertResponse } from './model/AlertResponse';
 import { Announcement } from './model/Announcement';
 import { Event } from './model/Event';
+import { ForumPost } from './model/ForumPost';
+import { ForumResponse } from './model/ForumResponse';
+import { ForumThread } from './model/ForumThread';
 import { PhotoDetails } from './model/PhotoDetails';
 import { ReactionDetail } from './model/ReactionDetail';
 import { ReactionsSummary } from './model/ReactionsSummary';
@@ -50,6 +54,7 @@ const DAO = Object.freeze({
   AlertDAO,
   AutocompleteDAO,
   EventDAO,
+  ForumDAO,
   PhotoDAO,
   SeamailDAO,
   SearchDAO,
@@ -63,6 +68,9 @@ const Model = Object.freeze({
   AlertResponse,
   Announcement,
   Event,
+  ForumPost,
+  ForumResponse,
+  ForumThread,
   PhotoDetails,
   ReactionDetail,
   ReactionsSummary,

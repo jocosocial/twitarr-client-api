@@ -3,6 +3,7 @@ import { TwitarrError } from '../api/TwitarrError';
 import { Util } from '../internal/Util';
 
 import { Event } from './Event';
+import { ForumThread } from './ForumThread';
 import { SeamailThread } from './SeamailThread';
 import { StreamPost } from './StreamPost';
 import { User } from './User';
@@ -41,12 +42,10 @@ export class SearchResponse {
       Util.setProperties(ret.streamPosts, data.streamPosts, 'count', 'more');
       ret.streamPosts.matches = data.tweets.matches.map((tweet: any) => StreamPost.fromRest(tweet));
     }
-    /*
     if (data.forums) {
       Util.setProperties(ret.forumThreads, data.forumThreads, 'count', 'more');
-      ret.forumThreads.matches = data.forums.matches.map((thread) => ForumThread.fromRest(thread));
+      ret.forumThreads.matches = data.forums.matches.map(thread => ForumThread.fromRest(thread));
     }
-    */
     if (data.events) {
       Util.setProperties(ret.events, data.events, 'count', 'more');
       ret.events.matches = data.events.matches.map(event => Event.fromRest(event));
@@ -76,13 +75,11 @@ export class SearchResponse {
     more: false,
   };
 
-  /*
   public forumThreads: ISearchStatus<ForumThread> = {
     count: 0,
     matches: [],
     more: false,
   };
-  */
 
   public events: ISearchStatus<Event> = {
     count: 0,

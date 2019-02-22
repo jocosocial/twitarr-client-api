@@ -183,6 +183,37 @@ const CLI = () => {
         .command('time', 'print the current server time')
         .command('reactions', 'get the list of valid reactions')
         .command('announcements', 'print all active announcements');
+    })
+    .command('forums', 'list, read, and post to forum threads', sub => {
+      return sub
+        .command('list', 'list forum threads', y => {
+          return y
+            .alias('p', 'page')
+            .describe('p', 'the page of threads to read')
+            .number('p')
+            .alias('l', 'limit')
+            .describe('l', 'limit results to <num> results (default: 20)')
+            .number('l');
+        })
+        .command('read <thread-id> [post-id]', 'read the given forum thread or post', y => {
+          return y
+            .alias('p', 'page')
+            .describe('p', 'the forum page to read')
+            .number('p')
+            .alias('l', 'limit')
+            .describe('l', 'limit results to <num> results per page (default: 20)')
+            .number('l');
+        })
+        .command('create <subject> <text> [photos...]', 'create a new thread with the given subject + first post text and photos')
+        .command('post <thread-id> <text> [photos...]', 'post a new response to the given forum thread')
+        .command('sticky <thread-id>', 'mark the given forum thread sticky')
+        .command('unsticky <thread-id>', 'mark the given forum thread un-sticky')
+        .command('lock <thread-id>', 'mark the given forum thread locked')
+        .command('unlock <thread-id>', 'mark the given forum thread unlocked')
+        .command('update-post <thread-id> <post-id> <text> [photos...]', 'update the contents of the given thread post')
+        .command('delete-post <thread-id> <post-id>', 'delete the given thread post')
+        .command('react <thread-id> <post-id> <reaction>', 'react to the given thread post')
+        .command('delete-react <thread-id> <post-id> <reaction>', 'delete a reaction to the given thread post');
     }).argv;
 
   const readConfig = () => {
@@ -548,6 +579,151 @@ const CLI = () => {
     }
   };
 
+  const printForumPost = post => {
+    const time = post.timestamp.fromNow();
+    console.log('-----');
+    console.log(post.author.toString() + ' posted ' + time);
+    const statusLine =
+      'id: ' +
+      post.id +
+      (post.photos && post.photos.length ? ' [' + post.photos.length + ' photo(s)]' : '') +
+      (post.is_new ? ' [new]' : '') +
+      (post.thread_locked ? ' [locked]' : '');
+    console.log(statusLine);
+    console.log('');
+    console.log(wrap(post.text, { indent: '  ', size: 50 }));
+    console.log('');
+  };
+
+  const printThreadSummary = (thread, page?: number) => {
+    const lastTime = thread.timestamp ? thread.timestamp.format('yyyy-MM-DD hh:mm a') : thread.latest_read.format('yyyy-MM-DD hh:mm a');
+    console.log('### ' + thread.subject + ' ###');
+    console.log(lastTime + (thread.sticky ? ' [sticky]' : '') + (thread.locked ? ' [locked]' : ''));
+    const statusLine =
+      (thread.last_post_author ? 'Last posted by: ' + thread.last_post_author.toString() : '') + (thread.count ? ' (' + thread.count + ' unread)' : '');
+    if (statusLine) {
+      console.log(statusLine);
+    }
+    console.log(
+      'id: ' + thread.id + ' ' + (page !== undefined ? 'page: ' + page + (thread.next_page ? ' next page: ' + thread.next_page : ' (end of thread)') : ''),
+    );
+    console.log('');
+    if (thread.posts) {
+      for (const post of thread.posts) {
+        printForumPost(post);
+      }
+    }
+  };
+
+  const doListForumThreads = async (page?: number, limit?: number) => {
+    const response = await getClient()
+      .forums()
+      .list(page, limit);
+    for (const thread of response.threads) {
+      printThreadSummary(thread);
+    }
+  };
+
+  const doReadForumThread = async (id: string, page?: number, limit?: number) => {
+    const thread = await getClient()
+      .forums()
+      .get(id, page, limit);
+    printThreadSummary(thread, page || 0);
+  };
+
+  const doCreateForumThread = async (subject: string, text: string, photos?: string[]) => {
+    let photoIds = [];
+    if (photos && photos.length) {
+      for (const photo of photos) {
+        photoIds.push(await postPhotoIfNecessary(photo));
+      }
+    }
+    console.log('');
+    const thread = await getClient()
+      .forums()
+      .create(subject, text, photoIds);
+    printThreadSummary(thread);
+  };
+
+  const doPostToForumThread = async (id: string, text: string, photos?: string[]) => {
+    let photoIds = [];
+    if (photos && photos.length) {
+      for (const photo of photos) {
+        photoIds.push(await postPhotoIfNecessary(photo));
+      }
+    }
+    console.log('');
+    const post = await getClient()
+      .forums()
+      .post(id, text, photoIds);
+    printForumPost(post);
+  };
+
+  const doSticky = async (id: string, sticky: boolean) => {
+    await getClient()
+      .forums()
+      .sticky(id, sticky);
+    console.log(colors.green('Set thread ' + id + ' to ' + (sticky ? 'sticky' : 'un-sticky') + '.'));
+    console.log('');
+  };
+
+  const doLocked = async (id: string, locked: boolean) => {
+    await getClient()
+      .forums()
+      .locked(id, locked);
+    console.log(colors.green('Set thread ' + id + ' to ' + (locked ? 'locked' : 'unlocked') + '.'));
+    console.log('');
+  };
+
+  const doReadPost = async (threadId: string, postId: string) => {
+    const post = await getClient()
+      .forums()
+      .getPost(threadId, postId);
+    printForumPost(post);
+  };
+
+  const doDeletePost = async (threadId: string, postId: string) => {
+    const deleted = await getClient()
+      .forums()
+      .removePost(threadId, postId);
+    if (deleted) {
+      console.log(colors.red('Post deleted.'));
+    } else {
+      console.log(colors.red('Post NOT deleted.'));
+    }
+    console.log('');
+  };
+
+  const doUpdatePost = async (threadId: string, postId: string, text: string, photos?: string[]) => {
+    let photoIds = [];
+    if (photos && photos.length) {
+      for (const photo of photos) {
+        photoIds.push(await postPhotoIfNecessary(photo));
+      }
+    }
+    console.log('');
+    const post = await getClient()
+      .forums()
+      .updatePost(threadId, postId, text, photoIds);
+    printForumPost(post);
+  };
+
+  const doReactToPost = async (threadId: string, postId: string, reaction: string) => {
+    await getClient()
+      .forums()
+      .react(threadId, postId, reaction);
+    console.log(colors.green('Reacted ' + reaction + ' to post.'));
+    console.log('');
+  };
+
+  const doDeleteReactToPost = async (threadId: string, postId: string, reaction: string) => {
+    await getClient()
+      .forums()
+      .deleteReact(threadId, postId, reaction);
+    console.log(colors.green('Deleted reaction ' + reaction + ' from post.'));
+    console.log('');
+  };
+
   const processArgs = async args => {
     try {
       switch (args._[0]) {
@@ -699,6 +875,64 @@ const CLI = () => {
           }
           break;
         }
+        case 'forums': {
+          const command = args._[1];
+          switch (command) {
+            case 'list': {
+              await doListForumThreads(args.page, args.limit);
+              break;
+            }
+            case 'read': {
+              if (args.postId) {
+                await doReadPost(args.threadId, args.postId);
+              } else {
+                await doReadForumThread(args.threadId, args.page, args.limit);
+              }
+              break;
+            }
+            case 'create': {
+              await doCreateForumThread(args.subject, args.text, args.photos);
+              break;
+            }
+            case 'post': {
+              await doPostToForumThread(args.threadId, args.text, args.photos);
+              break;
+            }
+            case 'sticky': {
+              await doSticky(args.threadId, true);
+              break;
+            }
+            case 'unsticky': {
+              await doSticky(args.threadId, false);
+              break;
+            }
+            case 'lock': {
+              await doLocked(args.threadId, true);
+              break;
+            }
+            case 'unlock': {
+              await doLocked(args.threadId, false);
+              break;
+            }
+            case 'delete-post': {
+              await doDeletePost(args.threadId, args.postId);
+              break;
+            }
+            case 'update-post': {
+              await doUpdatePost(args.threadId, args.postId, args.text, args.photos);
+              break;
+            }
+            case 'react': {
+              await doReactToPost(args.threadId, args.postId, args.reaction);
+              break;
+            }
+            case 'delete-react': {
+              await doDeleteReactToPost(args.threadId, args.postId, args.reaction);
+              break;
+            }
+          }
+          break;
+        }
         default: {
           console.error('Unhandled argument:', args._);
           throw new TwitarrError('Unhandled argument: ' + args._.join(' '));
@@ -707,6 +941,15 @@ const CLI = () => {
       process.exit(0);
     } catch (err) {
       console.log(colors.red('Failed: ' + (err.toString ? err.toString() : err.message)));
+      if (err.stack) {
+        console.log(colors.red(err.stack));
+      }
+      if (err.data) {
+        console.log('data:', err.data);
+      }
+      if (err.errors) {
+        console.log('errors:', err.errors);
+      }
       process.exit(1);
     }
   };

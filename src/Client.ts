@@ -7,12 +7,13 @@ import { TwitarrServer } from './api/TwitarrServer';
 import { AlertDAO } from './dao/AlertDAO';
 import { AutocompleteDAO } from './dao/AutocompleteDAO';
 import { EventDAO } from './dao/EventDAO';
-import { UserDAO } from './dao/UserDAO';
+import { ForumDAO } from './dao/ForumDAO';
 import { PhotoDAO } from './dao/PhotoDAO';
 import { SeamailDAO } from './dao/SeamailDAO';
 import { SearchDAO } from './dao/SearchDAO';
 import { StreamDAO } from './dao/StreamDAO';
 import { TextDAO } from './dao/TextDAO';
+import { UserDAO } from './dao/UserDAO';
 
 import { BrowserHTTP } from './rest/BrowserHTTP';
 
@@ -137,6 +138,13 @@ export class Client implements IHasHTTP {
    */
   public events() {
     return new EventDAO(this);
+  }
+
+  /**
+   * Get a forum DAO.
+   */
+  public forums() {
+    return new ForumDAO(this);
   }
 
   /**

@@ -13,20 +13,16 @@ export class SearchDAO extends AbstractDAO {
   /**
    * Search events.
    */
-  /*
   public async events(query: string, limit?: number, page?: number) {
     return this.doSearch('/api/v2/search/events/' + query, limit, page);
   }
-  */
 
   /**
    * Search forums.
    */
-  /*
   public async forums(query: string, limit?: number, page?: number) {
     return this.doSearch('/api/v2/search/forums/' + query, limit, page);
   }
-  */
 
   /**
    * Search seamails.
