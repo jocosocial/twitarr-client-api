@@ -115,6 +115,10 @@ export class User {
   }
 
   public toString() {
-    return '@' + this.username + (Util.isEmpty(this.display_name) ? '' : ' (' + this.display_name + ')');
+    let ret = '@' + this.username;
+    if (!Util.isEmpty(this.display_name) && this.display_name !== this.username) {
+      ret += ' (' + this.display_name + ')';
+    }
+    return ret;
   }
 }
