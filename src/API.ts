@@ -35,6 +35,7 @@ import { User } from './model/User';
 import { UserProfileInfo } from './model/UserProfileInfo';
 
 import { BrowserHTTP } from './rest/BrowserHTTP';
+import { CordovaHTTP } from './rest/CordovaHTTP';
 import { NodeHTTP } from './rest/NodeHTTP';
 
 import { Client } from './Client';
@@ -87,6 +88,7 @@ const Model = Object.freeze({
 /** @hidden */
 const Rest = Object.freeze({
   BrowserHTTP,
+  CordovaHTTP,
   NodeHTTP,
 });
 
