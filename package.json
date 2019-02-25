@@ -1,6 +1,6 @@
 {
   "name": "twitarr",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Client API for Twitarr",
   "main": "dist/twitarr.js",
   "bin": {
