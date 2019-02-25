@@ -1,5 +1,3 @@
-declare const cordova;
-
 import * as clonedeep from 'lodash.clonedeep';
 
 if (!fetch) { // eslint-disable-line
@@ -42,10 +40,13 @@ export class CordovaHTTP extends AbstractHTTP {
    */
   public constructor(server?: TwitarrServer, timeout = 10000) {
     super(server, timeout);
+    // @ts-ignore
     if (!cordova || !cordova.plugin || !cordova.plugin.http) {
       throw new TwitarrError('cordova-plugin-advanced-http is not available!');
     }
+    // @ts-ignore
     cordova.plugin.http.setDataSerializer('json');
+    // @ts-ignore
     cordova.plugin.http.setRequestTimeout(timeout / 1000.0);
   }
 
@@ -163,6 +164,7 @@ export class CordovaHTTP extends AbstractHTTP {
   protected async request(url, opts) {
     await this.initializeSSL();
     return new Promise((resolve, reject) => {
+      // @ts-ignore
       cordova.plugin.http.sendRequest(url, opts, response => resolve(response), err => reject(err));
     })
       .then((response: any) => {
@@ -229,6 +231,7 @@ export class CordovaHTTP extends AbstractHTTP {
     }
 
     return new Promise((resolve, reject) => {
+      // @ts-ignore
       cordova.plugin.http.setSSLCertMode(
         'nocheck',
         () => {

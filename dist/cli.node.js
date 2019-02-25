@@ -31618,7 +31618,7 @@ var fakeRequire = __webpack_require__(/*! ./__fake_require */ "./src/__fake_requ
 
 
 var CLI = function CLI() {
-  var version = "0.1.1" || false || false;
+  var version = "0.1.2-beta.1" || false || false;
   var Table = fakeRequire('cli-table2');
   var colors = fakeRequire('colors');
   var fs = fakeRequire('fs');
@@ -40895,13 +40895,15 @@ function (_AbstractHTTP_1$Abstr) {
     _classCallCheck(this, CordovaHTTP);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(CordovaHTTP).call(this, server, timeout));
-    _this.initialized = false;
+    _this.initialized = false; // @ts-ignore
 
     if (!cordova || !cordova.plugin || !cordova.plugin.http) {
       throw new TwitarrError_1.TwitarrError('cordova-plugin-advanced-http is not available!');
-    }
+    } // @ts-ignore
 
-    cordova.plugin.http.setDataSerializer('json');
+
+    cordova.plugin.http.setDataSerializer('json'); // @ts-ignore
+
     cordova.plugin.http.setRequestTimeout(timeout / 1000.0);
     return _this;
   }
@@ -41023,6 +41025,7 @@ function (_AbstractHTTP_1$Abstr) {
 
               case 2:
                 return _context2.abrupt("return", new _Promise(function (resolve, reject) {
+                  // @ts-ignore
                   cordova.plugin.http.sendRequest(url, opts, function (response) {
                     return resolve(response);
                   }, function (err) {
@@ -41118,6 +41121,7 @@ function (_AbstractHTTP_1$Abstr) {
 
               case 3:
                 return _context3.abrupt("return", new _Promise(function (resolve, reject) {
+                  // @ts-ignore
                   cordova.plugin.http.setSSLCertMode('nocheck', function () {
                     self.initialized = true;
                     resolve();

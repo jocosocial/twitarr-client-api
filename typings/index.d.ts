@@ -4,7 +4,7 @@ interface Window {
   DOMParser: any;
 }
 
-declare module NodeJS {
+declare namespace NodeJS {
   interface Global {
     window: Window;
     DOMParser: any;
