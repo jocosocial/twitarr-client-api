@@ -8,19 +8,11 @@ import { ReactionsSummary } from '../model/ReactionsSummary';
 
 import { AbstractDAO } from './AbstractDAO';
 
-interface IAlertCounts {
-  unnoticed_announcements: number;
-  unnoticed_alerts: boolean;
-  seamail_unread_count: number;
-  unnoticed_mentions: number;
-  unnoticed_upcoming_events: number;
-}
-
 export class ForumDAO extends AbstractDAO {
   /**
    * Get a list of forum threads.
    */
-  public async list(page?: number, limit?: number) {
+  public async list(page?: number, limit?: number, participated?: boolean) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (page) {
       options.parameters.page = '' + page;
@@ -28,8 +20,27 @@ export class ForumDAO extends AbstractDAO {
     if (limit) {
       options.parameters.limit = '' + limit;
     }
+    if (participated) {
+      options.parameters.participated = '' + participated;
+    }
     return this.http
       .get('/api/v2/forums', options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return ForumResponse.fromRest(data);
+      });
+  }
+
+  /**
+   * Mark all forums as read.
+   */
+  public async markRead(participated?: boolean) {
+    const options = new TwitarrHTTPOptions();
+    if (participated) {
+      options.parameters.participated = '' + participated;
+    }
+    return this.http
+      .post('/api/v2/forum/mark_all_read', options)
       .then(result => this.handleErrors(result))
       .then(data => {
         return ForumResponse.fromRest(data);
@@ -95,7 +106,7 @@ export class ForumDAO extends AbstractDAO {
   /** Delete a thread (admin-only) */
   public async remove(id: string) {
     return this.http
-      .httpDelete('/api/v2/forum/' + id)
+      .httpDelete('/api/v2/forums/' + id)
       .then(result => this.handleErrors(result))
       .then(() => {
         return true;

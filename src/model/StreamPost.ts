@@ -1,10 +1,10 @@
-import { User } from './User';
+import { DateTime } from 'luxon';
 
 import { Util } from '../internal/Util';
 
-import { Moment } from 'moment';
 import { ReactionsSummary } from './ReactionsSummary';
 import { PhotoDetails } from './PhotoDetails';
+import { User } from './User';
 
 /**
  * Represents a stream post.
@@ -47,7 +47,7 @@ export class StreamPost {
   public locked: boolean;
 
   /** The time the post was created. */
-  public timestamp: Moment;
+  public timestamp: DateTime;
 
   /** The text (contents) of the post. */
   public text: string;
@@ -74,7 +74,7 @@ export class StreamPost {
       photo: this.photo ? this.photo.toJSON() : undefined,
       reactions: this.reactions ? this.reactions.toJSON() : undefined,
       text: this.text,
-      timestamp: this.timestamp,
+      timestamp: this.timestamp ? this.timestamp.toMillis() : undefined,
     };
   }
 }

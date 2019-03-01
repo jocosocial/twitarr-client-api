@@ -1,9 +1,9 @@
+import { DateTime } from 'luxon';
+
 import { SeamailMessage } from './SeamailMessage';
 import { User } from './User';
 
 import { Util } from '../internal/Util';
-
-import { Moment } from 'moment';
 
 /**
  * Represents a Seamail thread.
@@ -43,7 +43,7 @@ export class SeamailThread {
   public message_count: number;
 
   /** The time the most recent message was created. */
-  public timestamp: Moment;
+  public timestamp: DateTime;
 
   /** Whether `message_count` is unread or total. */
   public count_is_unread: false;
@@ -54,9 +54,9 @@ export class SeamailThread {
   public toJSON() {
     const ret = {} as any;
     Util.setProperties(ret, this, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
+    Util.setEpochProperties(ret, this, 'timestamp');
     ret.users = this.users.map(user => user.toJSON());
     ret.messages = this.messages.map(message => message.toJSON());
-    ret.timestamp = this.timestamp.valueOf();
     return ret;
   }
 }

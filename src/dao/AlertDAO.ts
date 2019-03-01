@@ -1,8 +1,10 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 
 import { AlertResponse } from '../model/AlertResponse';
+
+import { Util } from '../internal/Util';
 
 import { AbstractDAO } from './AbstractDAO';
 
@@ -18,10 +20,10 @@ export class AlertDAO extends AbstractDAO {
   /**
    * Retrieve an alert response containing all posts/etc. that are un-viewed.
    */
-  public async get(last_checked_time?: Moment, no_reset?: boolean) {
+  public async get(last_checked_time?: DateTime | number, no_reset?: boolean) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (last_checked_time) {
-      options.parameters.last_checked_time = '' + last_checked_time.valueOf();
+      options.parameters.last_checked_time = '' + Util.toDateTime(last_checked_time).toMillis();
     }
     if (no_reset) {
       options.parameters.no_reset = '' + no_reset;
@@ -34,10 +36,23 @@ export class AlertDAO extends AbstractDAO {
       });
   }
 
-  public async count(last_checked_time?: Moment) {
+  public async lastChecked(last_checked_time: DateTime | number) {
+    const options = new TwitarrHTTPOptions().withData({
+      last_checked_time: Util.toDateTime(last_checked_time).toMillis(),
+    });
+
+    return this.http
+      .post('/api/v2/alerts/last_checked', options)
+      .then(result => this.handleErrors(result))
+      .then(data => {
+        return Util.toDateTime(data.last_checked_time);
+      });
+  }
+
+  public async count(last_checked_time?: DateTime | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (last_checked_time) {
-      options.parameters.last_checked_time = '' + last_checked_time.valueOf();
+      options.parameters.last_checked_time = '' + Util.toDateTime(last_checked_time).toMillis();
     }
     return this.http
       .get('/api/v2/alerts/check', options)

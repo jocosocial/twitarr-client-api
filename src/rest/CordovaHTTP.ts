@@ -200,7 +200,7 @@ export class CordovaHTTP extends AbstractHTTP {
       ret.timeout = allOptions.timeout / 1000.0;
     }
 
-    if (allOptions.headers) {
+    if (allOptions.headers && Object.keys(allOptions.headers).length > 0) {
       ret.headers = clonedeep(allOptions.headers);
     } else {
       ret.headers = {};
@@ -215,6 +215,9 @@ export class CordovaHTTP extends AbstractHTTP {
 
     if (allOptions.parameters) {
       ret.params = clonedeep(allOptions.parameters);
+    }
+    if (Object.keys(ret.params).length === 0) {
+      delete ret.params;
     }
 
     if (allOptions.data) {

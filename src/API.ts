@@ -18,7 +18,7 @@ import { UserDAO } from './dao/UserDAO';
 
 import { AlertResponse } from './model/AlertResponse';
 import { Announcement } from './model/Announcement';
-import { Event } from './model/Event';
+import { CalendarEvent } from './model/CalendarEvent';
 import { ForumPost } from './model/ForumPost';
 import { ForumResponse } from './model/ForumResponse';
 import { ForumThread } from './model/ForumThread';
@@ -34,6 +34,7 @@ import { StreamResponse } from './model/StreamResponse';
 import { User } from './model/User';
 import { UserProfileInfo } from './model/UserProfileInfo';
 
+import { AutomaticHTTP } from './rest/AutomaticHTTP';
 import { BrowserHTTP } from './rest/BrowserHTTP';
 import { CordovaHTTP } from './rest/CordovaHTTP';
 import { NodeHTTP } from './rest/NodeHTTP';
@@ -68,7 +69,7 @@ const DAO = Object.freeze({
 const Model = Object.freeze({
   AlertResponse,
   Announcement,
-  Event,
+  CalendarEvent,
   ForumPost,
   ForumResponse,
   ForumThread,
@@ -87,6 +88,7 @@ const Model = Object.freeze({
 
 /** @hidden */
 const Rest = Object.freeze({
+  AutomaticHTTP,
   BrowserHTTP,
   CordovaHTTP,
   NodeHTTP,

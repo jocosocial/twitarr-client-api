@@ -1,10 +1,14 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
+
+import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
+import { TwitarrError } from '../api/TwitarrError';
+
+import { SeamailResponse } from '../model/SeamailResponse';
+import { SeamailMessage } from '../model/SeamailMessage';
+
+import { Util } from '../internal/Util';
 
 import { AbstractDAO } from './AbstractDAO';
-import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
-import { SeamailResponse } from '../model/SeamailResponse';
-import { TwitarrError } from '../api/TwitarrError';
-import { SeamailMessage } from '../model/SeamailMessage';
 
 export class SeamailDAO extends AbstractDAO {
   public async get(id: string, skip_mark_read?: boolean) {
@@ -23,13 +27,13 @@ export class SeamailDAO extends AbstractDAO {
       });
   }
 
-  public async getMetadata(unread?: boolean, after?: Moment) {
+  public async getMetadata(unread?: boolean, after?: DateTime | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
     }
     if (after) {
-      options.parameters.after = '' + after.valueOf();
+      options.parameters.after = '' + Util.toDateTime(after).valueOf();
     }
     return this.http
       .get('/api/v2/seamail', options)
@@ -39,7 +43,7 @@ export class SeamailDAO extends AbstractDAO {
       });
   }
 
-  public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: Moment) {
+  public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: DateTime | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
@@ -48,7 +52,7 @@ export class SeamailDAO extends AbstractDAO {
       options.parameters.exclude_read_messages = 'true';
     }
     if (after) {
-      options.parameters.after = '' + after.valueOf();
+      options.parameters.after = '' + Util.toDateTime(after).valueOf();
     }
     return this.http.get('/api/v2/seamail_threads', options).then(result => {
       return SeamailResponse.fromRest(result.data);

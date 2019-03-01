@@ -65,8 +65,10 @@ export class TwitarrServer {
       return this.url;
     }
     let uri = URI(this.url);
-    if (forFragment.indexOf('/') === 0 || forFragment.indexOf('http') === 0) {
+    if (forFragment.indexOf('http') === 0) {
       uri = URI(forFragment);
+    } else if (forFragment.indexOf('/') === 0) {
+      uri.pathname(forFragment);
     } else {
       uri = uri.segment(forFragment);
     }

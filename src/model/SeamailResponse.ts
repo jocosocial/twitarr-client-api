@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 import { SeamailThread } from './SeamailThread';
 
@@ -33,7 +33,7 @@ export class SeamailResponse {
   }
 
   /** When the metadata was last checked. */
-  public last_checked: Moment;
+  public last_checked: DateTime;
 
   /** The list of threads. */
   public threads: SeamailThread[];
@@ -43,7 +43,7 @@ export class SeamailResponse {
 
   public toJSON() {
     const ret = {
-      last_checked: this.last_checked,
+      last_checked: this.last_checked.toMillis(),
     } as any;
     if (this.is_meta) {
       ret.seamail_meta = this.threads;

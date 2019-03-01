@@ -21,23 +21,6 @@ export class PhotoDAO extends AbstractDAO {
   }
 
   /**
-   * Update the "original filename" metadata on a photo.
-   */
-  public async put(id: string, newFileName: string) {
-    const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
-
-    options.data = {
-      original_filename: newFileName,
-    };
-    return this.http
-      .put('/api/v2/photo/' + id, options)
-      .then(result => this.handleErrors(result))
-      .then(data => {
-        return PhotoDetails.fromRest(data.photo);
-      });
-  }
-
-  /**
    * Delete/remove a photo..
    */
   public async remove(id: string) {

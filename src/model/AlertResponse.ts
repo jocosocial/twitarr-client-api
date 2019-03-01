@@ -1,9 +1,10 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 import { Util } from '../internal/Util';
 
 import { Announcement } from './Announcement';
-import { Event } from './Event';
+import { CalendarEvent } from './CalendarEvent';
+import { ForumThread } from './ForumThread';
 import { SeamailThread } from './SeamailThread';
 import { StreamPost } from './StreamPost';
 
@@ -24,34 +25,35 @@ export class AlertResponse {
     if (data.tweet_mentions) {
       ret.tweet_mentions = data.tweet_mentions.map(twarrt => StreamPost.fromRest(twarrt));
     }
-    /*
     if (data.forum_mentions) {
       ret.forum_mentions = data.forum_mentions.map(thread => ForumThread.fromRest(thread));
     }
-    */
     if (data.unread_seamail) {
       ret.unread_seamail = data.unread_seamail.map(thread => SeamailThread.fromRest(thread));
     }
     if (data.upcoming_events) {
-      ret.upcoming_events = data.upcoming_events.map(event => Event.fromRest(event));
+      ret.upcoming_events = data.upcoming_events.map(event => CalendarEvent.fromRest(event));
     }
 
     return ret;
   }
 
-  public last_checked_time: Moment;
+  public last_checked_time: DateTime;
 
   public announcements: Announcement[];
 
   public tweet_mentions: StreamPost[];
 
-  // public forum_mentions: ForumThread[];
+  public forum_mentions: ForumThread[];
 
   public unread_seamail: SeamailThread[];
 
-  public upcoming_events: Event[];
+  public upcoming_events: CalendarEvent[];
 
   public toJSON() {
-    return this;
+    const ret = {} as any;
+    Util.setEpochProperties(ret, this, 'last_checked_time');
+    Util.setProperties(ret, this, 'announcements', 'tweet_mentions', 'forum_mentions', 'unread_seamail', 'upcoming_events');
+    return ret;
   }
 }

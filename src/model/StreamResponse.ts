@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 import { Util } from '../internal/Util';
 import { StreamPost } from './StreamPost';
@@ -36,7 +36,7 @@ export class StreamResponse {
   public has_next_page: boolean;
 
   /** The timestamp of the next page. */
-  public next_page: Moment;
+  public next_page: DateTime;
 
   /** The stream posts. */
   public posts: StreamPost[] = [];
@@ -53,8 +53,8 @@ export class StreamResponse {
 
   public toJSON() {
     const ret = {} as any;
+    Util.setEpochProperties(ret, this, 'next_page');
     ret.has_next_page = this.has_next_page;
-    ret.next_page = this.next_page;
     if (ret.is_thread) {
       ret.post = this.posts;
     } else {

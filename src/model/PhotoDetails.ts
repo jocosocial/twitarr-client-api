@@ -1,6 +1,6 @@
-import { Util } from '../internal/Util';
+import { DateTime } from 'luxon';
 
-import { Moment } from 'moment';
+import { Util } from '../internal/Util';
 
 /**
  * Represents a photo.
@@ -12,7 +12,7 @@ export class PhotoDetails {
 
     const ret = new PhotoDetails();
     Util.setProperties(ret, data, 'id', 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader');
-    Util.setDateProperties(ret, data, 'uploader_time');
+    Util.setDateProperties(ret, data, 'upload_time');
     if (data.sizes) {
       Object.assign(ret.sizes, data.sizes);
     }
@@ -38,12 +38,15 @@ export class PhotoDetails {
   public uploader: string;
 
   /** When the photo was uploaded. */
-  public upload_time: Moment;
+  public upload_time: DateTime;
 
   /** The sizes available. */
   public sizes: { [key: string]: string } = {};
 
   public toJSON() {
-    return this;
+    const ret = {} as any;
+    Util.setProperties(ret, this, 'id', 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader', 'sizes');
+    Util.setEpochProperties(ret, this, 'upload_time');
+    return ret;
   }
 }

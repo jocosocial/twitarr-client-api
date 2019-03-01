@@ -1,7 +1,7 @@
 declare const describe, beforeEach, it, expect;
 
 import { EventDAO } from '../../src/dao/EventDAO';
-import { Event } from '../../src/model/Event';
+import { CalendarEvent } from '../../src/model/CalendarEvent';
 import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
 import { TwitarrServer } from '../../src/api/TwitarrServer';
 
@@ -26,7 +26,7 @@ describe('dao/PhotoDAO', () => {
       const ret = await dao.all();
       expect(ret).toBeDefined();
       expect(ret.length).toEqual(4);
-      expect(ret[0]).toBeInstanceOf(Event);
+      expect(ret[0]).toBeInstanceOf(CalendarEvent);
       expect(ret[0].id).toEqual('1');
       expect(ret[1].id).toEqual('2');
       expect(ret[2].id).toEqual('3');

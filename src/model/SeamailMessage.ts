@@ -1,8 +1,9 @@
+import { DateTime } from 'luxon';
+import * as hashFunc from 'string-hash';
+
 import { User } from './User';
 
 import { Util } from '../internal/Util';
-
-import { Moment } from 'moment';
 
 /**
  * Represents a Seamail message.
@@ -13,17 +14,20 @@ export class SeamailMessage {
     Util.assertHasProperties(data, 'id', 'text', 'timestamp');
 
     const ret = new SeamailMessage();
+    var hash = data.id + '/' + data.timestamp + '/' + data.text;
 
     Util.setProperties(ret, data, 'id', 'text');
     Util.setDateProperties(ret, data, 'timestamp');
 
     if (!Util.isEmpty(data.author)) {
+      hash += '/' + data.author.username;
       ret.author = User.fromRest(data.author);
     }
 
     if (!Util.isEmpty(data.read_users)) {
       ret.read_users = data.read_users.map(user => User.fromRest(user));
     }
+    ret.hash = hashFunc(hash);
 
     return ret;
   }
@@ -38,18 +42,20 @@ export class SeamailMessage {
   public text: string;
 
   /** The time the message was created. */
-  public timestamp: Moment;
+  public timestamp: DateTime;
 
   /** The users who have read the message. */
   public read_users: User[] = [];
 
+  /** A unique hash of this message. */
+  public hash: string;
+
   public toJSON() {
     return {
-      author: this.author.toJSON(),
       id: this.id,
       read_users: this.read_users.map(user => user.toJSON()),
       text: this.text,
-      timestamp: this.timestamp,
+      timestamp: this.timestamp.toMillis(),
     };
   }
 }

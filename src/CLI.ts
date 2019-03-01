@@ -285,7 +285,7 @@ const CLI = () => {
         continue;
       }
       if (Util.isDateObject(value)) {
-        value = Util.toMoment(value).fromNow();
+        value = Util.toDateTime(value).toRelative();
       }
       t.push([name + ':', value]);
     }
@@ -347,7 +347,7 @@ const CLI = () => {
     const t = new Table(format);
 
     for (const thread of seamail.threads) {
-      const row = [thread.id, thread.subject, thread.timestamp.fromNow()];
+      const row = [thread.id, thread.subject, thread.timestamp.toRelative()];
       if (!n) {
         row.unshift(thread.is_unread ? '*' : '');
       }
@@ -366,13 +366,13 @@ const CLI = () => {
 
     const thread = seamail.threads[0];
     t.push(['Subject:', thread.subject]);
-    t.push(['Last Updated:', thread.timestamp.fromNow()]);
+    t.push(['Last Updated:', thread.timestamp.toRelative()]);
     t.push(['Participants:', thread.users.map(user => user.toString()).join('\n')]);
     console.log(t.toString());
     console.log('');
     t = new Table(tableFormat);
     thread.messages.reverse().forEach(message => {
-      t.push([message.author.getDisplayName(), message.text, message.timestamp.fromNow()]);
+      t.push([message.author.getDisplayName(), message.text, message.timestamp.toRelative()]);
     });
     console.log(t.toString());
     console.log('');
@@ -398,7 +398,7 @@ const CLI = () => {
     for (const post of response.posts.reverse()) {
       console.log(post.author.toString());
       console.log(wrap(post.text.trim(), { indent: '  ', width: 60 }));
-      console.log('  - ' + post.timestamp.fromNow() + ' (id: ' + post.id + ')');
+      console.log('  - ' + post.timestamp.toRelative() + ' (id: ' + post.id + ')');
       console.log('');
     }
   };
@@ -471,10 +471,10 @@ const CLI = () => {
 
   const printEvent = (event: any) => {
     const prefix = '           ';
-    const startTime = event.start_time.format('hh:mm a');
+    const startTime = event.start_time.toFormat('hh:mm a');
     console.log(startTime + ' ' + (event.following ? '* ' : '  ') + event.title + (event.official ? '' : ' (shadow)'));
     if (event.location) console.log(prefix + event.location);
-    if (event.end_time) console.log(prefix + 'ends: ' + event.end_time.format('hh:mm a'));
+    if (event.end_time) console.log(prefix + 'ends: ' + event.end_time.toFormat('hh:mm a'));
     if (event.description) console.log(wrap(event.description.trim(), { indent: prefix, width: 50 }));
     console.log(prefix + 'id: ' + event.id);
     console.log('');
@@ -482,7 +482,7 @@ const CLI = () => {
 
   const doListEvents = async (mine?: boolean, today?: boolean) => {
     const client = getClient();
-    const now = Util.toMoment(new Date().getTime());
+    const now = Util.toDateTime(new Date().getTime());
     let events;
     if (mine || today) {
       events = await client.events().getDay(now, mine);
@@ -491,7 +491,7 @@ const CLI = () => {
     }
     let lastDay;
     for (const event of events) {
-      let day = event.start_time.format('ddd, MMM Do');
+      let day = event.start_time.toFormat('ccc, MMM dd');
       if (day !== lastDay) {
         console.log('[ ' + day + ' ]');
         lastDay = day;
@@ -509,12 +509,12 @@ const CLI = () => {
   };
 
   const doUpdateEvent = async (id: string, title?: string, description?: string, location?: string, startTime?: string, endTime?: string) => {
-    const start = startTime ? Util.toMoment(startTime) : undefined;
-    const end = endTime ? Util.toMoment(endTime) : undefined;
+    const start = startTime ? Util.toDateTime(startTime) : undefined;
+    const end = endTime ? Util.toDateTime(endTime) : undefined;
     const event = await getClient()
       .events()
       .update(id, title, description, location, start, end);
-    let day = event.start_time.format('ddd, MMM Do');
+    let day = event.start_time.toFormat('ccc, MMM dd');
     console.log('[ ' + day + ' ]');
     printEvent(event);
   };
@@ -574,14 +574,14 @@ const CLI = () => {
       .text()
       .announcements();
     for (const announcement of announcements) {
-      console.log(announcement.timestamp.fromNow() + ' - ' + announcement.author.toString());
+      console.log(announcement.timestamp.toRelative() + ' - ' + announcement.author.toString());
       console.log(wrap(announcement.text, { indent: '  ', size: 50 }));
       console.log('');
     }
   };
 
   const printForumPost = post => {
-    const time = post.timestamp.fromNow();
+    const time = post.timestamp.toRelative();
     console.log('-----');
     console.log(post.author.toString() + ' posted ' + time);
     const statusLine =
@@ -597,7 +597,7 @@ const CLI = () => {
   };
 
   const printThreadSummary = (thread, page?: number) => {
-    const lastTime = thread.timestamp ? thread.timestamp.format('yyyy-MM-DD hh:mm a') : thread.latest_read.format('yyyy-MM-DD hh:mm a');
+    const lastTime = thread.timestamp ? thread.timestamp.toFormat('yyyy-MM-dd hh:mm a') : thread.latest_read.toFormat('yyyy-MM-dd hh:mm a');
     console.log('### ' + thread.subject + ' ###');
     console.log(lastTime + (thread.sticky ? ' [sticky]' : '') + (thread.locked ? ' [locked]' : ''));
     const statusLine =
@@ -792,11 +792,11 @@ const CLI = () => {
               };
               if (args.newerThan) {
                 options.newer_posts = true;
-                options.start = Util.toMoment(args.newerThan);
+                options.start = Util.toDateTime(args.newerThan);
               }
               if (args.olderThan) {
                 options.newer_posts = false;
-                options.start = Util.toMoment(args.olderThan);
+                options.start = Util.toDateTime(args.olderThan);
               }
               await doStreamRead(options);
               break;

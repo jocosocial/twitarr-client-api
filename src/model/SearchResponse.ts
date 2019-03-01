@@ -2,7 +2,7 @@ import { TwitarrError } from '../api/TwitarrError';
 
 import { Util } from '../internal/Util';
 
-import { Event } from './Event';
+import { CalendarEvent } from './CalendarEvent';
 import { ForumThread } from './ForumThread';
 import { SeamailThread } from './SeamailThread';
 import { StreamPost } from './StreamPost';
@@ -48,7 +48,7 @@ export class SearchResponse {
     }
     if (data.events) {
       Util.setProperties(ret.events, data.events, 'count', 'more');
-      ret.events.matches = data.events.matches.map(event => Event.fromRest(event));
+      ret.events.matches = data.events.matches.map(event => CalendarEvent.fromRest(event));
     }
 
     return ret;
@@ -81,7 +81,7 @@ export class SearchResponse {
     more: false,
   };
 
-  public events: ISearchStatus<Event> = {
+  public events: ISearchStatus<CalendarEvent> = {
     count: 0,
     matches: [],
     more: false,

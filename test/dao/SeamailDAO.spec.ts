@@ -52,7 +52,7 @@ describe('dao/SeamailDAO', () => {
       done();
     });
     it('after=<date>', async done => {
-      const ret = await dao.getMetadata(undefined, Util.toMoment(1549827395180));
+      const ret = await dao.getMetadata(undefined, Util.toDateTime(1549827395180));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
       expect(ret.threads.length).toEqual(0);
@@ -117,7 +117,7 @@ describe('dao/SeamailDAO', () => {
       done();
     });
     it('after=<date>', async done => {
-      const ret = await dao.getThreads(undefined, undefined, Util.toMoment(1549827390000));
+      const ret = await dao.getThreads(undefined, undefined, Util.toDateTime(1549827390000));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
       expect(ret.threads.length).toEqual(1);

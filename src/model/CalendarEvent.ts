@@ -1,16 +1,16 @@
-import { Util } from '../internal/Util';
+import { DateTime } from 'luxon';
 
-import { Moment } from 'moment';
+import { Util } from '../internal/Util';
 
 /**
  * Represents a calendar event.
- * @module Event
+ * @module CalendarEvent
  */
-export class Event {
+export class CalendarEvent {
   public static fromRest(data: any) {
     Util.assertHasProperties(data, 'id', 'title', 'start_time');
 
-    const ret = new Event();
+    const ret = new CalendarEvent();
     Util.setProperties(ret, data, 'id', 'title', 'location', 'official', 'description', 'following');
     Util.setDateProperties(ret, data, 'start_time', 'end_time');
 
@@ -27,10 +27,10 @@ export class Event {
   public location: string;
 
   /** The event's starting time. */
-  public start_time: Moment;
+  public start_time: DateTime;
 
   /** The event's ending time. */
-  public end_time: Moment;
+  public end_time: DateTime;
 
   /** Whether the event is official or not. */
   public official: boolean;
@@ -44,12 +44,7 @@ export class Event {
   public toJSON() {
     const ret = {} as any;
     Util.setProperties(ret, this, 'id', 'title', 'location', 'official', 'description', 'following');
-    if (this.start_time) {
-      ret.start_time = this.start_time.valueOf();
-    }
-    if (this.end_time) {
-      ret.end_time = this.end_time.valueOf();
-    }
+    Util.setEpochProperties(ret, this, 'start_time', 'end_time');
     return ret;
   }
 }

@@ -15,7 +15,7 @@ import { StreamDAO } from './dao/StreamDAO';
 import { TextDAO } from './dao/TextDAO';
 import { UserDAO } from './dao/UserDAO';
 
-import { BrowserHTTP } from './rest/BrowserHTTP';
+import { AutomaticHTTP } from './rest/AutomaticHTTP';
 
 /**
  * The Twitarr client.  This is the primary interface to Twitarr servers.
@@ -65,7 +65,7 @@ export class Client implements IHasHTTP {
     if (httpImpl) {
       Client.defaultHttp = httpImpl;
     } else {
-      Client.defaultHttp = new BrowserHTTP();
+      Client.defaultHttp = new AutomaticHTTP();
     }
     this.http = Client.defaultHttp;
   }

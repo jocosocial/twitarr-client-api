@@ -1,15 +1,6 @@
 import { TwitarrError } from '../api/TwitarrError';
 
-import { Moment } from 'moment';
-
-/** @hidden */
-const moment = require('moment');
-moment.fn.toJSON = () => {
-  return this.valueOf();
-};
-
-/** @hidden */
-const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
+import { DateTime } from 'luxon';
 
 /**
  * A utility class for random stuff.
@@ -54,39 +45,42 @@ export class Util {
   }
 
   /**
-   * Whether or not the passed object is already a date. (Either a [[Moment]] object, or
+   * Whether or not the passed object is already a date. (Either a [[DateTime]] object, or
    * a JavaScript [[Date]] object.)
    */
   public static isDateObject(date: any) {
-    return moment.isMoment(date) || date instanceof Date;
+    return DateTime.isDateTime(date) || date instanceof Date;
   }
 
   /**
-   * Create a [[Moment]] from any form of date (JavaScript [[Date]], [[Moment]], or epoch).
-   * [[Moment]] dates in Twitarr.js will always be converted internally to UTC to avoid time
-   * zone issues.
+   * Create a [[DateTime]] from any form of date (JavaScript [[Date]], [[DateTime]], or epoch).
    */
-  public static toMoment(date: Date | Moment | string | number): Moment {
+  public static toDateTime(date: Date | DateTime | string | number): DateTime {
+    let ret;
     if (date === undefined || date === null) {
-      return undefined;
-    } else if (moment.isMoment(date)) {
-      return (date as Moment).utc();
-    } else if (typeof date === 'number' || date instanceof Date || typeof date === 'string' || date instanceof String) {
-      return moment(date).utc();
+      ret = undefined;
+    } else if (DateTime.isDateTime(date)) {
+      ret = date as DateTime;
+    } else if (typeof date === 'number') {
+      ret = DateTime.fromMillis(date, { zone: 'utc' });
+    } else if (date instanceof Date) {
+      ret = DateTime.fromJSDate(date, { zone: 'utc' });
+    } else if (typeof date === 'string' || (date as any) instanceof String) {
+      ret = DateTime.fromISO(date, { zone: 'utc' });
     } else {
       throw new TwitarrError('Unable to parse type "' + typeof date + '" as a date.');
     }
+    // console.log('returning:', ret);
+    return ret;
   }
 
   /**
-   * Create a date string from any form of date (JavaScript [[Date]], [[Moment]], or epoch).
-   * Dates in Twitarr.js will always be converted internally to UTC before stringifying to
-   * avoid time zone issues.
+   * Create an ISO date string from any form of date (JavaScript [[Date]], [[DateTime]], or epoch).
    */
-  public static toDateString(date: Date | Moment | number) {
-    const ret = Util.toMoment(date);
+  public static toDateString(date: Date | DateTime | number) {
+    const ret = Util.toDateTime(date);
     if (ret) {
-      return ret.utc().format(dateFormat);
+      return ret.toISO();
     } else {
       return undefined;
     }
@@ -107,13 +101,27 @@ export class Util {
 
   /**
    * Iterate over a set of (optional) properties on the source object, and apply them to the target
-   * converting them to @Moment objects in the process.
+   * converting them to [[DateTime]] objects in the process.
    */
   public static setDateProperties(target: any, source: any, ...props) {
     if (!Util.isEmpty(source)) {
       for (const prop of props) {
         if (!Util.isEmpty(source[prop])) {
-          target[prop] = Util.toMoment(source[prop]);
+          target[prop] = Util.toDateTime(source[prop]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Iterate over a set of (optional) properties on the source object, and apply them to the target
+   * converting them to epoch time objects in the process.
+   */
+  public static setEpochProperties(target: any, source: any, ...props) {
+    if (!Util.isEmpty(source)) {
+      for (const prop of props) {
+        if (!Util.isEmpty(source[prop])) {
+          target[prop] = Util.toDateTime(source[prop]).toMillis();
         }
       }
     }

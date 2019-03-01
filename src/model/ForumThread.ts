@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 import { Util } from '../internal/Util';
 
@@ -61,7 +61,7 @@ export class ForumThread {
   public posts: ForumPost[] = [];
 
   /** The last time the thread was posted to */
-  public timestamp: Moment;
+  public timestamp: DateTime;
 
   /** The last page read in the thread */
   public last_post_page: number;
@@ -85,7 +85,7 @@ export class ForumThread {
   public post_count: number;
 
   /** The timestamp of the latest read post */
-  public latest_read: Moment;
+  public latest_read: DateTime;
 
   public toJSON() {
     const ret = {} as any;
@@ -105,7 +105,7 @@ export class ForumThread {
       'post_count',
       'latest_read',
     );
-    Util.setDateProperties(ret, this, 'timestamp', 'latest_read');
+    Util.setEpochProperties(ret, this, 'timestamp', 'latest_read');
     if (this.last_post_author) {
       ret.last_post_author = this.last_post_author.toJSON();
     }

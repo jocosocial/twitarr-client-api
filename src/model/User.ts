@@ -1,6 +1,19 @@
+import { DateTime } from 'luxon';
+
 import { Util } from '../internal/Util';
 
-import { Moment } from 'moment';
+export const sortUsers = (a: User, b: User) => {
+  if (a) {
+    if (b) {
+      return a.username.localeCompare(b.username);
+    } else {
+      return -1;
+    }
+  } else if (b) {
+    return 1;
+  }
+  return 0;
+};
 
 /**
  * Represents a Twit-arr user.
@@ -34,6 +47,18 @@ export class User {
     return ret;
   }
 
+  public static unique(users: User[]) {
+    let seen: { [key: string]: boolean };
+    return users
+      .filter(user => {
+        if (user === undefined || user === null || seen[user.username]) {
+          return false;
+        }
+        return (seen[user.username] = true);
+      })
+      .sort(sortUsers);
+  }
+
   /** The unique username. */
   public username: string;
 
@@ -50,10 +75,10 @@ export class User {
   public empty_password: boolean;
 
   /** The last time the user logged in. */
-  public last_login: Moment;
+  public last_login: DateTime;
 
   /** The last time the user's photo was updated. */
-  public last_photo_updated: Moment;
+  public last_photo_updated: DateTime;
 
   /** The user's room number. */
   public room_number: number;
@@ -101,12 +126,7 @@ export class User {
       'number_of_tweets',
       'number_of_mentions',
     );
-    if (!Util.isEmpty(this.last_login)) {
-      ret.last_login = this.last_login.valueOf();
-    }
-    if (!Util.isEmpty(this.last_photo_updated)) {
-      ret.last_photo_updated = this.last_photo_updated.valueOf();
-    }
+    Util.setEpochProperties(ret, this, 'last_login', 'last_photo_updated');
     return ret;
   }
 

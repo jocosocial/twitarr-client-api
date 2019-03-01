@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AxiosStatic, AxiosInstance, /*AxiosResponse,*/ AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import * as clonedeep from 'lodash.clonedeep';
 
 if (!fetch) { // eslint-disable-line
@@ -23,14 +23,6 @@ import { TwitarrServer } from '../api/TwitarrServer';
  */
 export class BrowserHTTP extends AbstractHTTP {
   /**
-   * The Axios implementation class we'll use for making ReST calls.  This is necessary
-   * to make sure we end up with the correct backend (XMLHttpRequest or Node.js 'http')
-   * at runtime.
-   * @hidden
-   */
-  private axiosImpl: AxiosStatic;
-
-  /**
    * The Axios instance we'll use for making ReST calls.  This will be reinitialized whenever
    * the server configuration changes.
    */
@@ -39,12 +31,10 @@ export class BrowserHTTP extends AbstractHTTP {
   /**
    * Construct an AxiosHTTP instance.
    * @param server - The server to connect to.
-   * @param axiosImpl - The Axios implementation class to use.
    * @param timeout - The default timeout for ReST connections.
    */
-  public constructor(server?: TwitarrServer, axiosImpl?: AxiosStatic, timeout = 10000) {
+  public constructor(server?: TwitarrServer, timeout = 10000) {
     super(server, timeout);
-    this.axiosImpl = axiosImpl || axios;
   }
 
   /**
@@ -303,7 +293,7 @@ export class BrowserHTTP extends AbstractHTTP {
         axiosOpts.adapter = require('axios/lib/adapters/http.js');
       }
 
-      this.axiosObj = this.axiosImpl.create(axiosOpts);
+      this.axiosObj = axios.create(axiosOpts);
     }
     return this.axiosObj;
   }

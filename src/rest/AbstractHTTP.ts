@@ -181,7 +181,10 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
       ret.headers['X-Requested-With'] = 'XMLHttpRequest';
     }
     if (!ret.parameters.hasOwnProperty('key')) {
-      ret.parameters.key = this.getKey();
+      const key = this.getKey();
+      if (key) {
+        ret.parameters.key = key;
+      }
     }
     return ret;
   }

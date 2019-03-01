@@ -24,7 +24,7 @@ export class TextDAO extends AbstractDAO {
       .then(result => this.handleErrors(result))
       .then(data => {
         return {
-          time: Util.toMoment(data.epoch),
+          time: Util.toDateTime(data.epoch),
           display: data.time,
           offset: data.offset as number,
         };

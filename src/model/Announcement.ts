@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 import { Util } from '../internal/Util';
 
@@ -32,9 +32,12 @@ export class Announcement {
   public text: string;
 
   /** The announcement time. */
-  public timestamp: Moment;
+  public timestamp: DateTime;
 
   public toJSON() {
-    return this;
+    const ret = {} as any;
+    Util.setProperties(ret, this, 'id', 'author', 'text');
+    Util.setEpochProperties(ret, this, 'timestamp');
+    return ret;
   }
 }

@@ -58,10 +58,10 @@ describe('api/TwitarrServer', () => {
       expect(server.resolveURL('foo/')).toEqual(SERVER_URL + 'foo');
     });
     it('#resolveURL(absolute-path)', () => {
-      expect(server.resolveURL('/rest/foo/')).toEqual('/rest/foo/');
+      expect(server.resolveURL('/rest/foo/')).toEqual(SERVER_URL + 'rest/foo/');
     });
     it('#resolveURL(absolute-path, query-parms)', () => {
-      expect(server.resolveURL('/rest/foo', 'foo=bar')).toEqual('/rest/foo?foo%3Dbar');
+      expect(server.resolveURL('/rest/foo', 'foo=bar')).toEqual(SERVER_URL + 'rest/foo?foo%3Dbar');
     });
     it('#resolveURL(relative)', () => {
       expect(server.resolveURL('rest/foo/')).toEqual(SERVER_URL + 'rest/foo');

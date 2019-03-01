@@ -81,7 +81,7 @@ describe('dao/StreamDAO', () => {
       done();
     });
     it('posts(start=0)', async done => {
-      const ret = await dao.posts({ start: Util.toMoment(0) });
+      const ret = await dao.posts({ start: Util.toDateTime(0) });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(20);

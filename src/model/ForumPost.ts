@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 import { Util } from '../internal/Util';
 
@@ -44,7 +44,7 @@ export class ForumPost {
   public text: string;
 
   /** The time the post was made */
-  public timestamp: Moment;
+  public timestamp: DateTime;
 
   /** Photos in the post */
   public photos: PhotoDetails[] = [];
@@ -55,8 +55,8 @@ export class ForumPost {
   public toJSON() {
     const ret = {} as any;
     Util.setProperties(ret, this, 'id', 'forum_id', 'thread_locked', 'text');
+    Util.setEpochProperties(ret, this, 'timestamp');
     ret.author = this.author.toJSON();
-    ret.timestamp = this.timestamp.valueOf();
     ret.photos = this.photos.map(photo => photo.toJSON());
     return ret;
   }
