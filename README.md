@@ -26,7 +26,7 @@ The intention is to implement 100% of the features specified in [the Twit-arr Re
 
 # Changes
 
-The CHANGELOG will be updated as releases occur, and should always be accessible [here](https://github.com/RangerRick/twitarr-client-api/blob/master/CHANGELOG.md).
+The CHANGELOG will be updated as releases occur, and should always be accessible [here](https://github.com/seamonkeysocial/twitarr-client-api/blob/master/CHANGELOG.md).
 
 # Development
 
@@ -46,5 +46,5 @@ Then you can run npm to build or test the project:
 
 # Reporting Bugs or Feature Requests
 
-Twitarr.js issues are tracked in the Twit-arr issue tracker: https://github.com/RangerRick/twitarr-client-api/issues
+Twitarr.js issues are tracked in the Twit-arr issue tracker: https://github.com/seamonkeysocial/twitarr-client-api/issues
 
