@@ -1,12 +1,10 @@
 import clonedeep from 'lodash.clonedeep';
+import URI from 'urijs';
 
 let fetch: any;
 if (!fetch) {
   fetch = require('node-fetch');
 }
-
-/** @hidden */
-const URI = require('urijs');
 
 import { AbstractHTTP } from './AbstractHTTP';
 import { TwitarrError } from '../api/TwitarrError';
@@ -57,7 +55,7 @@ export class CordovaHTTP extends AbstractHTTP {
    * Make an HTTP GET call using `cordova.plugin.http.get`.
    */
   public get(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
@@ -73,7 +71,7 @@ export class CordovaHTTP extends AbstractHTTP {
    * Make an HTTP PUT call using `cordova.plugin.http.put`.
    */
   public put(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
@@ -90,7 +88,7 @@ export class CordovaHTTP extends AbstractHTTP {
    * Make an HTTP POST call using `cordova.plugin.http.post`.
    */
   public post(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
@@ -106,7 +104,7 @@ export class CordovaHTTP extends AbstractHTTP {
    * Make an HTTP DELETE call using `cordova.plugin.http.delete`.
    */
   public httpDelete(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);

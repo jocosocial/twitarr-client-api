@@ -1,14 +1,12 @@
 import axios from 'axios';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import clonedeep from 'lodash.clonedeep';
+import URI from 'urijs';
 
 let fetch: any;
 if (!fetch) {
   fetch = require('node-fetch');
 }
-
-/** @hidden */
-const URI = require('urijs');
 
 import { AbstractHTTP } from './AbstractHTTP';
 import { TwitarrError } from '../api/TwitarrError';
@@ -41,7 +39,7 @@ export class BrowserHTTP extends AbstractHTTP {
    * Make an HTTP GET call using `axios.request({method:'get'})`.
    */
   public get(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
@@ -73,7 +71,7 @@ export class BrowserHTTP extends AbstractHTTP {
    * Make an HTTP PUT call using `axios.request({method:'put'})`.
    */
   public put(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
@@ -106,7 +104,7 @@ export class BrowserHTTP extends AbstractHTTP {
    * Make an HTTP POST call using `axios.request({method:'post'})`.
    */
   public post(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
@@ -138,7 +136,7 @@ export class BrowserHTTP extends AbstractHTTP {
    * Make an HTTP DELETE call using `axios.request({method:'delete'})`.
    */
   public httpDelete(url: string, options?: TwitarrHTTPOptions) {
-    const realUrl = this.getServer(options).resolveURL(url);
+    const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
@@ -177,7 +175,7 @@ export class BrowserHTTP extends AbstractHTTP {
     }
 
     const fetchObj = this.getFetchObject(fileName, contentType, data, opts);
-    const u = URI(this.server.url).resource(this.server.resolveURL(url, opts.parameters));
+    const u = URI(this.server.url).resource(this.server.resolveURL(url, opts.parameters) as string);
 
     const fetchOpts = Object.assign(
       {
