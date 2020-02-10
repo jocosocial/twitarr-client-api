@@ -49,6 +49,6 @@ jobs:
     steps:
       - cached-checkout
       - cached-npm-install
-      - run: # run tests
-          name: test
-          command: npm run test
+      - run:
+          name: build and test
+          command: npm run dist
