@@ -42,15 +42,15 @@ export class CordovaHTTP extends AbstractHTTP {
     super(server, timeout);
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    if (!cordova || !cordova.plugin || !cordova.plugin.http) {
+    if (!window.cordova || !window.cordova.plugin || !window.cordova.plugin.http) {
       throw new TwitarrError('cordova-plugin-advanced-http is not available!');
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    cordova.plugin.http.setDataSerializer('json');
+    window.cordova.plugin.http.setDataSerializer('json');
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    cordova.plugin.http.setRequestTimeout(timeout / 1000.0);
+    window.cordova.plugin.http.setRequestTimeout(timeout / 1000.0);
   }
 
   /**
@@ -169,7 +169,7 @@ export class CordovaHTTP extends AbstractHTTP {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      cordova.plugin.http.sendRequest(url, opts, response => resolve(response), err => reject(err));
+      window.cordova.plugin.http.sendRequest(url, opts, response => resolve(response), err => reject(err));
     })
       .then((response: any) => {
         let type;
@@ -239,7 +239,7 @@ export class CordovaHTTP extends AbstractHTTP {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      cordova.plugin.http.setSSLCertMode(
+      window.cordova.plugin.http.setSSLCertMode(
         'nocheck',
         () => {
           this.initialized = true;
