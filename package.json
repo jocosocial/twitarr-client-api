@@ -122,8 +122,8 @@
     "testURL": "http://localhost"
   },
   "scripts": {
-    "precommit": "npm run lint && jest",
-    "prepush": "conventional-changelog-lint --from=origin/master && npm run lint",
+    "precommit": "npm run lint",
+    "prepush": "conventional-changelog-lint --from=origin/master && npm run lint && npm run test",
     "changelog": "standard-changelog -i CHANGELOG.md -s -r 1 -f",
     "build": "webpack --define process.env.NODE_ENV=production --env production",
     "dev": "webpack --progress --colors",
