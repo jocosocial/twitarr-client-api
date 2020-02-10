@@ -29,7 +29,7 @@ commands:
         - restore_cache:
             name: Restore Package Cache
             keys:
-              - npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}{{ checksum "bower.json" }}
+              - npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
               - npm-packages-{{ .Branch }}
               - npm-packages-
         - run:
@@ -37,9 +37,8 @@ commands:
             command: npm --pure-lockfile --prefer-offline --no-progress install
         - save_cache:
             name: Save Package Cache
-            key: npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}{{ checksum "bower.json" }}
+            key: npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
             paths:
-              - bower_components/
               - node_modules/
 
 jobs:
