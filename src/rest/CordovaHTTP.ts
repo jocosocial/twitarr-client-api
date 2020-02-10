@@ -169,7 +169,12 @@ export class CordovaHTTP extends AbstractHTTP {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      window.cordova.plugin.http.sendRequest(url, opts, response => resolve(response), err => reject(err));
+      window.cordova.plugin.http.sendRequest(
+        url,
+        opts,
+        response => resolve(response),
+        err => reject(err),
+      );
     })
       .then((response: any) => {
         let type;
