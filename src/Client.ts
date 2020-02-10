@@ -109,7 +109,11 @@ export class Client implements IHasHTTP {
     }
 
     try {
-      return await this.user().login();
+      return await this.user()
+        .login()
+        .then(() => {
+          return this;
+        });
     } catch (err) {
       if (err.code === 401) {
         throw new TwitarrError('username or password was invalid', err.code, err.options, err.errors, err.data);
