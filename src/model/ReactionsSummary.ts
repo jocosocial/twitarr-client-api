@@ -11,9 +11,11 @@ interface IReactions {
  */
 export class ReactionsSummary {
   public static fromRest(data: any) {
-    const ret = new ReactionsSummary();
-    ret.reactions = data as IReactions;
-    return ret;
+    return new ReactionsSummary(data);
+  }
+
+  public constructor(data: any) {
+    this.reactions = data as IReactions;
   }
 
   /** The reactions. */

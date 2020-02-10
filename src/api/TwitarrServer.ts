@@ -1,8 +1,9 @@
 /** @hidden */
-const URI = require('urijs');
+import URI from 'urijs';
 
 import { TwitarrAuthConfig } from './TwitarrAuthConfig';
 import { UUID } from '../internal/UUID';
+import { TwitarrError } from './TwitarrError';
 
 /**
  * Represents a remote Twitarr server.
@@ -43,6 +44,9 @@ export class TwitarrServer {
   public constructor(name?: string, url?: string, auth?: TwitarrAuthConfig | string, password?: string) {
     this.id = UUID.generate();
     this.name = name;
+    if (!url) {
+      throw new TwitarrError('You must provide a URL when creating a TwitarrServer!');
+    }
     this.url = url;
     if (auth instanceof TwitarrAuthConfig) {
       this.auth = auth;

@@ -10,16 +10,15 @@ import { User } from './User';
  */
 export class Announcement {
   public static fromRest(data: any) {
+    return new Announcement(data);
+  }
+
+  public constructor(data: any) {
     Util.assertHasProperties(data, 'id', 'author', 'text', 'timestamp');
-
-    const ret = new Announcement();
-    Util.setProperties(ret, data, 'id', 'text');
-    Util.setDateProperties(ret, data, 'timestamp');
-    if (!Util.isEmpty(data.author)) {
-      ret.author = User.fromRest(data.author);
-    }
-
-    return ret;
+    this.id = data.id;
+    this.author = User.fromRest(data.author);
+    this.text = data.text;
+    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
   }
 
   /** The unique announcement ID. */

@@ -44,7 +44,7 @@ export class StreamDAO extends AbstractDAO {
     if (streamOptions) {
       Util.setProperties(options.parameters, streamOptions, 'author', 'hashtag', 'include_author', 'limit', 'mentions', 'newer_posts', 'starred');
       if (streamOptions.start) {
-        options.parameters.start = '' + Util.toDateTime(streamOptions.start).toMillis();
+        options.parameters.start = String((Util.toDateTime(streamOptions.start) as DateTime).toMillis());
       }
     }
     return this.http.get('/api/v2/stream', options).then(result => {
@@ -58,10 +58,10 @@ export class StreamDAO extends AbstractDAO {
   public async thread(id: string, limit?: number, page?: number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (!Util.isEmpty(limit)) {
-      options.parameters.limit = '' + limit;
+      options.parameters.limit = String(limit);
     }
     if (!Util.isEmpty(page)) {
-      options.parameters.page = '' + page;
+      options.parameters.page = String(page);
     }
     return this.http.get('/api/v2/thread/' + id, options).then(result => {
       return StreamResponse.fromRest(result.data);
@@ -74,13 +74,13 @@ export class StreamDAO extends AbstractDAO {
   public async mentions(username: string, limit?: number, page?: number, after?: DateTime | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (!Util.isEmpty(limit)) {
-      options.parameters.limit = '' + limit;
+      options.parameters.limit = String(limit);
     }
     if (!Util.isEmpty(page)) {
-      options.parameters.page = '' + page;
+      options.parameters.page = String(page);
     }
-    if (!Util.isEmpty(after)) {
-      options.parameters.after = '' + Util.toDateTime(after).toMillis();
+    if (after !== undefined) {
+      options.parameters.after = String((Util.toDateTime(after) as DateTime).toMillis());
     }
     return this.http.get('/api/v2/stream/m/' + username, options).then(result => {
       return StreamResponse.fromRest(result.data);
@@ -93,13 +93,13 @@ export class StreamDAO extends AbstractDAO {
   public async hashtag(hashtag: string, limit?: number, page?: number, after?: DateTime | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (!Util.isEmpty(limit)) {
-      options.parameters.limit = '' + limit;
+      options.parameters.limit = String(limit);
     }
     if (!Util.isEmpty(page)) {
-      options.parameters.page = '' + page;
+      options.parameters.page = String(page);
     }
-    if (!Util.isEmpty(after)) {
-      options.parameters.after = '' + Util.toDateTime(after).toMillis();
+    if (after !== undefined) {
+      options.parameters.after = String((Util.toDateTime(after) as DateTime).toMillis());
     }
     return this.http.get('/api/v2/stream/h/' + hashtag, options).then(result => {
       return StreamResponse.fromRest(result.data);

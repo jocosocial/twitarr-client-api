@@ -55,7 +55,7 @@ export class Util {
   /**
    * Create a [[DateTime]] from any form of date (JavaScript [[Date]], [[DateTime]], or epoch).
    */
-  public static toDateTime(date: Date | DateTime | string | number): DateTime {
+  public static toDateTime(date: Date | DateTime | string | number): DateTime | undefined {
     let ret;
     if (date === undefined || date === null) {
       ret = undefined;
@@ -70,7 +70,6 @@ export class Util {
     } else {
       throw new TwitarrError('Unable to parse type "' + typeof date + '" as a date.');
     }
-    // console.log('returning:', ret);
     return ret;
   }
 
@@ -89,7 +88,7 @@ export class Util {
   /**
    * Iterate over a set of (optional) properties on the source object, and apply them to the target.
    */
-  public static setProperties(target: any, source: any, ...props) {
+  public static setProperties(target: any, source: any, ...props: string[]) {
     if (!Util.isEmpty(source)) {
       for (const prop of props) {
         if (!Util.isEmpty(source[prop])) {
@@ -103,7 +102,7 @@ export class Util {
    * Iterate over a set of (optional) properties on the source object, and apply them to the target
    * converting them to [[DateTime]] objects in the process.
    */
-  public static setDateProperties(target: any, source: any, ...props) {
+  public static setDateProperties(target: any, source: any, ...props: string[]) {
     if (!Util.isEmpty(source)) {
       for (const prop of props) {
         if (!Util.isEmpty(source[prop])) {
@@ -117,11 +116,11 @@ export class Util {
    * Iterate over a set of (optional) properties on the source object, and apply them to the target
    * converting them to epoch time objects in the process.
    */
-  public static setEpochProperties(target: any, source: any, ...props) {
+  public static setEpochProperties(target: any, source: any, ...props: string[]) {
     if (!Util.isEmpty(source)) {
       for (const prop of props) {
         if (!Util.isEmpty(source[prop])) {
-          target[prop] = Util.toDateTime(source[prop]).toMillis();
+          target[prop] = (Util.toDateTime(source[prop]) as DateTime).toMillis();
         }
       }
     }

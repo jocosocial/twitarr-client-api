@@ -23,7 +23,7 @@ export class AlertDAO extends AbstractDAO {
   public async get(last_checked_time?: DateTime | number, no_reset?: boolean) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (last_checked_time) {
-      options.parameters.last_checked_time = '' + Util.toDateTime(last_checked_time).toMillis();
+      options.parameters.last_checked_time = String((Util.toDateTime(last_checked_time) as DateTime).toMillis());
     }
     if (no_reset) {
       options.parameters.no_reset = '' + no_reset;
@@ -38,7 +38,7 @@ export class AlertDAO extends AbstractDAO {
 
   public async lastChecked(last_checked_time: DateTime | number) {
     const options = new TwitarrHTTPOptions().withData({
-      last_checked_time: Util.toDateTime(last_checked_time).toMillis(),
+      last_checked_time: (Util.toDateTime(last_checked_time) as DateTime).toMillis(),
     });
 
     return this.http
@@ -52,7 +52,7 @@ export class AlertDAO extends AbstractDAO {
   public async count(last_checked_time?: DateTime | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (last_checked_time) {
-      options.parameters.last_checked_time = '' + Util.toDateTime(last_checked_time).toMillis();
+      options.parameters.last_checked_time = String((Util.toDateTime(last_checked_time) as DateTime).toMillis());
     }
     return this.http
       .get('/api/v2/alerts/check', options)

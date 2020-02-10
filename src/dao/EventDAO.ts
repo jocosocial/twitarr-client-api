@@ -47,7 +47,7 @@ export class EventDAO extends AbstractDAO {
       .get('/api/v2/event', new TwitarrHTTPOptions().withParameter('app', 'plain'))
       .then(result => this.handleErrors(result))
       .then(data => {
-        const events = data.events.map(e => CalendarEvent.fromRest(e));
+        const events = data.events.map((e: any) => CalendarEvent.fromRest(e));
         return events.sort(sortEvents);
       });
   }
@@ -115,10 +115,10 @@ export class EventDAO extends AbstractDAO {
       options.data.location = location;
     }
     if (start_time) {
-      options.data.start_time = Util.toDateTime(start_time).toMillis();
+      options.data.start_time = (Util.toDateTime(start_time) as DateTime).toMillis();
     }
     if (end_time) {
-      options.data.end_time = Util.toDateTime(end_time).toMillis();
+      options.data.end_time = (Util.toDateTime(end_time) as DateTime).toMillis();
     }
     return this.http
       .post('/api/v2/event/' + id, options)
@@ -132,7 +132,7 @@ export class EventDAO extends AbstractDAO {
    * Retrieve the list of events for a given day.
    */
   public async getDay(date: DateTime | number, mine?: boolean) {
-    const epoch = Util.toDateTime(date).toMillis();
+    const epoch = (Util.toDateTime(date) as DateTime).toMillis();
     let url = '/api/v2/event/day/' + epoch;
     if (mine) {
       url = '/api/v2/event/mine/' + epoch;
@@ -141,7 +141,7 @@ export class EventDAO extends AbstractDAO {
       .get(url, new TwitarrHTTPOptions().withParameter('app', 'plain'))
       .then(result => this.handleErrors(result))
       .then(data => {
-        const events = data.events.map(e => CalendarEvent.fromRest(e));
+        const events = data.events.map((e: any) => CalendarEvent.fromRest(e));
         return events.sort(sortEvents);
       });
   }

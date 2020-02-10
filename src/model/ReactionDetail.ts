@@ -7,13 +7,14 @@ import { Util } from '../internal/Util';
  */
 export class ReactionDetail {
   public static fromRest(data: any) {
+    return new ReactionDetail(data);
+  }
+
+  public constructor(data: any) {
     Util.assertHasProperties(data, 'reaction', 'user');
-    const ret = new ReactionDetail();
-    ret.reaction = data.reaction;
-    if (!Util.isEmpty(data.user)) {
-      ret.user = User.fromRest(data.user);
-    }
-    return ret;
+
+    this.reaction = data.reaction;
+    this.user = User.fromRest(data.user);
   }
 
   /** The reaction. */

@@ -19,10 +19,6 @@ const otherUser = {
 };
 
 describe('SeamailMessage', () => {
-  it('empty constructor', () => {
-    expect(new SeamailMessage()).toMatchObject({});
-  });
-
   describe('#fromRest', () => {
     it('undefined', () => {
       expect(() => SeamailMessage.fromRest(undefined)).toThrow();

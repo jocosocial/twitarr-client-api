@@ -1,5 +1,3 @@
-declare const describe, beforeEach, it, expect;
-
 import { StreamDAO } from '../../src/dao/StreamDAO';
 import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
 import { TwitarrServer } from '../../src/api/TwitarrServer';
@@ -8,13 +6,14 @@ import { MockHTTP } from '../rest/MockHTTP';
 import { StreamResponse } from '../../src/model/StreamResponse';
 import { Util } from '../../src/internal/Util';
 import { ReactionsSummary } from '../../src/model/ReactionsSummary';
+import { ITwitarrHTTP } from '../../src/api/ITwitarrHTTP';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
 const SERVER_USER = 'demo';
 const SERVER_PASSWORD = 'demo';
 
-let dao: StreamDAO, server, auth, mockHTTP;
+let dao: StreamDAO, server: TwitarrServer, auth: TwitarrAuthConfig, mockHTTP: ITwitarrHTTP;
 
 describe('dao/StreamDAO', () => {
   beforeEach(() => {
@@ -24,70 +23,70 @@ describe('dao/StreamDAO', () => {
     dao = new StreamDAO(mockHTTP);
   });
   describe('#posts', () => {
-    it('posts()', async done => {
+    it('posts()', async (done: Function) => {
       const ret = await dao.posts();
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(20);
       done();
     });
-    it('posts(author=rangerrick)', async done => {
+    it('posts(author=rangerrick)', async (done: Function) => {
       const ret = await dao.posts({ author: 'rangerrick' });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(1);
       done();
     });
-    it('posts(hashtag=hashtag)', async done => {
+    it('posts(hashtag=hashtag)', async (done: Function) => {
       const ret = await dao.posts({ hashtag: 'hashtag' });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(1);
       done();
     });
-    it('posts(limit=5)', async done => {
+    it('posts(limit=5)', async (done: Function) => {
       const ret = await dao.posts({ limit: 5 });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(5);
       done();
     });
-    it('posts(limit=20)', async done => {
+    it('posts(limit=20)', async (done: Function) => {
       const ret = await dao.posts({ limit: 20 });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(20);
       done();
     });
-    it('posts(mentions=rangerrick)', async done => {
+    it('posts(mentions=rangerrick)', async (done: Function) => {
       const ret = await dao.posts({ mentions: 'rangerrick' });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(0);
       done();
     });
-    it('posts(mentions=rangerrick&include_author=true)', async done => {
+    it('posts(mentions=rangerrick&include_author=true)', async (done: Function) => {
       const ret = await dao.posts({ include_author: true, mentions: 'rangerrick' });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(1);
       done();
     });
-    it('posts(newer_posts=true)', async done => {
+    it('posts(newer_posts=true)', async (done: Function) => {
       const ret = await dao.posts({ newer_posts: true });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(0);
       done();
     });
-    it('posts(start=0)', async done => {
+    it('posts(start=0)', async (done: Function) => {
       const ret = await dao.posts({ start: Util.toDateTime(0) });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
       expect(ret.posts.length).toEqual(20);
       done();
     });
-    it('posts(starred=true)', async done => {
+    it('posts(starred=true)', async (done: Function) => {
       const ret = await dao.posts({ starred: true });
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -96,7 +95,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#thread', () => {
-    it('thread(id)', async done => {
+    it('thread(id)', async (done: Function) => {
       const ret = await dao.thread('5c63275ad86b930ad6739cb8');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -104,7 +103,7 @@ describe('dao/StreamDAO', () => {
       expect(ret.posts[0].children.length).toEqual(2);
       done();
     });
-    it('thread(id, limit=1)', async done => {
+    it('thread(id, limit=1)', async (done: Function) => {
       const ret = await dao.thread('5c63275ad86b930ad6739cb8', 1);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -113,7 +112,7 @@ describe('dao/StreamDAO', () => {
       expect(ret.posts[0].children[0].id).toEqual('5c6349e4ffef0beb3eae1e78');
       done();
     });
-    it('thread(id, limit=1, page=1)', async done => {
+    it('thread(id, limit=1, page=1)', async (done: Function) => {
       const ret = await dao.thread('5c63275ad86b930ad6739cb8', 1, 1);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -124,7 +123,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#mentions', () => {
-    it('mentions(username)', async done => {
+    it('mentions(username)', async (done: Function) => {
       const ret = await dao.mentions('rangerrick');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -134,7 +133,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#hashtag', () => {
-    it('hashtag(tag)', async done => {
+    it('hashtag(tag)', async (done: Function) => {
       const ret = await dao.hashtag('hashtag');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -144,7 +143,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#send', () => {
-    it('send(message)', async done => {
+    it('send(message)', async (done: Function) => {
       const ret = await dao.send('this is a twitter post!');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -154,7 +153,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#updatePost', () => {
-    it('updatePost(id, message)', async done => {
+    it('updatePost(id, message)', async (done: Function) => {
       const ret = await dao.updatePost('5c63275ad86b930ad6739cb8', 'this is no longer a twitter post!');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(StreamResponse);
@@ -164,7 +163,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#deletePost', () => {
-    it('deletePost(id)', async done => {
+    it('deletePost(id)', async (done: Function) => {
       const ret = await dao.deletePost('5c63275ad86b930ad6739cb8');
       expect(ret).toBeDefined();
       expect(ret).toBeTruthy();
@@ -172,7 +171,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#lockPost', () => {
-    it('lockPost(id)', async done => {
+    it('lockPost(id)', async (done: Function) => {
       const ret = await dao.lockPost('5c63275ad86b930ad6739cb8');
       expect(ret).toBeDefined();
       expect(ret).toBeTruthy();
@@ -180,7 +179,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#unlockPost', () => {
-    it('unlockPost(id)', async done => {
+    it('unlockPost(id)', async (done: Function) => {
       const ret = await dao.unlockPost('5c63275ad86b930ad6739cb8');
       expect(ret).toBeDefined();
       expect(ret).toBeFalsy();
@@ -188,7 +187,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#react', () => {
-    it('react(id, reaction)', async done => {
+    it('react(id, reaction)', async (done: Function) => {
       const ret = await dao.react('5c63275ad86b930ad6739cb8', 'like');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(ReactionsSummary);
@@ -202,7 +201,7 @@ describe('dao/StreamDAO', () => {
     });
   });
   describe('#deleteReact', () => {
-    it('deleteReact(id, reaction)', async done => {
+    it('deleteReact(id, reaction)', async (done: Function) => {
       const ret = await dao.deleteReact('5c63275ad86b930ad6739cb8', 'like');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(ReactionsSummary);

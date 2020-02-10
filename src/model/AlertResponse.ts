@@ -14,41 +14,41 @@ import { StreamPost } from './StreamPost';
  */
 export class AlertResponse {
   public static fromRest(data: any) {
-    Util.assertHasProperties(data, 'status', 'last_checked_time');
+    return new AlertResponse(data);
+  }
 
-    const ret = new AlertResponse();
-    Util.setDateProperties(ret, data, 'last_checked_time');
+  public constructor(data: any) {
+    Util.assertHasProperties(data, 'last_checked_time');
+    this.last_checked_time = Util.toDateTime(data.last_checked_time) as DateTime;
 
     if (data.announcements) {
-      ret.announcements = data.announcements.map(announcement => Announcement.fromRest(announcement));
+      this.announcements = data.announcements.map((announcement: any) => Announcement.fromRest(announcement));
     }
     if (data.tweet_mentions) {
-      ret.tweet_mentions = data.tweet_mentions.map(twarrt => StreamPost.fromRest(twarrt));
+      this.tweet_mentions = data.tweet_mentions.map((twarrt: any) => StreamPost.fromRest(twarrt));
     }
     if (data.forum_mentions) {
-      ret.forum_mentions = data.forum_mentions.map(thread => ForumThread.fromRest(thread));
+      this.forum_mentions = data.forum_mentions.map((thread: any) => ForumThread.fromRest(thread));
     }
     if (data.unread_seamail) {
-      ret.unread_seamail = data.unread_seamail.map(thread => SeamailThread.fromRest(thread));
+      this.unread_seamail = data.unread_seamail.map((thread: any) => SeamailThread.fromRest(thread));
     }
     if (data.upcoming_events) {
-      ret.upcoming_events = data.upcoming_events.map(event => CalendarEvent.fromRest(event));
+      this.upcoming_events = data.upcoming_events.map((event: any) => CalendarEvent.fromRest(event));
     }
-
-    return ret;
   }
 
   public last_checked_time: DateTime;
 
-  public announcements: Announcement[];
+  public announcements = [] as Announcement[];
 
-  public tweet_mentions: StreamPost[];
+  public tweet_mentions = [] as StreamPost[];
 
-  public forum_mentions: ForumThread[];
+  public forum_mentions = [] as ForumThread[];
 
-  public unread_seamail: SeamailThread[];
+  public unread_seamail = [] as SeamailThread[];
 
-  public upcoming_events: CalendarEvent[];
+  public upcoming_events = [] as CalendarEvent[];
 
   public toJSON() {
     const ret = {} as any;

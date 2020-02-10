@@ -17,22 +17,9 @@ describe('api/TwitarrServer', () => {
   });
 
   describe('new TwitarrServer()', () => {
-    beforeEach(() => {
-      server = new TwitarrServer();
-    });
-    it('.id', () => {
-      expect(server.id).toBeDefined();
-      expect(server.id.length).toEqual(36);
-    });
-    it('.url', () => {
-      expect(server.url).toBeUndefined();
-    });
-    it('.host', () => {
-      expect(server.host).toBeUndefined();
-    });
-    it('#resolveURL', () => {
-      expect(server.resolveURL()).toBeUndefined();
-    });
+    expect(() => {
+      new TwitarrServer();
+    }).toThrowError('You must provide a URL');
   });
 
   describe('new TwitarrServer(name, url, auth)', () => {

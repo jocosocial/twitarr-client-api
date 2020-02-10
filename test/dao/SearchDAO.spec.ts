@@ -8,13 +8,14 @@ import { TwitarrServer } from '../../src/api/TwitarrServer';
 import { SearchResponse } from '../../src/model/SearchResponse';
 
 import { MockHTTP } from '../rest/MockHTTP';
+import { ITwitarrHTTP } from '../../src/api/ITwitarrHTTP';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
 const SERVER_USER = 'demo';
 const SERVER_PASSWORD = 'demo';
 
-let dao: SearchDAO, server, auth, mockHTTP;
+let dao: SearchDAO, server: TwitarrServer, auth: TwitarrAuthConfig, mockHTTP: ITwitarrHTTP;
 
 describe('dao/SearchDAO', () => {
   beforeEach(() => {
@@ -24,7 +25,7 @@ describe('dao/SearchDAO', () => {
     dao = new SearchDAO(mockHTTP);
   });
   describe('#all', () => {
-    it('all(rangerrick)', async done => {
+    it('all(rangerrick)', async (done: Function) => {
       const ret = await dao.all('rangerrick');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SearchResponse);

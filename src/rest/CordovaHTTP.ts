@@ -1,4 +1,4 @@
-import * as clonedeep from 'lodash.clonedeep';
+import clonedeep from 'lodash.clonedeep';
 
 let fetch: any;
 if (!fetch) {
@@ -80,7 +80,7 @@ export class CordovaHTTP extends AbstractHTTP {
     urlObj.search(opts.params);
     console.debug('PUT ' + urlObj.toString());
 
-    opts.data = Object.apply({}, opts.params);
+    opts.data = Object.apply({}, opts.params as any);
     opts.method = 'put';
 
     return this.request(urlObj.toString(), opts);
@@ -164,16 +164,17 @@ export class CordovaHTTP extends AbstractHTTP {
   /**
    * Make a request.
    */
-  protected async request(url, opts) {
+  protected async request(url: string, opts: ICordovaHTTPOptions) {
     await this.initializeSSL();
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
+      // eslint-disable-next-line prettier/prettier
       window.cordova.plugin.http.sendRequest(
         url,
         opts,
-        response => resolve(response),
-        err => reject(err),
+        (response: any) => resolve(response),
+        (err: Error) => reject(err),
       );
     })
       .then((response: any) => {

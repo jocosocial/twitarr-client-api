@@ -20,7 +20,7 @@ export class TwitarrError extends Error {
   /**
    * Any error messages that were returned from Twit-arr.
    */
-  private errors: ErrorMessage | IErrorParameters;
+  private errors: ErrorMessage | IErrorParameters | undefined;
 
   /**
    * Any other useful data.
@@ -29,7 +29,7 @@ export class TwitarrError extends Error {
 
   /** The error code associated with this error. */
   public get code() {
-    return this.statusCode;
+    return this.statusCode === -1 ? undefined : this.statusCode;
   }
 
   /** The error message */
@@ -41,6 +41,8 @@ export class TwitarrError extends Error {
       return this.errors.messages[0];
     } else if (this.errors && Object.keys(this.errors).length > 0) {
       const key = Object.keys(this.errors)[0];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
       return this.errors[key][0];
     }
     return undefined;
@@ -54,7 +56,7 @@ export class TwitarrError extends Error {
   public constructor(message?: string, code?: number, errors?: any, options?: any, data?: any) {
     super(message);
     this.name = this.constructor.name;
-    this.statusCode = code;
+    this.statusCode = code || -1;
     this.options = options;
     this.data = data;
 

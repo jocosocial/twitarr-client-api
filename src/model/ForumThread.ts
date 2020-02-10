@@ -11,16 +11,26 @@ import { User } from './User';
  */
 export class ForumThread {
   public static fromRest(data: any) {
-    Util.assertHasProperties(data, 'id', 'subject', 'sticky', 'locked', 'posts');
+    return new ForumThread(data);
+  }
 
-    const ret = new ForumThread();
+  public constructor(data: any) {
+    Util.assertHasProperties(data, 'id', 'subject', 'sticky', 'locked', 'posts');
+    this.id = data.id;
+    this.subject = data.subject;
+    this.sticky = data.sticky;
+    this.locked = data.locked;
+    if (Array.isArray(data.posts)) {
+      this.posts = data.posts.map((post: any) => ForumPost.fromRest(post));
+    } else if (typeof data.posts === 'number') {
+      this.posts = [];
+      this.post_count = parseInt(data.posts, 10);
+    }
+
+    // eslint-disable-next-line prettier/prettier
     Util.setProperties(
-      ret,
+      this,
       data,
-      'id',
-      'subject',
-      'sticky',
-      'locked',
       'last_post_page',
       'count',
       'new_posts',
@@ -30,16 +40,10 @@ export class ForumThread {
       'post_count',
       'latest_read',
     );
-    Util.setDateProperties(ret, data, 'timestamp', 'latest_read');
+    Util.setDateProperties(this, data, 'timestamp', 'latest_read');
     if (data.last_post_author) {
-      ret.last_post_author = User.fromRest(data.last_post_author);
+      this.last_post_author = User.fromRest(data.last_post_author);
     }
-    if (Array.isArray(data.posts)) {
-      ret.posts = data.posts.map(post => ForumPost.fromRest(post));
-    } else if (typeof data.posts === 'number') {
-      ret.post_count = parseInt(data.posts, 10);
-    }
-    return ret;
   }
 
   /** The unique thread ID. */
@@ -55,37 +59,37 @@ export class ForumThread {
   public locked: boolean;
 
   /** The last user to post to the thread */
-  public last_post_author: User;
+  public last_post_author?: User;
 
   /** The posts in this thread */
   public posts: ForumPost[] = [];
 
   /** The last time the thread was posted to */
-  public timestamp: DateTime;
+  public timestamp?: DateTime;
 
   /** The last page read in the thread */
-  public last_post_page: number;
+  public last_post_page?: number;
 
   /** Number of posts since last viewed */
-  public count: number;
+  public count?: number;
 
   /** Whether the thread has new posts */
-  public new_posts: boolean;
+  public new_posts?: boolean;
 
   /** The next page in the thread */
-  public next_page: number;
+  public next_page?: number;
 
   /** The previous page in the thread */
-  public previous_page: number;
+  public previous_page?: number;
 
   /** How many pages there are in the thread */
-  public page_count: number;
+  public page_count?: number;
 
   /** How many posts there are in the thread */
-  public post_count: number;
+  public post_count?: number;
 
   /** The timestamp of the latest read post */
-  public latest_read: DateTime;
+  public latest_read?: DateTime;
 
   public toJSON() {
     const ret = {} as any;

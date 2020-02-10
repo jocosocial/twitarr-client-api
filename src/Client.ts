@@ -40,6 +40,9 @@ export class Client implements IHasHTTP {
     opts.headers.accept = 'application/json';
 
     const welcomeUrl = server.resolveURL('api/v2/text/welcome');
+    if (!welcomeUrl) {
+      throw new TwitarrError('An error occurred resolving the welcome URL!');
+    }
     console.debug('checkServer: checking URL: ' + welcomeUrl);
     await httpImpl.get(welcomeUrl, opts);
     return true;
@@ -68,6 +71,7 @@ export class Client implements IHasHTTP {
       Client.defaultHttp = new AutomaticHTTP();
     }
     this.http = Client.defaultHttp;
+    this.server = (undefined as unknown) as TwitarrServer;
   }
 
   public async isLoggedIn(): Promise<boolean> {

@@ -6,37 +6,37 @@ import { TwitarrError } from '../api/TwitarrError';
 
 export class StreamResponse {
   public static fromRest(data: any) {
+    return new StreamResponse(data);
+  }
+
+  public constructor(data: any) {
     Util.assertHasProperties(data, 'has_next_page');
+    this.has_next_page = data.has_next_page;
 
     if (Util.isEmpty(data.stream_posts, data.stream_post, data.post)) {
       throw new TwitarrError('At least one of stream_posts, stream_post, or posts is expected on the response!', undefined, undefined, undefined, data);
     }
 
-    const ret = new StreamResponse();
-
-    Util.setProperties(ret, data, 'has_next_page');
-    Util.setDateProperties(ret, data, 'next_page');
+    Util.setDateProperties(this, data, 'next_page');
     if (!Util.isEmpty(data.stream_posts)) {
-      ret.posts = data.stream_posts.map(post => StreamPost.fromRest(post));
-      ret.is_thread = false;
+      this.posts = data.stream_posts.map((post: any) => StreamPost.fromRest(post));
+      this.is_thread = false;
     }
     if (!Util.isEmpty(data.stream_post)) {
-      ret.posts = [StreamPost.fromRest(data.stream_post)];
-      ret.is_thread = true;
+      this.posts = [StreamPost.fromRest(data.stream_post)];
+      this.is_thread = true;
     }
     if (!Util.isEmpty(data.post)) {
-      ret.posts = [StreamPost.fromRest(data.post)];
-      ret.is_thread = true;
+      this.posts = [StreamPost.fromRest(data.post)];
+      this.is_thread = true;
     }
-
-    return ret;
   }
 
   /** Whether there are more posts to retrieve. */
   public has_next_page: boolean;
 
   /** The timestamp of the next page. */
-  public next_page: DateTime;
+  public next_page: DateTime | undefined;
 
   /** The stream posts. */
   public posts: StreamPost[] = [];

@@ -10,13 +10,14 @@ import { Util } from '../../src/internal/Util';
 
 import { MockHTTP } from '../rest/MockHTTP';
 import { SeamailMessage } from '../../src/model/SeamailMessage';
+import { ITwitarrHTTP } from '../../src/api/ITwitarrHTTP';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
 const SERVER_USER = 'demo';
 const SERVER_PASSWORD = 'demo';
 
-let dao: SeamailDAO, server, auth, mockHTTP;
+let dao: SeamailDAO, server: TwitarrServer, auth: TwitarrAuthConfig, mockHTTP: ITwitarrHTTP;
 
 const assertThreadsMatch = (expected, actual) => {
   expect(Object.keys(expected).length).toEqual(actual.threads.length);
@@ -37,21 +38,21 @@ describe('dao/SeamailDAO', () => {
     dao = new SeamailDAO(mockHTTP);
   });
   describe('#getMetadata', () => {
-    it('no arguments', async done => {
+    it('no arguments', async (done: Function) => {
       const ret = await dao.getMetadata();
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
       expect(ret.threads[0].is_unread).toBeFalsy();
       done();
     });
-    it('unread=true', async done => {
+    it('unread=true', async (done: Function) => {
       const ret = await dao.getMetadata(true);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
       expect(ret.threads[0].is_unread).toBeTruthy();
       done();
     });
-    it('after=<date>', async done => {
+    it('after=<date>', async (done: Function) => {
       const ret = await dao.getMetadata(undefined, Util.toDateTime(1549827395180));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -60,7 +61,7 @@ describe('dao/SeamailDAO', () => {
     });
   });
   describe('#getThreads', () => {
-    it('no arguments', async done => {
+    it('no arguments', async (done: Function) => {
       const ret = await dao.getThreads();
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -79,7 +80,7 @@ describe('dao/SeamailDAO', () => {
       );
       done();
     });
-    it('exclude_read_messages=true', async done => {
+    it('exclude_read_messages=true', async (done: Function) => {
       const ret = await dao.getThreads(false, true);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -98,7 +99,7 @@ describe('dao/SeamailDAO', () => {
       );
       done();
     });
-    it('unread=true', async done => {
+    it('unread=true', async (done: Function) => {
       const ret = await dao.getThreads(true);
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -116,7 +117,7 @@ describe('dao/SeamailDAO', () => {
       );
       done();
     });
-    it('after=<date>', async done => {
+    it('after=<date>', async (done: Function) => {
       const ret = await dao.getThreads(undefined, undefined, Util.toDateTime(1549827390000));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(SeamailResponse);
@@ -136,7 +137,7 @@ describe('dao/SeamailDAO', () => {
   });
 
   describe('#get', () => {
-    it('no arguments', async done => {
+    it('no arguments', async (done: Function) => {
       dao.get(undefined).catch(err => {
         expect(err).toBeDefined();
         expect(err.message).toBe('id is required!');
@@ -144,7 +145,7 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('get(id)', async done => {
+    it('get(id)', async (done: Function) => {
       dao.get('5c607d43ea204f5815755cda').then(thread => {
         expect(thread).toBeDefined();
         expect(thread.threads).toBeDefined();
@@ -153,7 +154,7 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('get(id, true)', async done => {
+    it('get(id, true)', async (done: Function) => {
       dao.get('5c607d43ea204f5815755cda', true).then(thread => {
         expect(thread).toBeDefined();
         expect(thread.threads).toBeDefined();
@@ -162,7 +163,7 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('create()', async done => {
+    it('create()', async (done: Function) => {
       dao.create('Test Subject', 'Test Message', 'twitarrteam', 'rangerrick').then(response => {
         expect(response).toBeDefined();
         expect(response).toBeInstanceOf(SeamailResponse);
@@ -170,7 +171,7 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('post()', async done => {
+    it('post()', async (done: Function) => {
       dao.post('5c607d43ea204f5815755cda', 'another message').then(response => {
         expect(response).toBeDefined();
         expect(response).toBeInstanceOf(SeamailMessage);
@@ -178,7 +179,7 @@ describe('dao/SeamailDAO', () => {
       });
     });
 
-    it('unreadCount()', async done => {
+    it('unreadCount()', async (done: Function) => {
       dao.unreadCount().then(response => {
         expect(response).toBeDefined();
         expect(response).toEqual(15);

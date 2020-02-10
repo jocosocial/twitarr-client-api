@@ -46,7 +46,7 @@ export class TextDAO extends AbstractDAO {
       .then(result => this.handleErrors(result))
       .then(data => {
         if (data.announcements) {
-          return data.announcements.map(announcement => Announcement.fromRest(announcement));
+          return data.announcements.map((announcement: any) => Announcement.fromRest(announcement));
         }
       });
   }

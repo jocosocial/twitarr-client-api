@@ -89,7 +89,7 @@ export class UserDAO extends AbstractDAO {
       .get('/api/v2/user/starred', new TwitarrHTTPOptions().withParameter('app', 'plain'))
       .then(result => this.handleErrors(result))
       .then(data => {
-        return data.users.map(user => User.fromRest(user));
+        return data.users.map((user: any) => User.fromRest(user));
       });
   }
   public async createUser(registrationCode: string, username: string, password: string, displayName?: string) {

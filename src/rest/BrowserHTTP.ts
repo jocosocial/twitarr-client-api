@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import * as clonedeep from 'lodash.clonedeep';
+import clonedeep from 'lodash.clonedeep';
 
 let fetch: any;
 if (!fetch) {
@@ -26,7 +26,7 @@ export class BrowserHTTP extends AbstractHTTP {
    * The Axios instance we'll use for making ReST calls.  This will be reinitialized whenever
    * the server configuration changes.
    */
-  private axiosObj: AxiosInstance;
+  private axiosObj: AxiosInstance | undefined;
 
   /**
    * Construct an AxiosHTTP instance.
@@ -172,6 +172,10 @@ export class BrowserHTTP extends AbstractHTTP {
       .withHeader('content-type', 'multipart/form-data')
       .withParameter('key', this.getKey());
 
+    if (!this.server) {
+      throw new TwitarrError('attempting to post a file, but TwitarrServer is undefined!');
+    }
+
     const fetchObj = this.getFetchObject(fileName, contentType, data, opts);
     const u = URI(this.server.url).resource(this.server.resolveURL(url, opts.parameters));
 
@@ -186,9 +190,9 @@ export class BrowserHTTP extends AbstractHTTP {
       fetchObj,
     );
 
-    return fetch(u.toString(), fetchOpts).then(async response => {
+    return fetch(u.toString(), fetchOpts).then(async (response: Response) => {
       const json = await response.json();
-      return TwitarrResult.ok(json, undefined, response.status, response.headers['content-type']);
+      return TwitarrResult.ok(json, undefined, response.status, response.headers.get('content-type') || undefined);
     });
   }
 

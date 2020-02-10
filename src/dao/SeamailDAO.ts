@@ -33,7 +33,7 @@ export class SeamailDAO extends AbstractDAO {
       options.parameters.unread = 'true';
     }
     if (after) {
-      options.parameters.after = '' + Util.toDateTime(after).valueOf();
+      options.parameters.after = String((Util.toDateTime(after) as DateTime).valueOf());
     }
     return this.http
       .get('/api/v2/seamail', options)
@@ -52,7 +52,7 @@ export class SeamailDAO extends AbstractDAO {
       options.parameters.exclude_read_messages = 'true';
     }
     if (after) {
-      options.parameters.after = '' + Util.toDateTime(after).valueOf();
+      options.parameters.after = String((Util.toDateTime(after) as DateTime).valueOf());
     }
     return this.http.get('/api/v2/seamail_threads', options).then(result => {
       return SeamailResponse.fromRest(result.data);

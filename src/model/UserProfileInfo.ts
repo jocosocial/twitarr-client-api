@@ -5,36 +5,36 @@ import { Util } from '../internal/Util';
 
 export class UserProfileInfo {
   public static fromRest(data: any) {
+    return new UserProfileInfo(data);
+  }
+
+  constructor(data: any) {
     Util.assertHasProperties(data, 'user');
+    this.user = User.fromRest(data.user);
 
-    const ret = new UserProfileInfo();
-
-    ret.user = User.fromRest(data.user);
     if (!Util.isEmpty(data.recent_tweets)) {
-      ret.recentStreamPosts = data.recent_tweets.map(tweet => StreamPost.fromRest(tweet));
+      this.recentStreamPosts = data.recent_tweets.map((tweet: any) => StreamPost.fromRest(tweet));
     }
 
     if (!Util.isEmpty(data.comment)) {
-      ret._comment = data.comment;
+      this._comment = data.comment;
     }
     if (!Util.isEmpty(data.starred)) {
-      ret._starred = data.starred;
+      this._starred = data.starred;
     }
-
-    return ret;
   }
 
   /**
    * A comment about the user
    * @hidden
    */
-  private _comment: string;
+  private _comment: string | undefined;
 
   /**
    * Whether the user is starred
    * @hidden
    */
-  public _starred: boolean;
+  public _starred: boolean | undefined;
 
   /** The user */
   public user: User;

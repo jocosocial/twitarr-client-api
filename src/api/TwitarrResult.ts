@@ -20,16 +20,16 @@ export class TwitarrResult<T> {
   public data: T;
 
   /** The request type, if any. */
-  public type: string;
+  public type?: string;
 
   /** The status message associated with this result. */
-  public message: string;
+  public message?: string;
 
   /** The response code associated with this result. */
-  public code: number;
+  public code?: number;
 
   /** The error associated with this response if any. */
-  public error: TwitarrError;
+  public error?: TwitarrError;
 
   /**
    * Construct a new result.

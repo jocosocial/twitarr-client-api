@@ -6,13 +6,14 @@ import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
 import { TwitarrServer } from '../../src/api/TwitarrServer';
 
 import { MockHTTP } from '../rest/MockHTTP';
+import { ITwitarrHTTP } from '../../src/api/ITwitarrHTTP';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
 const SERVER_USER = 'demo';
 const SERVER_PASSWORD = 'demo';
 
-let dao: EventDAO, server, auth, mockHTTP;
+let dao: EventDAO, server: TwitarrServer, auth: TwitarrAuthConfig, mockHTTP: ITwitarrHTTP;
 
 describe('dao/PhotoDAO', () => {
   beforeEach(() => {
@@ -22,7 +23,7 @@ describe('dao/PhotoDAO', () => {
     dao = new EventDAO(mockHTTP);
   });
   describe('#all', () => {
-    it('all()', async done => {
+    it('all()', async (done: Function) => {
       const ret = await dao.all();
       expect(ret).toBeDefined();
       expect(ret.length).toEqual(4);

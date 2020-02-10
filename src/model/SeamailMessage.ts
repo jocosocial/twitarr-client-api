@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import * as hashFunc from 'string-hash';
+import hashFunc from 'string-hash';
 
 import { User } from './User';
 
@@ -11,32 +11,33 @@ import { Util } from '../internal/Util';
  */
 export class SeamailMessage {
   public static fromRest(data: any) {
+    return new SeamailMessage(data);
+  }
+
+  public constructor(data: any) {
     Util.assertHasProperties(data, 'id', 'text', 'timestamp');
+    this.id = data.id;
+    this.text = data.text;
+    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
 
-    const ret = new SeamailMessage();
     let hash = data.id + '/' + data.timestamp + '/' + data.text;
-
-    Util.setProperties(ret, data, 'id', 'text');
-    Util.setDateProperties(ret, data, 'timestamp');
 
     if (!Util.isEmpty(data.author)) {
       hash += '/' + data.author.username;
-      ret.author = User.fromRest(data.author);
+      this.author = User.fromRest(data.author);
     }
 
     if (!Util.isEmpty(data.read_users)) {
-      ret.read_users = data.read_users.map(user => User.fromRest(user));
+      this.read_users = data.read_users.map((user: any) => User.fromRest(user));
     }
-    ret.hash = hashFunc(hash);
-
-    return ret;
+    this.hash = hashFunc(hash);
   }
 
   /** The unique id. */
   public id: string;
 
   /** The user that wrote the message. */
-  public author: User;
+  public author?: User;
 
   /** The text (contents) of the message. */
   public text: string;
@@ -48,7 +49,7 @@ export class SeamailMessage {
   public read_users: User[] = [];
 
   /** A unique hash of this message. */
-  public hash: string;
+  public hash: number;
 
   public toJSON() {
     return {

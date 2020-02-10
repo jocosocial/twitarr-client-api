@@ -159,7 +159,7 @@ export class ForumDAO extends AbstractDAO {
       .get('/api/v2/forums/' + threadId + '/' + postId + '/react')
       .then(result => this.handleErrors(result))
       .then(data => {
-        return data.reactions.map(reaction => ReactionDetail.fromRest(reaction));
+        return data.reactions.map((reaction: any) => ReactionDetail.fromRest(reaction));
       });
   }
   /** Get an individual thread post */

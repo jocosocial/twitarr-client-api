@@ -41,7 +41,7 @@ export class TwitarrHTTPOptions {
   }
 
   /** The server to use if no server is set on the HTTP implementation. */
-  public server: TwitarrServer;
+  public server: TwitarrServer | undefined;
 
   /** HTTP headers to be passed to the request. */
   public headers: IHash<string> = {};

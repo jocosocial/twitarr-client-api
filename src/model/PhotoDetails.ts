@@ -8,37 +8,40 @@ import { Util } from '../internal/Util';
  */
 export class PhotoDetails {
   public static fromRest(data: any) {
-    Util.assertHasProperties(data, 'id');
+    return new PhotoDetails(data);
+  }
 
-    const ret = new PhotoDetails();
-    Util.setProperties(ret, data, 'id', 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader');
-    Util.setDateProperties(ret, data, 'upload_time');
+  public constructor(data: any) {
+    Util.assertHasProperties(data, 'id');
+    this.id = data.id;
+
+    Util.setProperties(this, data, 'animated', 'store_filename', 'md5_hash', 'original_filename', 'uploader');
+    Util.setDateProperties(this, data, 'upload_time');
     if (data.sizes) {
-      Object.assign(ret.sizes, data.sizes);
+      Object.assign(this.sizes, data.sizes);
     }
-    return ret;
   }
 
   /** The photo's ID. */
   public id: string;
 
   /** Whether the photo is animated. */
-  public animated: boolean;
+  public animated = false;
 
   /** The filename stored on the server. */
-  public store_filename: string;
+  public store_filename?: string;
 
   /** The photo's MD5 hash. */
-  public md5_hash: string;
+  public md5_hash?: string;
 
   /** The original filename. */
-  public original_filename: string;
+  public original_filename?: string;
 
   /** The user that uploaded the photo. */
-  public uploader: string;
+  public uploader?: string;
 
   /** When the photo was uploaded. */
-  public upload_time: DateTime;
+  public upload_time?: DateTime;
 
   /** The sizes available. */
   public sizes: { [key: string]: string } = {};

@@ -11,20 +11,23 @@ import { Util } from '../internal/Util';
  */
 export class SeamailThread {
   public static fromRest(data: any) {
+    return new SeamailThread(data);
+  }
+
+  public constructor(data: any) {
     Util.assertHasProperties(data, 'id', 'subject', 'timestamp');
 
-    const ret = new SeamailThread();
+    this.id = data.id;
+    this.subject = data.subject;
+    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
 
-    Util.setProperties(ret, data, 'id', 'subject', 'message_count', 'count_is_unread', 'is_unread');
-    Util.setDateProperties(ret, data, 'timestamp');
+    Util.setProperties(this, data, 'message_count', 'count_is_unread', 'is_unread');
     if (!Util.isEmpty(data.users)) {
-      ret.users = data.users.map((user: any) => User.fromRest(user));
+      this.users = data.users.map((user: any) => User.fromRest(user));
     }
     if (!Util.isEmpty(data.messages)) {
-      ret.messages = data.messages.map((message: any) => SeamailMessage.fromRest(message));
+      this.messages = data.messages.map((message: any) => SeamailMessage.fromRest(message));
     }
-
-    return ret;
   }
 
   /** The unique thread id. */
@@ -40,16 +43,16 @@ export class SeamailThread {
   public messages: SeamailMessage[] = [];
 
   /** The number of messages (or unread messages) in the thread. */
-  public message_count: number;
+  public message_count?: number;
 
   /** The time the most recent message was created. */
   public timestamp: DateTime;
 
   /** Whether `message_count` is unread or total. */
-  public count_is_unread: false;
+  public count_is_unread = false;
 
   /** Whether there are unread messages in the thread. */
-  public is_unread: false;
+  public is_unread = false;
 
   public toJSON() {
     const ret = {} as any;

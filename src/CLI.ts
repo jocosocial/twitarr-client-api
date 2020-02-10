@@ -2,6 +2,7 @@ import { API, Rest, Client } from './API';
 import { Util } from './internal/Util';
 import { TwitarrError } from './api/TwitarrError';
 import { IStreamOptions } from './dao/StreamDAO';
+import { DateTime } from 'luxon';
 
 /** @hidden */
 const fakeRequire = require('./__fake_require'); // eslint-disable-line @typescript-eslint/no-var-requires
@@ -58,10 +59,10 @@ const CLI = () => {
     .describe('debug', 'enable debug output')
     .count('debug')
     .command('connect <url> <user> <pass>', 'connect to a Twit-arr server')
-    .command('profile', 'read, edit, or react to profile', sub => {
+    .command('profile', 'read, edit, or react to profile', (sub: any) => {
       return sub
         .command('show [username]', 'view a profile')
-        .command('update', 'update your profile', y => {
+        .command('update', 'update your profile', (y: any) => {
           return y
             .alias('d', 'display-name')
             .describe('d', 'set your display name')
@@ -85,18 +86,18 @@ const CLI = () => {
         .command('comment <username> <comment>', 'add a comment to a user profile')
         .command('star <username>', "toggle a user's starred status");
     })
-    .command('seamail', 'list, read, or create seamail threads', sub => {
+    .command('seamail', 'list, read, or create seamail threads', (sub: any) => {
       return sub
-        .command('list', 'list seamail threads', y => {
+        .command('list', 'list seamail threads', (y: any) => {
           return y.alias('n', 'new').describe('n', 'list new threads and threads with new messages');
         })
         .command('read <id>', 'read a seamail thread')
         .command('create <subject> <message> <users...>', 'create a new seamail thread')
         .command('post <id> <message>', 'post a message to a thread');
     })
-    .command('stream', 'read or post to the twarrt stream', sub => {
+    .command('stream', 'read or post to the twarrt stream', (sub: any) => {
       return sub
-        .command('read', 'read the twarrt stream', y => {
+        .command('read', 'read the twarrt stream', (y: any) => {
           return y
             .alias('a', 'author')
             .describe('a', 'filter twarrts to those posted by the specified author')
@@ -122,7 +123,7 @@ const CLI = () => {
             .alias('s', 'starred')
             .describe('s', 'filter twarrts to those posted by users you have starred');
         })
-        .command('post <message>', 'post a twarrt', y => {
+        .command('post <message>', 'post a twarrt', (y: any) => {
           return y
             .alias('r', 'reply-to')
             .describe('r', 'the id of the twarrt you are replying to')
@@ -131,7 +132,7 @@ const CLI = () => {
             .describe('p', 'the path to a photo to upload along with the twarrt')
             .string('p');
         })
-        .command('update <id> <message>', 'edit/update an existing twarrt', y => {
+        .command('update <id> <message>', 'edit/update an existing twarrt', (y: any) => {
           return y
             .alias('p', 'photo')
             .describe('p', 'the path to a photo to add/replace in the twarrt')
@@ -140,16 +141,16 @@ const CLI = () => {
         .command('delete <id>', 'delete an existing twarrt')
         .command('lock <id>', 'lock a twarrt and its children (requires moderator privileges)')
         .command('unlock <id>', 'unlock a twarrt and its children (requires moderator privileges)')
-        .command('react <id> <reaction>', 'react to a twarrt', y => {
+        .command('react <id> <reaction>', 'react to a twarrt', (y: any) => {
           return y
             .alias('r', 'remove')
             .describe('r', 'remove the reaction, rather than adding it')
             .boolean('r');
         });
     })
-    .command('events', 'read or update events', sub => {
+    .command('events', 'read or update events', (sub: any) => {
       return sub
-        .command('list', 'list events', y => {
+        .command('list', 'list events', (y: any) => {
           return y
             .alias('m', 'mine')
             .describe('m', 'list only favorited events (implies --today)')
@@ -159,7 +160,7 @@ const CLI = () => {
             .boolean('t');
         })
         .command('delete <id>', 'delete an event (admin only)')
-        .command('update <id>', 'update an event (admin only)', y => {
+        .command('update <id>', 'update an event (admin only)', (y: any) => {
           return y
             .alias('t', 'title')
             .describe('t', 'the event title')
@@ -180,16 +181,16 @@ const CLI = () => {
         .command('favorite <id>', 'favorite an event')
         .command('unfavorite <id>', 'un-favorite an event');
     })
-    .command('misc', 'retrieve various miscellaneous data from the server', sub => {
+    .command('misc', 'retrieve various miscellaneous data from the server', (sub: any) => {
       return sub
         .command('text <document>', 'print a document from the server')
         .command('time', 'print the current server time')
         .command('reactions', 'get the list of valid reactions')
         .command('announcements', 'print all active announcements');
     })
-    .command('forums', 'list, read, and post to forum threads', sub => {
+    .command('forums', 'list, read, and post to forum threads', (sub: any) => {
       return sub
-        .command('list', 'list forum threads', y => {
+        .command('list', 'list forum threads', (y: any) => {
           return y
             .alias('p', 'page')
             .describe('p', 'the page of threads to read')
@@ -198,7 +199,7 @@ const CLI = () => {
             .describe('l', 'limit results to <num> results (default: 20)')
             .number('l');
         })
-        .command('read <thread-id> [post-id]', 'read the given forum thread or post', y => {
+        .command('read <thread-id> [post-id]', 'read the given forum thread or post', (y: any) => {
           return y
             .alias('p', 'page')
             .describe('p', 'the forum page to read')
@@ -246,7 +247,7 @@ const CLI = () => {
     console.debug = () => {};
   }
 
-  const doConnect = async (url, username, password) => {
+  const doConnect = async (url: string, username: string, password: string) => {
     console.log(colors.red('WARNING: This command saves your login' + ' information to ~/.twitarr.config.json in clear text.'));
     const config = readConfig();
     if (url) {
@@ -276,7 +277,7 @@ const CLI = () => {
     return config;
   };
 
-  const printUserProfile = profileInfo => {
+  const printUserProfile = (profileInfo: any) => {
     const t = new Table(tableFormat);
     for (const key of Object.keys(profileInfo.user)) {
       if (key === 'starred' || key === 'comment') {
@@ -288,7 +289,7 @@ const CLI = () => {
         continue;
       }
       if (Util.isDateObject(value)) {
-        value = Util.toDateTime(value).toRelative();
+        value = (Util.toDateTime(value) as DateTime).toRelative();
       }
       t.push([name + ':', value]);
     }
@@ -342,7 +343,7 @@ const CLI = () => {
     const client = getClient();
     const seamail = await client.seamail().getMetadata(n);
 
-    const format = Object.assign({}, tableFormat);
+    const format = Object.assign({}, tableFormat) as any;
     format.head = ['ID', 'Subject', 'Last Updated'];
     if (!n) {
       format.head.unshift('New');
@@ -375,7 +376,9 @@ const CLI = () => {
     console.log('');
     t = new Table(tableFormat);
     thread.messages.reverse().forEach(message => {
-      t.push([message.author.getDisplayName(), message.text, message.timestamp.toRelative()]);
+      if (message.author) {
+        t.push([message.author.getDisplayName(), message.text, message.timestamp.toRelative()]);
+      }
     });
     console.log(t.toString());
     console.log('');
@@ -485,7 +488,7 @@ const CLI = () => {
 
   const doListEvents = async (mine?: boolean, today?: boolean) => {
     const client = getClient();
-    const now = Util.toDateTime(new Date().getTime());
+    const now = Util.toDateTime(new Date().getTime()) as DateTime;
     let events;
     if (mine || today) {
       events = await client.events().getDay(now, mine);
@@ -583,7 +586,7 @@ const CLI = () => {
     }
   };
 
-  const printForumPost = post => {
+  const printForumPost = (post: any) => {
     const time = post.timestamp.toRelative();
     console.log('-----');
     console.log(post.author.toString() + ' posted ' + time);
@@ -599,7 +602,7 @@ const CLI = () => {
     console.log('');
   };
 
-  const printThreadSummary = (thread, page?: number) => {
+  const printThreadSummary = (thread: any, page?: number) => {
     const lastTime = thread.timestamp ? thread.timestamp.toFormat('yyyy-MM-dd hh:mm a') : thread.latest_read.toFormat('yyyy-MM-dd hh:mm a');
     console.log('### ' + thread.subject + ' ###');
     console.log(lastTime + (thread.sticky ? ' [sticky]' : '') + (thread.locked ? ' [locked]' : ''));
@@ -636,10 +639,10 @@ const CLI = () => {
   };
 
   const doCreateForumThread = async (subject: string, text: string, photos?: string[]) => {
-    const photoIds = [];
+    const photoIds = [] as string[];
     if (photos && photos.length) {
       for (const photo of photos) {
-        photoIds.push(await postPhotoIfNecessary(photo));
+        photoIds.push((await postPhotoIfNecessary(photo)) as string);
       }
     }
     console.log('');
@@ -650,10 +653,10 @@ const CLI = () => {
   };
 
   const doPostToForumThread = async (id: string, text: string, photos?: string[]) => {
-    const photoIds = [];
+    const photoIds = [] as string[];
     if (photos && photos.length) {
       for (const photo of photos) {
-        photoIds.push(await postPhotoIfNecessary(photo));
+        photoIds.push((await postPhotoIfNecessary(photo)) as string);
       }
     }
     console.log('');
@@ -699,10 +702,10 @@ const CLI = () => {
   };
 
   const doUpdatePost = async (threadId: string, postId: string, text: string, photos?: string[]) => {
-    const photoIds = [];
+    const photoIds = [] as string[];
     if (photos && photos.length) {
       for (const photo of photos) {
-        photoIds.push(await postPhotoIfNecessary(photo));
+        photoIds.push((await postPhotoIfNecessary(photo)) as string);
       }
     }
     console.log('');
@@ -728,7 +731,7 @@ const CLI = () => {
     console.log('');
   };
 
-  const processArgs = async args => {
+  const processArgs = async (args: any) => {
     try {
       switch (args._[0]) {
         case 'connect': {

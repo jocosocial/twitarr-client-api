@@ -1,7 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
 var TypedocWebpackPlugin = require('typedoc-webpack-plugin');
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
 var pkginfo = require('./package.json');
 
 var createVariants = require('parallel-webpack').createVariants;
@@ -10,7 +11,7 @@ var clonedeep = require('lodash.clonedeep');
 
 var argv = require('yargs').argv;
 var isProduction = argv.env === 'production';
-var justDocs = argv.env === 'docs';
+// var justDocs = argv.env === 'docs';
 
 var libraryName = 'twitarr';
 
@@ -22,12 +23,14 @@ if (isProduction) {
   variants.production = [ true, false ];
 }
 
+/*
 if (justDocs) {
   variants = {
     target: ['node'],
     docs: [true],
   };
 }
+*/
 
 var config = {
   entry: {
@@ -42,18 +45,10 @@ var config = {
   module: {
     rules: [
       {
-        test: /(\.jsx?)$/,
+        test: /(\.[jt]sx?)$/,
         use: [
           'cache-loader',
           'babel-loader'
-        ]
-      },
-      {
-        test: /(\.tsx?)$/,
-        use: [
-          'cache-loader',
-          'babel-loader',
-          'ts-loader'
         ],
         exclude: [/node_modules/]
       }
@@ -116,16 +111,16 @@ function createConfig(options) {
     } else {
       console.log('minimizer exists:',myconf.optimization.minimizer);
     }
-    myconf.optimization.minimizer.push(new UglifyJsPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: true,
-      uglifyOptions: {
+    myconf.optimization.minimizer.push(new TerserPlugin({
+      extractComments: false,
+      terserOptions: {
         mangle: {
+          keep_classnames: true,
+          keep_fnames: true,
           reserved: [ '$element', '$super', '$scope', '$uib', '$', 'jQuery', 'exports', 'require', 'angular', 'c3', 'd3' ]
         },
-        compress: true
-      }
+        compress: true,
+      },
     }));
 
     myconf.module.rules.unshift({
@@ -157,7 +152,8 @@ function createConfig(options) {
   myconf.plugins.push(new webpack.ProvidePlugin({X2JS: 'x2js'}));
 
   // build docs either on a dedicated doc build, or during production node.js build
-  var buildDocs = !!(justDocs || (options.production && options.target === 'node'));
+  //var buildDocs = !!(justDocs || (options.production && options.target === 'node'));
+  const buildDocs = false;
   if (buildDocs) {
     // generate documentation
     var tsconfig = require('./tsconfig.json');
@@ -171,7 +167,7 @@ function createConfig(options) {
 
   myconf.output.filename += '.js';
 
-  console.log('Building variant: target=' + options.target + ', production=' + (!!options.production) + ', docs=' + buildDocs);
+  console.log('Building variant: target=' + options.target + ', production=' + Boolean(options.production) + ', docs=' + buildDocs);
 
   return myconf;
 }

@@ -43,7 +43,7 @@ export class AutocompleteDAO extends AbstractDAO {
       .get('/api/v2/user/ac/' + q, new TwitarrHTTPOptions().withParameter('app', 'plain'))
       .then(result => this.handleErrors(result))
       .then(data => {
-        return data.users.map(user => User.fromRest(user));
+        return data.users.map((user: any) => User.fromRest(user));
       });
   }
 }

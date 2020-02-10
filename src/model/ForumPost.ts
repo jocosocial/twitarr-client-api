@@ -11,21 +11,23 @@ import { User } from './User';
  */
 export class ForumPost {
   public static fromRest(data: any) {
-    Util.assertHasProperties(data, 'id', 'forum_id', 'author', 'timestamp');
+    return new ForumPost(data);
+  }
 
-    const ret = new ForumPost();
-    Util.setProperties(ret, data, 'id', 'forum_id', 'thread_locked', 'text');
-    Util.setDateProperties(ret, data, 'timestamp');
+  public constructor(data: any) {
+    Util.assertHasProperties(data, 'id', 'forum_id', 'author', 'timestamp');
+    this.id = data.id;
+    this.forum_id = data.forum_id;
+    this.author = User.fromRest(data.author);
+    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
+
+    Util.setProperties(this, data, 'thread_locked', 'text');
     if (!Util.isEmpty(data.new)) {
-      ret.is_new = data.new;
-    }
-    if (!Util.isEmpty(data.author)) {
-      ret.author = User.fromRest(data.author);
+      this.is_new = data.new;
     }
     if (!Util.isEmpty(data.photos)) {
-      ret.photos = data.photos.map(photo => PhotoDetails.fromRest(photo));
+      this.photos = data.photos.map((photo: any) => PhotoDetails.fromRest(photo));
     }
-    return ret;
   }
 
   /** The unique post ID. */
@@ -38,10 +40,10 @@ export class ForumPost {
   public author: User;
 
   /** Whether the thread is locked */
-  public thread_locked: boolean;
+  public thread_locked?: boolean;
 
   /** The contents of the post */
-  public text: string;
+  public text?: string;
 
   /** The time the post was made */
   public timestamp: DateTime;
@@ -50,7 +52,7 @@ export class ForumPost {
   public photos: PhotoDetails[] = [];
 
   /** Whether the post is unread/new */
-  public is_new: boolean;
+  public is_new?: boolean;
 
   public toJSON() {
     const ret = {} as any;

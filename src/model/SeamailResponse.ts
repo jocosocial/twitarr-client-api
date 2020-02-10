@@ -8,43 +8,45 @@ import { Util } from '../internal/Util';
 
 export class SeamailResponse {
   public static fromRest(data: any) {
-    Util.assertHasProperties(data, 'status');
+    return new SeamailResponse(data);
+  }
+
+  public constructor(data: any) {
+    if (!Util.isEmpty(data.last_checked)) {
+      this.last_checked = Util.toDateTime(data.last_checked) as DateTime;
+    }
 
     if (Util.isEmpty(data.seamail) && Util.isEmpty(data.seamail_meta) && Util.isEmpty(data.seamail_threads)) {
       throw new TwitarrError('At least one of seamail, seamail_meta, or seamail_threads is expected in the response!', undefined, undefined, data);
     }
 
-    const ret = new SeamailResponse();
-    Util.setDateProperties(ret, data, 'last_checked');
-
     if (!Util.isEmpty(data.seamail)) {
-      ret.threads = [SeamailThread.fromRest(data.seamail)];
-      ret.is_meta = false;
+      this.threads = [SeamailThread.fromRest(data.seamail)];
+      this.is_meta = false;
     }
     if (!Util.isEmpty(data.seamail_meta)) {
-      ret.threads = data.seamail_meta.map(thread => SeamailThread.fromRest(thread));
-      ret.is_meta = true;
+      this.threads = data.seamail_meta.map((thread: any) => SeamailThread.fromRest(thread));
+      this.is_meta = true;
     } else if (!Util.isEmpty(data.seamail_threads)) {
-      ret.threads = data.seamail_threads.map(thread => SeamailThread.fromRest(thread));
-      ret.is_meta = false;
+      this.threads = data.seamail_threads.map((thread: any) => SeamailThread.fromRest(thread));
+      this.is_meta = false;
     }
-
-    return ret;
   }
 
   /** When the metadata was last checked. */
-  public last_checked: DateTime;
+  public last_checked?: DateTime;
 
   /** The list of threads. */
-  public threads: SeamailThread[];
+  public threads = [] as SeamailThread[];
 
   /** Whether this is a metadata response or a full response. */
   public is_meta = false;
 
   public toJSON() {
-    const ret = {
-      last_checked: this.last_checked.toMillis(),
-    } as any;
+    const ret = {} as any;
+    if (this.last_checked) {
+      ret.last_checked = this.last_checked.toMillis();
+    }
     if (this.is_meta) {
       ret.seamail_meta = this.threads;
     } else {

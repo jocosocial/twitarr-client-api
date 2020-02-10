@@ -1,6 +1,3 @@
-/** @hidden */
-declare const Promise;
-
 import { TwitarrHTTPOptions } from './TwitarrHTTPOptions';
 import { TwitarrResult } from './TwitarrResult';
 import { TwitarrServer } from './TwitarrServer';
@@ -23,21 +20,21 @@ import { TwitarrServer } from './TwitarrServer';
  */
 export interface ITwitarrHTTP {
   /** The server associated with this instance. */
-  server: TwitarrServer;
+  server: TwitarrServer | undefined;
 
   /** The default options used when making requests with this instance. */
   options: TwitarrHTTPOptions;
 
   /** The username for ReST APIv2 calls. */
-  getUsername(): string;
+  getUsername(): string | null;
   setUsername(username: string): ITwitarrHTTP;
 
   /** The password for ReST APIv2 calls. */
-  getPassword(): string;
+  getPassword(): string | null;
   setPassword(password: string): ITwitarrHTTP;
 
   /** The authorization key to use for ReST APIv2 calls. */
-  getKey(): string;
+  getKey(): string | null;
   setKey(key: string): ITwitarrHTTP;
 
   /**

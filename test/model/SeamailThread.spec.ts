@@ -35,10 +35,6 @@ const secondMessage = {
 };
 
 describe('SeamailThread', () => {
-  it('empty constructor', () => {
-    expect(new SeamailThread()).toMatchObject({});
-  });
-
   describe('#fromRest', () => {
     it('undefined', () => {
       expect(() => SeamailThread.fromRest(undefined)).toThrow();

@@ -1,5 +1,3 @@
-declare const describe, beforeEach, it, expect;
-
 import { TwitarrError } from '../../src/api/TwitarrError';
 
 import { UserDAO } from '../../src/dao/UserDAO';
@@ -11,13 +9,14 @@ import { User } from '../../src/model/User';
 import { UserProfileInfo } from '../../src/model/UserProfileInfo';
 
 import { MockHTTP } from '../rest/MockHTTP';
+import { ITwitarrHTTP } from '../../src/api/ITwitarrHTTP';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
 const SERVER_USER = 'demo';
 const SERVER_PASSWORD = 'demo';
 
-let dao: UserDAO, server, auth, mockHTTP;
+let dao: UserDAO, server: TwitarrServer, auth: TwitarrAuthConfig, mockHTTP: ITwitarrHTTP;
 
 describe('dao/UserDAO', () => {
   beforeEach(() => {
@@ -74,7 +73,7 @@ describe('dao/UserDAO', () => {
     });
   });
 
-  it('#toggleStar(user)', async done => {
+  it('#toggleStar(user)', async (done: Function) => {
     let starred = await dao.toggleStarred('kvort');
     expect(starred).toBeTruthy();
     starred = await dao.toggleStarred('kvort');

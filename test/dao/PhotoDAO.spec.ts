@@ -7,13 +7,14 @@ import { TwitarrResult } from '../../src/api/TwitarrResult';
 import { TwitarrServer } from '../../src/api/TwitarrServer';
 
 import { MockHTTP } from '../rest/MockHTTP';
+import { ITwitarrHTTP } from '../../src/api/ITwitarrHTTP';
 
 const SERVER_NAME = 'Demo';
 const SERVER_URL = 'http://demo.twitarr.com/';
 const SERVER_USER = 'demo';
 const SERVER_PASSWORD = 'demo';
 
-let dao: PhotoDAO, server, auth, mockHTTP;
+let dao: PhotoDAO, server: TwitarrServer, auth: TwitarrAuthConfig, mockHTTP: ITwitarrHTTP;
 
 describe('dao/PhotoDAO', () => {
   beforeEach(() => {
@@ -23,7 +24,7 @@ describe('dao/PhotoDAO', () => {
     dao = new PhotoDAO(mockHTTP);
   });
   describe('#get', () => {
-    it('get(id)', async done => {
+    it('get(id)', async (done: Function) => {
       const ret = await dao.get('12345');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(PhotoDetails);
@@ -32,7 +33,7 @@ describe('dao/PhotoDAO', () => {
     });
   });
   describe('#post', () => {
-    it('post()', async done => {
+    it('post()', async (done: Function) => {
       const ret = await dao.post('foo.png', Buffer.from([]));
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(PhotoDetails);
@@ -41,7 +42,7 @@ describe('dao/PhotoDAO', () => {
     });
   });
   describe('#remove', () => {
-    it('remove(id)', async done => {
+    it('remove(id)', async (done: Function) => {
       const ret = await dao.remove('12345');
       expect(ret).toBeDefined();
       expect(ret).toBeInstanceOf(TwitarrResult);

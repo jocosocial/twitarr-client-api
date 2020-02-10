@@ -20,38 +20,39 @@ interface ISearchStatus<T> {
  */
 export class SearchResponse {
   public static fromRest(data: any) {
+    return new SearchResponse(data);
+  }
+
+  public constructor(data: any) {
     Util.assertHasProperties(data, 'query');
+    const query = data.query;
+    Util.assertHasProperties(query, 'text');
+    this.query = data.query.text;
 
     if (Util.isEmpty(data.users, data.seamails, data.tweets, data.forums, data.events)) {
       throw new TwitarrError('At least one of users, seamails, tweets, forums, or events is expected on the response!', undefined, undefined, undefined, data);
     }
 
-    const ret = new SearchResponse();
-    if (data.query && data.query.text) {
-      ret.query = data.query.text;
-    }
     if (data.users) {
-      Util.setProperties(ret.users, data.users, 'count', 'more');
-      ret.users.matches = data.users.matches.map((user: any) => User.fromRest(user));
+      Util.setProperties(this.users, data.users, 'count', 'more');
+      this.users.matches = data.users.matches.map((user: any) => User.fromRest(user));
     }
     if (data.seamails) {
-      Util.setProperties(ret.seamails, data.seamails, 'count', 'more');
-      ret.seamails.matches = data.seamails.matches.map((thread: any) => SeamailThread.fromRest(thread));
+      Util.setProperties(this.seamails, data.seamails, 'count', 'more');
+      this.seamails.matches = data.seamails.matches.map((thread: any) => SeamailThread.fromRest(thread));
     }
     if (data.tweets) {
-      Util.setProperties(ret.streamPosts, data.streamPosts, 'count', 'more');
-      ret.streamPosts.matches = data.tweets.matches.map((tweet: any) => StreamPost.fromRest(tweet));
+      Util.setProperties(this.streamPosts, data.streamPosts, 'count', 'more');
+      this.streamPosts.matches = data.tweets.matches.map((tweet: any) => StreamPost.fromRest(tweet));
     }
     if (data.forums) {
-      Util.setProperties(ret.forumThreads, data.forumThreads, 'count', 'more');
-      ret.forumThreads.matches = data.forums.matches.map(thread => ForumThread.fromRest(thread));
+      Util.setProperties(this.forumThreads, data.forumThreads, 'count', 'more');
+      this.forumThreads.matches = data.forums.matches.map((thread: any) => ForumThread.fromRest(thread));
     }
     if (data.events) {
-      Util.setProperties(ret.events, data.events, 'count', 'more');
-      ret.events.matches = data.events.matches.map(event => CalendarEvent.fromRest(event));
+      Util.setProperties(this.events, data.events, 'count', 'more');
+      this.events.matches = data.events.matches.map((event: any) => CalendarEvent.fromRest(event));
     }
-
-    return ret;
   }
 
   /** The query that was passed to the database. */

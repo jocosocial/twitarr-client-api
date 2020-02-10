@@ -35,14 +35,14 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    * The server metadata we'll use for constructing ReST calls.
    * @hidden
    */
-  private serverObj: TwitarrServer;
+  private serverObj: TwitarrServer | undefined;
 
   /** The server associated with this HTTP implementation. */
   public get server() {
     return this.serverObj;
   }
 
-  public set server(server: TwitarrServer) {
+  public set server(server: TwitarrServer | undefined) {
     this.serverObj = server;
     this.onSetServer();
   }
@@ -63,33 +63,33 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   }
 
   public getUsername() {
-    return this.server && this.server.auth ? this.server.auth.username : null;
+    return this.server && this.server.auth && this.server.auth.username ? this.server.auth.username : null;
   }
 
-  public setUsername(username: string) {
+  public setUsername(username: string): ITwitarrHTTP {
     if (this.server && this.server.auth) {
       this.server.auth.username = username;
     } else {
       throw new TwitarrError('server auth not yet configured!');
     }
-    return this;
+    return this as ITwitarrHTTP;
   }
 
   public getPassword() {
-    return this.server && this.server.auth ? this.server.auth.password : null;
+    return this.server && this.server.auth && this.server.auth.password ? this.server.auth.password : null;
   }
 
-  public setPassword(password: string) {
+  public setPassword(password: string): ITwitarrHTTP {
     if (this.server && this.server.auth) {
       this.server.auth.password = password;
     } else {
       throw new TwitarrError('server auth not yet configured!');
     }
-    return this;
+    return this as ITwitarrHTTP;
   }
 
   public getKey() {
-    return this.server && this.server.auth ? this.server.auth.key : null;
+    return this.server && this.server.auth && this.server.auth.key ? this.server.auth.key : null;
   }
 
   public setKey(key: string): ITwitarrHTTP {
@@ -156,9 +156,12 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
    * passed in the [[TwitarrHTTPOptions]], otherwise it falls back to the default server associated
    * with the HTTP implementation.
    */
-  protected getServer(options?: TwitarrHTTPOptions) {
+  protected getServer(options?: TwitarrHTTPOptions): TwitarrServer {
     if (options && options.server) {
       return options.server;
+    }
+    if (!this.serverObj) {
+      throw new TwitarrError('getServer() called but server has never been initialized!');
     }
     return this.serverObj;
   }
