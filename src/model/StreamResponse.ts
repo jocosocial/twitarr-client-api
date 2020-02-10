@@ -49,7 +49,7 @@ export class StreamResponse {
   }
 
   /** Whether this is a single thread or multiple posts. */
-  public is_thread: boolean = false;
+  public is_thread = false;
 
   public toJSON() {
     const ret = {} as any;

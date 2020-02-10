@@ -14,7 +14,7 @@ export class SeamailMessage {
     Util.assertHasProperties(data, 'id', 'text', 'timestamp');
 
     const ret = new SeamailMessage();
-    var hash = data.id + '/' + data.timestamp + '/' + data.text;
+    let hash = data.id + '/' + data.timestamp + '/' + data.text;
 
     Util.setProperties(ret, data, 'id', 'text');
     Util.setDateProperties(ret, data, 'timestamp');

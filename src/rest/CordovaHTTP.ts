@@ -1,8 +1,8 @@
 import * as clonedeep from 'lodash.clonedeep';
 
-if (!fetch) { // eslint-disable-line
-  // @ts-ignore
-  var fetch = require('node-fetch');
+let fetch: any;
+if (!fetch) {
+  fetch = require('node-fetch');
 }
 
 /** @hidden */
@@ -31,7 +31,7 @@ interface ICordovaHTTPOptions {
  * @implements ITwitarrHTTP
  */
 export class CordovaHTTP extends AbstractHTTP {
-  private initialized: boolean = false;
+  private initialized = false;
 
   /**
    * Construct a CordovaHTTP instance.
@@ -40,12 +40,15 @@ export class CordovaHTTP extends AbstractHTTP {
    */
   public constructor(server?: TwitarrServer, timeout = 10000) {
     super(server, timeout);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     if (!cordova || !cordova.plugin || !cordova.plugin.http) {
       throw new TwitarrError('cordova-plugin-advanced-http is not available!');
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     cordova.plugin.http.setDataSerializer('json');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     cordova.plugin.http.setRequestTimeout(timeout / 1000.0);
   }
@@ -164,6 +167,7 @@ export class CordovaHTTP extends AbstractHTTP {
   protected async request(url, opts) {
     await this.initializeSSL();
     return new Promise((resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       cordova.plugin.http.sendRequest(url, opts, response => resolve(response), err => reject(err));
     })
@@ -228,21 +232,21 @@ export class CordovaHTTP extends AbstractHTTP {
   }
 
   private async initializeSSL() {
-    const self = this;
-    if (self.initialized) {
+    if (this.initialized) {
       return Promise.resolve();
     }
 
     return new Promise((resolve, reject) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       cordova.plugin.http.setSSLCertMode(
         'nocheck',
         () => {
-          self.initialized = true;
+          this.initialized = true;
           resolve();
         },
         () => {
-          self.initialized = true;
+          this.initialized = true;
           reject();
         },
       );

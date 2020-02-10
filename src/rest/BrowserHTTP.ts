@@ -2,9 +2,9 @@ import axios from 'axios';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import * as clonedeep from 'lodash.clonedeep';
 
-if (!fetch) { // eslint-disable-line
-  // @ts-ignore
-  var fetch = require('node-fetch');
+let fetch: any;
+if (!fetch) {
+  fetch = require('node-fetch');
 }
 
 /** @hidden */

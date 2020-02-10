@@ -8,6 +8,8 @@ const fakeRequire = require('./__fake_require'); // eslint-disable-line @typescr
 
 /** @hidden */
 const CLI = () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   const version = global.TWITARR_JS_VERSION || require('../package.json').version || 'unknown';
 
   const Table = fakeRequire('cli-table2');
@@ -240,6 +242,7 @@ const CLI = () => {
   };
 
   if (argv.debug === 0) {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     console.debug = () => {};
   }
 
@@ -457,7 +460,7 @@ const CLI = () => {
     console.log('');
   };
 
-  const doReact = async (id: string, reaction: string, del: boolean = false) => {
+  const doReact = async (id: string, reaction: string, del = false) => {
     const client = getClient();
     if (del) {
       await client.stream().deleteReact(id, reaction);
@@ -491,7 +494,7 @@ const CLI = () => {
     }
     let lastDay;
     for (const event of events) {
-      let day = event.start_time.toFormat('ccc, MMM dd');
+      const day = event.start_time.toFormat('ccc, MMM dd');
       if (day !== lastDay) {
         console.log('[ ' + day + ' ]');
         lastDay = day;
@@ -514,7 +517,7 @@ const CLI = () => {
     const event = await getClient()
       .events()
       .update(id, title, description, location, start, end);
-    let day = event.start_time.toFormat('ccc, MMM dd');
+    const day = event.start_time.toFormat('ccc, MMM dd');
     console.log('[ ' + day + ' ]');
     printEvent(event);
   };
@@ -633,7 +636,7 @@ const CLI = () => {
   };
 
   const doCreateForumThread = async (subject: string, text: string, photos?: string[]) => {
-    let photoIds = [];
+    const photoIds = [];
     if (photos && photos.length) {
       for (const photo of photos) {
         photoIds.push(await postPhotoIfNecessary(photo));
@@ -647,7 +650,7 @@ const CLI = () => {
   };
 
   const doPostToForumThread = async (id: string, text: string, photos?: string[]) => {
-    let photoIds = [];
+    const photoIds = [];
     if (photos && photos.length) {
       for (const photo of photos) {
         photoIds.push(await postPhotoIfNecessary(photo));
@@ -696,7 +699,7 @@ const CLI = () => {
   };
 
   const doUpdatePost = async (threadId: string, postId: string, text: string, photos?: string[]) => {
-    let photoIds = [];
+    const photoIds = [];
     if (photos && photos.length) {
       for (const photo of photos) {
         photoIds.push(await postPhotoIfNecessary(photo));

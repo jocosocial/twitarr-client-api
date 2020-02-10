@@ -39,7 +39,7 @@ export class SeamailResponse {
   public threads: SeamailThread[];
 
   /** Whether this is a metadata response or a full response. */
-  public is_meta: boolean = false;
+  public is_meta = false;
 
   public toJSON() {
     const ret = {

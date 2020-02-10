@@ -86,24 +86,23 @@ export class Client implements IHasHTTP {
    * Connect to an Twitarr server and return a [[TwitarrServer]] for that connection.
    */
   public async connect(name: string, url: string, username: string, password: string, timeout?: number) {
-    const self = this;
     const server = new TwitarrServer(name, url, username, password);
 
     await Client.checkServer(server, undefined, timeout);
 
-    if (!self.http) {
-      self.http = Client.defaultHttp;
+    if (!this.http) {
+      this.http = Client.defaultHttp;
     }
-    if (!self.http.server) {
-      self.http.server = server;
+    if (!this.http.server) {
+      this.http.server = server;
     }
-    self.server = server;
+    this.server = server;
 
-    if (self.server.auth.key) {
+    if (this.server.auth.key) {
       try {
         const profile = await this.user().profile();
-        console.debug('found auth key:', self.server.auth.key, profile);
-        return self;
+        console.debug('found auth key:', this.server.auth.key, profile);
+        return this;
       } catch (err) {
         console.error('auth key was invalid:', err);
       }

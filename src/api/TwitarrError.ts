@@ -53,18 +53,17 @@ export class TwitarrError extends Error {
    */
   public constructor(message?: string, code?: number, errors?: any, options?: any, data?: any) {
     super(message);
-    const self = this;
-    self.name = self.constructor.name;
-    self.statusCode = code;
-    self.options = options;
-    self.data = data;
+    this.name = this.constructor.name;
+    this.statusCode = code;
+    this.options = options;
+    this.data = data;
 
     if (typeof errors === 'string' || errors instanceof String) {
-      self.errors = new ErrorMessage(errors as string);
+      this.errors = new ErrorMessage(errors as string);
     } else if (Array.isArray(errors)) {
-      self.errors = new ErrorMessage(errors as string[]);
+      this.errors = new ErrorMessage(errors as string[]);
     } else if (errors && Object.keys(errors).length > 0) {
-      self.errors = errors as IErrorParameters;
+      this.errors = errors as IErrorParameters;
     } else if (errors) {
       console.warn('Unsure how to decode error response:', errors);
     }

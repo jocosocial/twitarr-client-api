@@ -16,12 +16,12 @@ module.exports = {
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    '@typescript-eslint/camelcase': false,
-    '@typescript-eslint/explicit-function-return-type': false,
+    '@typescript-eslint/camelcase': 0,
+    '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/indent': ['error', 2],
-    '@typescript-eslint/interface-name-prefix': false,
-    '@typescript-eslint/no-explicit-any': false,
-    '@typescript-eslint/no-triple-slash-reference': false,
-    '@typescript-eslint/no-var-requires': false,
+    '@typescript-eslint/interface-name-prefix': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/no-triple-slash-reference': 0,
+    '@typescript-eslint/no-var-requires': 0,
   },
 };

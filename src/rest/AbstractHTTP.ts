@@ -1,5 +1,3 @@
-/// <reference path="../../typings/index.d.ts" />
-
 import { ITwitarrHTTP } from '../api/ITwitarrHTTP';
 import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';

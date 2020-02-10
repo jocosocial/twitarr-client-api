@@ -12,6 +12,7 @@ export class AutomaticHTTP implements ITwitarrHTTP {
   private impl: ITwitarrHTTP;
 
   public constructor(server?: TwitarrServer, timeout = 10000) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     if (cordova && cordova.plugin && cordova.plugin.http) {
       console.debug('cordove-plugin-advanced-http found!  Using CordovaHTTP implementation.');
