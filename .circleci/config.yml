@@ -52,3 +52,50 @@ jobs:
       - run:
           name: build and test
           command: npm run dist
+  merge-master:
+      docker:
+        - image: circleci/node:10
+      steps:
+        - cached-checkout
+        - run:
+            name: Merge Develop to Master
+            command: |
+              git checkout master
+              git pull
+              git merge -m 'automated merge from develop -> master' --log develop
+        - cached-npm-install
+        - run:
+            name: Build Artifacts
+            command: npm run release-build
+        - run:
+            name: Commit and Push Updated Artifacts
+            command: |
+              git add -A
+              if [ `git diff HEAD | wc -l` -gt 0 ]; then
+                echo "code detected; committing updated dist/"
+                git commit -m 'build: automated generation of dist/'
+              fi
+              git push
+
+workflows:
+  run-tests:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - develop
+  run-tests-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
+      - merge-master:
+          requires:
+            - run-tests
+          filters:
+            branches:
+              only:
+                - develop
