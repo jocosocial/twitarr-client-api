@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 import { StreamPost } from './StreamPost';
@@ -35,7 +35,7 @@ export class StreamResponse {
   public has_next_page: boolean;
 
   /** The timestamp of the next page. */
-  public next_page: DateTime | undefined;
+  public next_page: Moment | undefined;
 
   /** The stream posts. */
   public posts: StreamPost[] = [];

@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -19,7 +19,7 @@ export class AlertResponse {
 
   public constructor(data: any) {
     Util.assertHasProperties(data, 'last_checked_time');
-    this.last_checked_time = Util.toDateTime(data.last_checked_time) as DateTime;
+    this.last_checked_time = Util.toDateTime(data.last_checked_time) as Moment;
 
     if (data.announcements) {
       this.announcements = data.announcements.map((announcement: any) => Announcement.fromRest(announcement));
@@ -38,7 +38,7 @@ export class AlertResponse {
     }
   }
 
-  public last_checked_time: DateTime;
+  public last_checked_time: Moment;
 
   public announcements = [] as Announcement[];
 

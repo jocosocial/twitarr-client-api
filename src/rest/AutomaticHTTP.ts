@@ -4,8 +4,10 @@ import { TwitarrServer } from '../api/TwitarrServer';
 
 import { CordovaHTTP } from './CordovaHTTP';
 
+/*
 import { isNode } from 'browser-or-node';
 import { NodeHTTP } from './NodeHTTP';
+*/
 import { BrowserHTTP } from './BrowserHTTP';
 
 export class AutomaticHTTP implements ITwitarrHTTP {
@@ -17,10 +19,10 @@ export class AutomaticHTTP implements ITwitarrHTTP {
     if (window.cordova && window.cordova.plugin && window.cordova.plugin.http) {
       console.debug('cordove-plugin-advanced-http found!  Using CordovaHTTP implementation.');
       this.impl = new CordovaHTTP(server, timeout);
-    } else if (isNode) {
+    } /* else if (isNode) {
       console.debug('Node.js environment found.  Using NodeHTTP implementation.');
       this.impl = new NodeHTTP(server, timeout);
-    } else {
+    } */ else {
       console.debug('Node.js and cordove-plugin-advanced-http not found.  Using BrowserHTTP implementation.');
       this.impl = new BrowserHTTP(server, timeout);
     }

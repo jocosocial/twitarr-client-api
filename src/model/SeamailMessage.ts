@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 import hashFunc from 'string-hash';
 
 import { User } from './User';
@@ -18,7 +18,7 @@ export class SeamailMessage {
     Util.assertHasProperties(data, 'id', 'text', 'timestamp');
     this.id = data.id;
     this.text = data.text;
-    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
+    this.timestamp = Util.toDateTime(data.timestamp) as Moment;
 
     let hash = data.id + '/' + data.timestamp + '/' + data.text;
 
@@ -43,7 +43,7 @@ export class SeamailMessage {
   public text: string;
 
   /** The time the message was created. */
-  public timestamp: DateTime;
+  public timestamp: Moment;
 
   /** The users who have read the message. */
   public read_users: User[] = [];
@@ -56,7 +56,7 @@ export class SeamailMessage {
       id: this.id,
       read_users: this.read_users.map(user => user.toJSON()),
       text: this.text,
-      timestamp: this.timestamp.toMillis(),
+      timestamp: this.timestamp.valueOf(),
     };
   }
 }

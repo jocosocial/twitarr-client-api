@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import moment, { Moment } from 'moment';
 
 /**
  * A utility class for random stuff.
@@ -43,41 +43,50 @@ export class Util {
   }
 
   /**
-   * Whether or not the passed object is already a date. (Either a [[DateTime]] object, or
+   * Whether or not the passed object is already a date. (Either a [[Moment]] object, or
    * a JavaScript [[Date]] object.)
    */
   public static isDateObject(date: any) {
-    return DateTime.isDateTime(date) || date instanceof Date;
-  }
-
-  /**
-   * Create a [[DateTime]] from any form of date (JavaScript [[Date]], [[DateTime]], or epoch).
-   */
-  public static toDateTime(date: Date | DateTime | string | number): DateTime | undefined {
-    let ret;
-    if (date === undefined || date === null) {
-      ret = undefined;
-    } else if (DateTime.isDateTime(date)) {
-      ret = date as DateTime;
-    } else if (typeof date === 'number') {
-      ret = DateTime.fromMillis(date, { zone: 'utc' });
-    } else if (date instanceof Date) {
-      ret = DateTime.fromJSDate(date, { zone: 'utc' });
-    } else if (typeof date === 'string' || (date as any) instanceof String) {
-      ret = DateTime.fromISO(date, { zone: 'utc' });
-    } else {
-      throw new Error('Unable to parse type "' + typeof date + '" as a date.');
+    if (date instanceof Date) {
+      return true;
     }
-    return ret;
+    if (date && date.isValid) {
+      return date.isValid();
+    }
+    return false;
   }
 
   /**
-   * Create an ISO date string from any form of date (JavaScript [[Date]], [[DateTime]], or epoch).
+   * Create a [[Moment]] from any form of date (JavaScript [[Date]], [[Moment]], or epoch).
    */
-  public static toDateString(date: Date | DateTime | number) {
+  public static toMillis(date: Date | Moment | string | number): number {
+    if (typeof date === 'number') {
+      return date;
+    }
+    return moment.utc(date).valueOf();
+  }
+
+  /**
+   * Create a [[Moment]] from any form of date (JavaScript [[Date]], [[Moment]], or epoch).
+   */
+  public static toDateTime(date: Date | Moment | string | number | undefined): Moment | undefined {
+    if (date === undefined || date === null) {
+      return undefined;
+    }
+    const ret = moment.utc(date);
+    if (ret.isValid()) {
+      return ret;
+    }
+    return undefined;
+  }
+
+  /**
+   * Create an ISO date string from any form of date (JavaScript [[Date]], [[Moment]], or epoch).
+   */
+  public static toDateString(date: Date | Moment | number) {
     const ret = Util.toDateTime(date);
     if (ret) {
-      return ret.toISO();
+      return ret.toISOString();
     } else {
       return undefined;
     }
@@ -98,7 +107,7 @@ export class Util {
 
   /**
    * Iterate over a set of (optional) properties on the source object, and apply them to the target
-   * converting them to [[DateTime]] objects in the process.
+   * converting them to [[Moment]] objects in the process.
    */
   public static setDateProperties(target: any, source: any, ...props: string[]) {
     if (!Util.isEmpty(source)) {
@@ -118,7 +127,7 @@ export class Util {
     if (!Util.isEmpty(source)) {
       for (const prop of props) {
         if (!Util.isEmpty(source[prop])) {
-          target[prop] = (Util.toDateTime(source[prop]) as DateTime).toMillis();
+          target[prop] = (Util.toDateTime(source[prop]) as Moment).valueOf();
         }
       }
     }

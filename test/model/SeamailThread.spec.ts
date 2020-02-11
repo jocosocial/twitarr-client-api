@@ -54,7 +54,7 @@ describe('SeamailThread', () => {
       expect(thread.message_count).toEqual(0);
       expect(thread.subject).toEqual('messages');
       expect(thread.timestamp).toBeDefined();
-      expect(thread.timestamp.toMillis()).toEqual(ARBITRARY_EPOCH);
+      expect(thread.timestamp.valueOf()).toEqual(ARBITRARY_EPOCH);
       expect(thread.users).toBeDefined();
       expect(thread.users.length).toEqual(2);
       expect(thread.users[0]).toBeInstanceOf(User);
@@ -75,7 +75,7 @@ describe('SeamailThread', () => {
       expect(thread.message_count).toEqual(0);
       expect(thread.subject).toEqual('messages');
       expect(thread.timestamp).toBeDefined();
-      expect(thread.timestamp.toMillis()).toEqual(ARBITRARY_EPOCH);
+      expect(thread.timestamp.valueOf()).toEqual(ARBITRARY_EPOCH);
       expect(thread.users).toBeDefined();
       expect(thread.users.length).toEqual(0);
       expect(thread.messages).toBeDefined();

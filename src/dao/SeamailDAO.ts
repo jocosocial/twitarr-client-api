@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 
@@ -26,13 +26,13 @@ export class SeamailDAO extends AbstractDAO {
       });
   }
 
-  public async getMetadata(unread?: boolean, after?: DateTime | number) {
+  public async getMetadata(unread?: boolean, after?: Moment | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
     }
     if (after) {
-      options.parameters.after = String((Util.toDateTime(after) as DateTime).valueOf());
+      options.parameters.after = String(Util.toMillis(after));
     }
     return this.http
       .get('/api/v2/seamail', options)
@@ -42,7 +42,7 @@ export class SeamailDAO extends AbstractDAO {
       });
   }
 
-  public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: DateTime | number) {
+  public async getThreads(unread?: boolean, exclude_read_messages?: boolean, after?: Moment | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (unread) {
       options.parameters.unread = 'true';
@@ -51,7 +51,7 @@ export class SeamailDAO extends AbstractDAO {
       options.parameters.exclude_read_messages = 'true';
     }
     if (after) {
-      options.parameters.after = String((Util.toDateTime(after) as DateTime).valueOf());
+      options.parameters.after = String(Util.toMillis(after));
     }
     return this.http.get('/api/v2/seamail_threads', options).then(result => {
       return SeamailResponse.fromRest(result.data);

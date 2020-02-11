@@ -1,12 +1,6 @@
-import axios from 'axios';
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import clonedeep from 'lodash.clonedeep';
 import URI from 'urijs';
 
-let fetch: any;
-if (!fetch) {
-  fetch = require('node-fetch');
-}
+import 'whatwg-fetch';
 
 import { AbstractHTTP } from './AbstractHTTP';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
@@ -14,19 +8,13 @@ import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrServer } from '../api/TwitarrServer';
 
 /**
- * Implementation of the [[ITwitarrHTTP]] interface using Axios: https://github.com/mzabriskie/axios
- * @module AxiosHTTP
+ * Implementation of the [[ITwitarrHTTP]] interface using `fetch`
+ * @module BrowserHTTP
  * @implements ITwitarrHTTP
  */
 export class BrowserHTTP extends AbstractHTTP {
   /**
-   * The Axios instance we'll use for making ReST calls.  This will be reinitialized whenever
-   * the server configuration changes.
-   */
-  private axiosObj: AxiosInstance | undefined;
-
-  /**
-   * Construct an AxiosHTTP instance.
+   * Construct a BrowserHTTP instance.
    * @param server - The server to connect to.
    * @param timeout - The default timeout for ReST connections.
    */
@@ -35,31 +23,33 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP GET call using `axios.request({method:'get'})`.
+   * Make an HTTP GET call using `window.fetch({method:'GET'})`.
    */
-  public get(url: string, options?: TwitarrHTTPOptions) {
+  public async get(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
-    urlObj.search(opts.params);
+    if (options && options.parameters) {
+      urlObj.search(options.parameters);
+    }
     console.debug('GET ' + urlObj.toString());
 
-    opts.method = 'get';
-    opts.url = realUrl;
+    opts.method = 'GET';
 
-    return this.getImpl(options)
-      .request(opts)
-      .then(response => {
-        let type;
-        if (response.headers && response.headers['content-type']) {
-          type = response.headers['content-type'];
+    return window
+      .fetch(urlObj.toString(), opts)
+      .then(async response => {
+        let type: string | undefined;
+        if (response.headers && response.headers.has('Content-Type')) {
+          type = response.headers.get('Content-Type') || undefined;
         }
-        const data = this.getData(response);
+        const data = await this.getResponseData(response);
         if (data && data.status === 'error') {
           throw response;
         }
-        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+        console.log('data:', data);
+        return TwitarrResult.ok(data, undefined, response.status, type);
       })
       .catch(err => {
         throw this.handleError(err);
@@ -67,32 +57,35 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP PUT call using `axios.request({method:'put'})`.
+   * Make an HTTP PUT call using `window.fetch({method:'PUT'})`.
    */
-  public put(url: string, options?: TwitarrHTTPOptions) {
+  public async put(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
-    urlObj.search(opts.params);
+    if (options && options.parameters) {
+      urlObj.search(options.parameters);
+    }
     console.debug('PUT ' + urlObj.toString());
 
-    opts.data = Object.apply({}, opts.params);
-    opts.method = 'put';
-    opts.url = realUrl;
+    if (options && options.parameters) {
+      opts.body = new URLSearchParams(Object.apply({}, options.parameters as any));
+    }
+    opts.method = 'PUT';
 
-    return this.getImpl(options)
-      .request(opts)
-      .then(response => {
-        let type;
-        if (response.headers && response.headers['content-type']) {
-          type = response.headers['content-type'];
+    return window
+      .fetch(urlObj.toString(), opts)
+      .then(async response => {
+        let type: string | undefined;
+        if (response.headers && response.headers.has('Content-Type')) {
+          type = response.headers.get('Content-Type') || undefined;
         }
-        const data = this.getData(response);
+        const data = await this.getResponseData(response);
         if (data && data.status === 'error') {
           throw response;
         }
-        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+        return TwitarrResult.ok(data, undefined, response.status, type);
       })
       .catch(err => {
         throw this.handleError(err);
@@ -100,31 +93,39 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP POST call using `axios.request({method:'post'})`.
+   * Make an HTTP POST call using `window.fetch({method:'POST'})`.
    */
-  public post(url: string, options?: TwitarrHTTPOptions) {
+  public async post(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
-    urlObj.search(opts.params);
+    if (options && options.parameters) {
+      urlObj.search(options.parameters);
+    }
     console.debug('POST ' + urlObj.toString());
 
-    opts.method = 'post';
-    opts.url = realUrl;
+    if (options && options.data) {
+      if (options.data instanceof FormData) {
+        opts.body = options.data;
+      } else {
+        opts.body = JSON.stringify(options.data);
+      }
+    }
+    opts.method = 'POST';
 
-    return this.getImpl(options)
-      .request(opts)
-      .then(response => {
-        let type;
-        if (response.headers && response.headers['content-type']) {
-          type = response.headers['content-type'];
+    return window
+      .fetch(urlObj.toString(), opts)
+      .then(async response => {
+        let type: string | undefined;
+        if (response.headers && response.headers.has('Content-Type')) {
+          type = response.headers.get('Content-Type') || undefined;
         }
-        const data = this.getData(response);
+        const data = await this.getResponseData(response);
         if (data && data.status === 'error') {
           throw response;
         }
-        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+        return TwitarrResult.ok(data, undefined, response.status, type);
       })
       .catch(err => {
         throw this.handleError(err);
@@ -132,33 +133,34 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP DELETE call using `axios.request({method:'delete'})`.
+   * Make an HTTP DELETE call using `window.fetch({method:'DELETE'})`.
    */
-  public httpDelete(url: string, options?: TwitarrHTTPOptions) {
+  public async httpDelete(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
     const opts = this.getConfig(options);
 
     const urlObj = new URI(realUrl);
-    urlObj.search(opts.params);
+    if (options && options.parameters) {
+      urlObj.search(options.parameters);
+    }
     console.debug('DELETE ' + urlObj.toString());
 
-    opts.method = 'delete';
-    opts.url = realUrl;
+    opts.method = 'DELETE';
 
-    return this.getImpl(options)
-      .request(opts)
-      .then(response => {
-        let type;
-        if (response.headers && response.headers['content-type']) {
-          type = response.headers['content-type'];
+    return window
+      .fetch(urlObj.toString(), opts)
+      .then(async response => {
+        let type: string | undefined;
+        if (response.headers && response.headers.has('Content-Type')) {
+          type = response.headers.get('Content-Type') || undefined;
         }
-        const data = this.getData(response);
+        const data = await this.getResponseData(response);
         if (data && data.status === 'error') {
           throw response;
         }
-        return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
+        return TwitarrResult.ok(data, undefined, response.status, type);
       })
-      .catch(err => {
+      .catch((err: Error) => {
         throw this.handleError(err);
       });
   }
@@ -187,9 +189,9 @@ export class BrowserHTTP extends AbstractHTTP {
       fetchObj,
     );
 
-    return fetch(u.toString(), fetchOpts).then(async (response: Response) => {
+    return window.fetch(u.toString(), fetchOpts).then(async (response: Response) => {
       const json = await response.json();
-      return TwitarrResult.ok(json, undefined, response.status, response.headers.get('content-type') || undefined);
+      return TwitarrResult.ok(json, undefined, response.status, response.headers.get('Content-Type') || undefined);
     });
   }
 
@@ -204,98 +206,59 @@ export class BrowserHTTP extends AbstractHTTP {
     };
   }
 
-  /**
-   * Clear the current [[AxiosInstance]] so it is recreated on next request with the
-   * new server configuration.
-   */
-  protected onSetServer() {
-    super.onSetServer();
-    this.axiosObj = undefined;
+  private async getResponseData(response: Response): Promise<any> {
+    try {
+      return await response.json();
+    } catch (err) {
+      return await response.text();
+    }
   }
 
   /**
-   * Internal method to turn [[TwitarrHTTPOptions]] into an [[AxiosRequestConfig]] object.
+   * Internal method to turn [[TwitarrHTTPOptions]] into a fetch [[RequestInit]] object.
    * @hidden
    */
-  private getConfig(options?: TwitarrHTTPOptions): AxiosRequestConfig {
+  private getConfig(options?: TwitarrHTTPOptions): RequestInit {
     const allOptions = this.getOptions(options);
 
-    const ret: AxiosRequestConfig = {
-      transformResponse: [], // we do this so we can post-process only on success
+    const headers = new Headers(allOptions.headers || {});
+
+    const ret: RequestInit = {
+      headers,
+      credentials: 'same-origin',
+      mode: 'cors',
+      redirect: 'follow',
     };
 
-    if (allOptions.auth && allOptions.auth.username && allOptions.auth.password) {
-      ret.auth = {
-        password: allOptions.auth.password,
-        username: allOptions.auth.username,
-      };
-    }
-
     if (allOptions.timeout) {
-      ret.timeout = allOptions.timeout;
+      console.warn('Fetch does not support timeouts.');
+      // ret.timeout = allOptions.timeout;
     }
 
-    if (allOptions.headers) {
-      ret.headers = clonedeep(allOptions.headers);
-    } else {
-      ret.headers = {};
+    if (allOptions.auth && allOptions.auth.username && allOptions.auth.password) {
+      headers.set('Authorization', 'Basic ' + btoa(`${allOptions.auth.username}:${allOptions.auth.password}`));
     }
 
-    if (!ret.headers.accept) {
-      ret.headers.accept = 'application/json';
+    if (!headers.has('Accept')) {
+      headers.set('Accept', 'application/json');
     }
-    if (!ret.headers['content-type']) {
-      ret.headers['content-type'] = 'application/json;charset=utf-8';
-    }
-
-    const type = ret.headers.accept;
-    ret.transformResponse = [];
-    if (type === 'application/json') {
-      ret.responseType = 'json';
-    } else if (type === 'text/plain') {
-      ret.responseType = 'text';
-    } else {
-      throw new Error('Unhandled "Accept" header: ' + type);
-    }
-
-    if (allOptions.parameters) {
-      ret.params = clonedeep(allOptions.parameters);
+    if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json;charset=utf-8');
     }
 
     if (allOptions.data) {
-      ret.data = clonedeep(allOptions.data);
+      if (
+        allOptions.data instanceof Blob ||
+        allOptions.data instanceof FormData ||
+        allOptions.data instanceof URLSearchParams ||
+        allOptions.data instanceof ReadableStream
+      ) {
+        ret.body = allOptions.data;
+      } else {
+        ret.body = JSON.stringify(allOptions.data);
+      }
     }
 
     return ret;
-  }
-
-  /**
-   * Internal method for getting/constructing an Axios object on-demand,
-   * based on the current server configuration.
-   * @hidden
-   */
-  private getImpl(options?: TwitarrHTTPOptions) {
-    if (!this.axiosObj) {
-      const server = this.getServer(options);
-      if (!server) {
-        throw new Error('You must set a server before attempting to make queries using Axios!');
-      }
-      const allOptions = this.getOptions(options);
-
-      const axiosOpts: AxiosRequestConfig = {
-        baseURL: server.url,
-        timeout: allOptions.timeout,
-        withCredentials: true,
-      };
-
-      if (typeof XMLHttpRequest !== 'undefined') {
-        axiosOpts.adapter = require('axios/lib/adapters/xhr.js');
-      } else if (typeof process !== 'undefined') {
-        axiosOpts.adapter = require('axios/lib/adapters/http.js');
-      }
-
-      this.axiosObj = axios.create(axiosOpts);
-    }
-    return this.axiosObj;
   }
 }

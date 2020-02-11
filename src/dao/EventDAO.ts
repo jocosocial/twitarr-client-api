@@ -1,11 +1,8 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
-
 import { CalendarEvent } from '../model/CalendarEvent';
-
 import { Util } from '../internal/Util';
-
 import { AbstractDAO } from './AbstractDAO';
 
 /** @hidden */
@@ -13,11 +10,11 @@ const sortEvents = (a: CalendarEvent, b: CalendarEvent) => {
   let ret = 0;
   if (a) {
     if (b) {
-      ret = a.start_time.toMillis() - b.start_time.toMillis();
+      ret = a.start_time.valueOf() - b.start_time.valueOf();
       if (ret === 0) {
         if (a.end_time) {
           if (b.end_time) {
-            ret = a.end_time.toMillis() - b.end_time.toMillis();
+            ret = a.end_time.valueOf() - b.end_time.valueOf();
           } else {
             return -1;
           }
@@ -103,7 +100,7 @@ export class EventDAO extends AbstractDAO {
   /**
    * Update an individual event. (Must be an admin.)
    */
-  public async update(id: string, title?: string, description?: string, location?: string, start_time?: DateTime | number, end_time?: DateTime | number) {
+  public async update(id: string, title?: string, description?: string, location?: string, start_time?: Moment | number, end_time?: Moment | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain').withData({});
     if (title) {
       options.data.title = title;
@@ -115,10 +112,10 @@ export class EventDAO extends AbstractDAO {
       options.data.location = location;
     }
     if (start_time) {
-      options.data.start_time = (Util.toDateTime(start_time) as DateTime).toMillis();
+      options.data.start_time = Util.toMillis(start_time);
     }
     if (end_time) {
-      options.data.end_time = (Util.toDateTime(end_time) as DateTime).toMillis();
+      options.data.end_time = Util.toMillis(end_time);
     }
     return this.http
       .post('/api/v2/event/' + id, options)
@@ -131,8 +128,8 @@ export class EventDAO extends AbstractDAO {
   /**
    * Retrieve the list of events for a given day.
    */
-  public async getDay(date: DateTime | number, mine?: boolean) {
-    const epoch = (Util.toDateTime(date) as DateTime).toMillis();
+  public async getDay(date: Moment | number, mine?: boolean) {
+    const epoch = Util.toMillis(date);
     let url = '/api/v2/event/day/' + epoch;
     if (mine) {
       url = '/api/v2/event/mine/' + epoch;

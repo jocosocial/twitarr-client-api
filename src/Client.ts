@@ -37,6 +37,7 @@ export class Client implements IHasHTTP {
       }
       httpImpl = Client.defaultHttp;
     }
+    httpImpl.server = server;
     opts.headers.accept = 'application/json';
 
     const welcomeUrl = server.resolveURL('api/v2/text/welcome');
@@ -97,9 +98,7 @@ export class Client implements IHasHTTP {
     if (!this.http) {
       this.http = Client.defaultHttp;
     }
-    if (!this.http.server) {
-      this.http.server = server;
-    }
+    this.http.server = server;
     this.server = server;
 
     if (this.server.auth.key) {

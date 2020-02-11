@@ -1,5 +1,3 @@
-declare const describe, beforeEach, it, expect, require;
-
 import { SeamailMessage } from '../../src/model/SeamailMessage';
 import { User } from '../../src/model/User';
 
@@ -35,11 +33,11 @@ describe('SeamailMessage', () => {
       });
       expect(message.author).toBeDefined();
       expect(message.author.email).toEqual(testUser.email);
-      expect(message.author.last_login.toMillis()).toEqual(ARBITRARY_EPOCH);
+      expect(message.author.last_login.valueOf()).toEqual(ARBITRARY_EPOCH);
       expect(message.author.username).toEqual(testUser.username);
       expect(message.id).toBe('1234');
       expect(message.text).toBe('seamail!');
-      expect(message.timestamp.toMillis()).toEqual(ARBITRARY_EPOCH);
+      expect(message.timestamp.valueOf()).toEqual(ARBITRARY_EPOCH);
       expect(message.read_users).toBeDefined();
       expect(message.read_users.length).toEqual(0);
     });
