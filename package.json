@@ -3,6 +3,7 @@
   "version": "0.1.2-beta.1",
   "description": "Client API for Twitarr",
   "main": "dist/twitarr.js",
+  "types": "dist/API.d.ts",
   "bin": {
     "twitarr": "dist/cli.node.js"
   },
@@ -124,7 +125,7 @@
     "precommit": "npm run lint",
     "prepush": "conventional-changelog-lint --from=origin/master && npm run lint && npm run test",
     "changelog": "standard-changelog -i CHANGELOG.md -s -r 1 -f",
-    "build": "webpack --define process.env.NODE_ENV=production --env production",
+    "build": "webpack --define process.env.NODE_ENV=production --env production && tsc -d --emitDeclarationOnly --outDir dist",
     "dev": "webpack --progress --colors",
     "dist": "npm run lint && npm run test && npm run build",
     "docs": "webpack --env docs",
