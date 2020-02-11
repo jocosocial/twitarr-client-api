@@ -66,7 +66,10 @@ jobs:
         - cached-npm-install
         - run:
             name: Build Artifacts
-            command: npm run release-build
+            command: npm run dist && rm -rf dist/coverage
+        - run:
+            name: Generate Changelog
+            command: npm run changelog
         - run:
             name: Commit and Push Updated Artifacts
             command: |
