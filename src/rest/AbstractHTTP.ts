@@ -1,9 +1,9 @@
 import { ITwitarrHTTP } from '../api/ITwitarrHTTP';
-import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrServer } from '../api/TwitarrServer';
 import { JsonTransformer } from './JsonTransformer';
+import { Util } from '../internal/Util';
 
 /** @hidden */
 const jsonTransformer = new JsonTransformer();
@@ -70,7 +70,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     if (this.server && this.server.auth) {
       this.server.auth.username = username;
     } else {
-      throw new TwitarrError('server auth not yet configured!');
+      throw new Error('server auth not yet configured!');
     }
     return this as ITwitarrHTTP;
   }
@@ -83,7 +83,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     if (this.server && this.server.auth) {
       this.server.auth.password = password;
     } else {
-      throw new TwitarrError('server auth not yet configured!');
+      throw new Error('server auth not yet configured!');
     }
     return this as ITwitarrHTTP;
   }
@@ -96,7 +96,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
     if (this.server && this.server.auth) {
       this.server.auth.key = key;
     } else {
-      throw new TwitarrError('server auth not yet configured!');
+      throw new Error('server auth not yet configured!');
     }
     return this;
   }
@@ -161,7 +161,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
       return options.server;
     }
     if (!this.serverObj) {
-      throw new TwitarrError('getServer() called but server has never been initialized!');
+      throw new Error('getServer() called but server has never been initialized!');
     }
     return this.serverObj;
   }
@@ -199,15 +199,15 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   }
 
   /**
-   * Create a [[TwitarrError]] from an error response.
+   * Create an [[Error]] from an error response.
    * @hidden
    */
-  protected handleError(err: any, options?: any): TwitarrError {
+  protected handleError(err: any /*, options?: any */): Error {
     const message = AbstractHTTP.extractMessage(err);
     const code = AbstractHTTP.extractCode(err);
-    const errors = AbstractHTTP.extractError(err);
+    // const errors = AbstractHTTP.extractError(err);
     const data = AbstractHTTP.extractData(err);
-    return new TwitarrError(message, code, errors, options, data);
+    return Util.getError(message, code, data);
   }
 
   /**

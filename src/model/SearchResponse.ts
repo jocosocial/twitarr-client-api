@@ -1,5 +1,3 @@
-import { TwitarrError } from '../api/TwitarrError';
-
 import { Util } from '../internal/Util';
 
 import { CalendarEvent } from './CalendarEvent';
@@ -30,7 +28,7 @@ export class SearchResponse {
     this.query = data.query.text;
 
     if (Util.isEmpty(data.users, data.seamails, data.tweets, data.forums, data.events)) {
-      throw new TwitarrError('At least one of users, seamails, tweets, forums, or events is expected on the response!', undefined, undefined, undefined, data);
+      throw new Error('SearchResponse: at least one of users, seamails, tweets, forums, or events is expected on the response!');
     }
 
     if (data.users) {

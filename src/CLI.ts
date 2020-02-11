@@ -1,6 +1,5 @@
 import { API, Rest, Client } from './API';
 import { Util } from './internal/Util';
-import { TwitarrError } from './api/TwitarrError';
 import { IStreamOptions } from './dao/StreamDAO';
 import { DateTime } from 'luxon';
 
@@ -256,7 +255,7 @@ const CLI = () => {
       config.key = undefined;
     }
     if (Util.isEmpty(username) || Util.isEmpty(password)) {
-      throw new TwitarrError('A username and password are required!');
+      throw new Error('A username and password are required!');
     }
 
     const auth = new API.TwitarrAuthConfig(username, password);
@@ -319,7 +318,7 @@ const CLI = () => {
 
   const doComment = async (username: string, comment: string) => {
     if (Util.isEmpty(username, comment)) {
-      throw new TwitarrError('You must specify a username and a comment!');
+      throw new Error('You must specify a username and a comment!');
     }
     const profileInfo = await getClient()
       .user()
@@ -421,7 +420,7 @@ const CLI = () => {
         console.log('* ' + filename + ' has photo ID ' + photoMeta.id);
         return photoMeta.id;
       }
-      throw new TwitarrError('Photo posted, but no metadata was found!');
+      throw new Error('Photo posted, but no metadata was found!');
     }
     return photo;
   };
@@ -780,7 +779,7 @@ const CLI = () => {
               break;
             }
             default:
-              throw new TwitarrError('Unhandled seamail command: ' + command);
+              throw new Error('Unhandled seamail command: ' + command);
           }
           break;
         }
@@ -942,7 +941,7 @@ const CLI = () => {
         }
         default: {
           console.error('Unhandled argument:', args._);
-          throw new TwitarrError('Unhandled argument: ' + args._.join(' '));
+          throw new Error('Unhandled argument: ' + args._.join(' '));
         }
       }
       process.exit(0);

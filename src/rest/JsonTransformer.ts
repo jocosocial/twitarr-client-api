@@ -1,5 +1,3 @@
-import { TwitarrError } from '../api/TwitarrError';
-
 /**
  * Helper to transform a json string to an json object.
  */
@@ -16,7 +14,8 @@ export class JsonTransformer {
         try {
           return JSON.parse(data);
         } catch (err) {
-          throw new TwitarrError(err.message, undefined, undefined, data);
+          (err as any).data = data;
+          throw err;
         }
       }
     } else {

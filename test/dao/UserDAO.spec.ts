@@ -1,5 +1,3 @@
-import { TwitarrError } from '../../src/api/TwitarrError';
-
 import { UserDAO } from '../../src/dao/UserDAO';
 import { TwitarrAuthConfig } from '../../src/api/TwitarrAuthConfig';
 import { TwitarrResult } from '../../src/api/TwitarrResult';
@@ -38,7 +36,7 @@ describe('dao/UserDAO', () => {
     auth.password = 'invalid';
     dao.login().catch(err => {
       expect(err).toBeDefined();
-      expect(err).toBeInstanceOf(TwitarrError);
+      expect(err).toBeInstanceOf(Error);
       expect(err.message).toEqual('invalid username or password');
       expect(err.code).toEqual(401);
       done();
@@ -104,7 +102,7 @@ describe('dao/UserDAO', () => {
   it('#changePassword', done => {
     dao.changePassword('badPassword', 'newPassword').catch(err => {
       expect(err).toBeDefined();
-      expect(err).toBeInstanceOf(TwitarrError);
+      expect(err).toBeInstanceOf(Error);
       expect(err.message).toEqual('Current password is incorrect.');
       expect(err.code).toEqual(400);
       done();
@@ -124,10 +122,7 @@ describe('dao/UserDAO', () => {
   it('#resetPassword', done => {
     dao.resetPassword('rangerrick', '123465', 'newPassword').catch(err => {
       expect(err).toBeDefined();
-      expect(err).toBeInstanceOf(TwitarrError);
-      expect(err.errors).toBeDefined();
-      expect(err.errors['username']).toBeDefined();
-      expect(err.errors['username'][0]).toEqual('Username and registration code combination not found.');
+      expect(err).toBeInstanceOf(Error);
       expect(err.code).toEqual(400);
       done();
     });

@@ -1,7 +1,6 @@
 import { IHasHTTP } from './api/IHasHTTP';
 import { ITwitarrHTTP } from './api/ITwitarrHTTP';
 import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
-import { TwitarrError } from './api/TwitarrError';
 import { TwitarrServer } from './api/TwitarrServer';
 
 import { AlertDAO } from './dao/AlertDAO';
@@ -16,6 +15,7 @@ import { TextDAO } from './dao/TextDAO';
 import { UserDAO } from './dao/UserDAO';
 
 import { AutomaticHTTP } from './rest/AutomaticHTTP';
+import { Util } from './internal/Util';
 
 /**
  * The Twitarr client.  This is the primary interface to Twitarr servers.
@@ -33,7 +33,7 @@ export class Client implements IHasHTTP {
     const opts = new TwitarrHTTPOptions(timeout, server.auth, server);
     if (!httpImpl) {
       if (!Client.defaultHttp) {
-        throw new TwitarrError('No HTTP implementation is configured!');
+        throw new Error('No HTTP implementation is configured!');
       }
       httpImpl = Client.defaultHttp;
     }
@@ -41,7 +41,7 @@ export class Client implements IHasHTTP {
 
     const welcomeUrl = server.resolveURL('api/v2/text/welcome');
     if (!welcomeUrl) {
-      throw new TwitarrError('An error occurred resolving the welcome URL!');
+      throw new Error('An error occurred resolving the welcome URL!');
     }
     console.debug('checkServer: checking URL: ' + welcomeUrl);
     await httpImpl.get(welcomeUrl, opts);
@@ -124,9 +124,9 @@ export class Client implements IHasHTTP {
         });
     } catch (err) {
       if (err.code === 401) {
-        throw new TwitarrError('username or password was invalid', err.code, err.options, err.errors, err.data);
+        Util.throwError('Username or password was invalid.', err.code, err.data);
       }
-      throw new TwitarrError('unexpected error: ' + err.message, err.code, err.options, err.errors, err.data);
+      throw err;
     }
   }
 

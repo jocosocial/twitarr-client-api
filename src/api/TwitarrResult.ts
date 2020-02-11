@@ -1,4 +1,4 @@
-import { TwitarrError } from './TwitarrError';
+import { Util } from '../internal/Util';
 
 /**
  * An [[ITwitarrHTTP]] query result.
@@ -29,7 +29,7 @@ export class TwitarrResult<T> {
   public code?: number;
 
   /** The error associated with this response if any. */
-  public error?: TwitarrError;
+  public error?: Error;
 
   /**
    * Construct a new result.
@@ -52,7 +52,7 @@ export class TwitarrResult<T> {
     }
 
     if (!this.isSuccess() || errors || status === 'error') {
-      this.error = new TwitarrError(message, code, errors, undefined, data);
+      this.error = Util.getError(message, code, data);
     }
   }
 

@@ -1,5 +1,4 @@
 import { AbstractDAO } from './AbstractDAO';
-import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { PhotoDetails } from '../model/PhotoDetails';
 
@@ -41,7 +40,7 @@ export class PhotoDAO extends AbstractDAO {
     } else if (fileName.endsWith('.jpeg') || fileName.endsWith('.jpg')) {
       mimeType = 'image/jpeg';
     } else {
-      throw new TwitarrError('Unable to determine mime-type from filename: ' + fileName);
+      throw new Error('Unable to determine mime-type from filename: ' + fileName);
     }
 
     return this.http
@@ -66,7 +65,7 @@ export class PhotoDAO extends AbstractDAO {
     } else if (fileName.endsWith('.jpeg') || fileName.endsWith('.jpg')) {
       mimeType = 'image/jpeg';
     } else {
-      throw new TwitarrError('Unable to determine mime-type from filename: ' + fileName);
+      throw new Error('Unable to determine mime-type from filename: ' + fileName);
     }
 
     return this.http

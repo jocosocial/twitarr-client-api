@@ -1,6 +1,5 @@
 import { ErrorMessage } from './api/ErrorMessage';
 import { TwitarrAuthConfig } from './api/TwitarrAuthConfig';
-import { TwitarrError } from './api/TwitarrError';
 import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
 import { TwitarrResult } from './api/TwitarrResult';
 import { TwitarrServer } from './api/TwitarrServer';
@@ -45,7 +44,6 @@ import { Client } from './Client';
 const API = Object.freeze({
   ErrorMessage,
   TwitarrAuthConfig,
-  TwitarrError,
   TwitarrHTTPOptions,
   TwitarrResult,
   TwitarrServer,

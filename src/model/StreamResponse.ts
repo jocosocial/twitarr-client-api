@@ -2,7 +2,6 @@ import { DateTime } from 'luxon';
 
 import { Util } from '../internal/Util';
 import { StreamPost } from './StreamPost';
-import { TwitarrError } from '../api/TwitarrError';
 
 export class StreamResponse {
   public static fromRest(data: any) {
@@ -14,7 +13,7 @@ export class StreamResponse {
     this.has_next_page = data.has_next_page;
 
     if (Util.isEmpty(data.stream_posts, data.stream_post, data.post)) {
-      throw new TwitarrError('At least one of stream_posts, stream_post, or posts is expected on the response!', undefined, undefined, undefined, data);
+      throw new Error('StreamResponse: at least one of stream_posts, stream_post, or posts is expected on the response!');
     }
 
     Util.setDateProperties(this, data, 'next_page');
@@ -43,7 +42,7 @@ export class StreamResponse {
 
   public get post() {
     if (this.posts && this.posts.length >= 2) {
-      throw new TwitarrError('StreamResponse has more than one post!');
+      throw new Error('StreamResponse has more than one post!');
     }
     return this.posts[0];
   }

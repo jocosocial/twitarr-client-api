@@ -2,8 +2,6 @@ import { DateTime } from 'luxon';
 
 import { SeamailThread } from './SeamailThread';
 
-import { TwitarrError } from '../api/TwitarrError';
-
 import { Util } from '../internal/Util';
 
 export class SeamailResponse {
@@ -17,7 +15,7 @@ export class SeamailResponse {
     }
 
     if (Util.isEmpty(data.seamail) && Util.isEmpty(data.seamail_meta) && Util.isEmpty(data.seamail_threads)) {
-      throw new TwitarrError('At least one of seamail, seamail_meta, or seamail_threads is expected in the response!', undefined, undefined, data);
+      throw new Error('SeamailResponse: at least one of seamail, seamail_meta, or seamail_threads is expected in the response!');
     }
 
     if (!Util.isEmpty(data.seamail)) {

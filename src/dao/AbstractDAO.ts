@@ -1,7 +1,7 @@
 import { IHasHTTP } from '../api/IHasHTTP';
 import { ITwitarrHTTP } from '../api/ITwitarrHTTP';
-import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrResult } from '../api/TwitarrResult';
+import { Util } from '../internal/Util';
 
 export abstract class AbstractDAO {
   /**
@@ -42,6 +42,6 @@ export abstract class AbstractDAO {
         return result.data;
       }
     }
-    throw new TwitarrError('Failed to parse result.', result.code, undefined, undefined, result.data);
+    Util.throwError('Failed to parse result.', result.code, result.data);
   }
 }

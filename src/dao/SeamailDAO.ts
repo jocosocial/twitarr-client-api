@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon';
 
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
-import { TwitarrError } from '../api/TwitarrError';
 
 import { SeamailResponse } from '../model/SeamailResponse';
 import { SeamailMessage } from '../model/SeamailMessage';
@@ -13,7 +12,7 @@ import { AbstractDAO } from './AbstractDAO';
 export class SeamailDAO extends AbstractDAO {
   public async get(id: string, skip_mark_read?: boolean) {
     if (!id) {
-      throw new TwitarrError('id is required!');
+      throw new Error('id is required!');
     }
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (skip_mark_read) {

@@ -1,5 +1,3 @@
-import { TwitarrError } from '../api/TwitarrError';
-
 import { DateTime } from 'luxon';
 
 /**
@@ -31,14 +29,14 @@ export class Util {
 
   public static assertHasProperties(obj?: any, ...expectedProperties: any[]) {
     if (Util.isEmpty(obj)) {
-      throw new TwitarrError('Object is empty!');
+      throw new Error('Object is empty!');
     }
     if (expectedProperties.length === 0) {
-      throw new TwitarrError('At least one property must be specified!');
+      throw new Error('At least one property must be specified!');
     }
     for (const prop of expectedProperties) {
       if (Util.isEmpty(obj[prop])) {
-        throw new TwitarrError('Object property "' + prop + '" does not exist or is empty!');
+        throw new Error('Object property "' + prop + '" does not exist or is empty!');
       }
     }
     return true;
@@ -68,7 +66,7 @@ export class Util {
     } else if (typeof date === 'string' || (date as any) instanceof String) {
       ret = DateTime.fromISO(date, { zone: 'utc' });
     } else {
-      throw new TwitarrError('Unable to parse type "' + typeof date + '" as a date.');
+      throw new Error('Unable to parse type "' + typeof date + '" as a date.');
     }
     return ret;
   }
@@ -124,5 +122,22 @@ export class Util {
         }
       }
     }
+  }
+
+  /**
+   * Create an error with custom properties.
+   */
+  public static getError(message?: string, code?: number, data?: any) {
+    const err = new Error(message);
+    (err as any).code = code;
+    (err as any).data = data;
+    return err;
+  }
+
+  /**
+   * Throw an Error with custom properties.
+   */
+  public static throwError(message?: string, code?: number, data?: any) {
+    throw Util.getError(message, code, data);
   }
 }

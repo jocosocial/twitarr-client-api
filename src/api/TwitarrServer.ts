@@ -3,7 +3,6 @@ import URI from 'urijs';
 
 import { TwitarrAuthConfig } from './TwitarrAuthConfig';
 import { UUID } from '../internal/UUID';
-import { TwitarrError } from './TwitarrError';
 
 /**
  * Represents a remote Twitarr server.
@@ -45,7 +44,7 @@ export class TwitarrServer {
     this.id = UUID.generate();
     this.name = name;
     if (!url) {
-      throw new TwitarrError('You must provide a URL when creating a TwitarrServer!');
+      throw new Error('You must provide a URL when creating a TwitarrServer!');
     }
     this.url = url;
     if (auth instanceof TwitarrAuthConfig) {

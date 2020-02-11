@@ -7,7 +7,6 @@ if (!fetch) {
 }
 
 import { AbstractHTTP } from './AbstractHTTP';
-import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrServer } from '../api/TwitarrServer';
@@ -41,7 +40,7 @@ export class CordovaHTTP extends AbstractHTTP {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     if (!window.cordova || !window.cordova.plugin || !window.cordova.plugin.http) {
-      throw new TwitarrError('cordova-plugin-advanced-http is not available!');
+      throw new Error('cordova-plugin-advanced-http is not available!');
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
@@ -119,7 +118,7 @@ export class CordovaHTTP extends AbstractHTTP {
   /** POST a file. */
   // eslint-disable-next-line
   public async postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
-    throw new TwitarrError('Not yet implemented!');
+    throw new Error('Not yet implemented!');
     /*
     const opts = this.getOptions(options)
       .withHeader('content-type', 'multipart/form-data')

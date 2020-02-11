@@ -9,7 +9,6 @@ if (!fetch) {
 }
 
 import { AbstractHTTP } from './AbstractHTTP';
-import { TwitarrError } from '../api/TwitarrError';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrServer } from '../api/TwitarrServer';
@@ -171,7 +170,7 @@ export class BrowserHTTP extends AbstractHTTP {
       .withParameter('key', this.getKey());
 
     if (!this.server) {
-      throw new TwitarrError('attempting to post a file, but TwitarrServer is undefined!');
+      throw new Error('attempting to post a file, but TwitarrServer is undefined!');
     }
 
     const fetchObj = this.getFetchObject(fileName, contentType, data, opts);
@@ -256,7 +255,7 @@ export class BrowserHTTP extends AbstractHTTP {
     } else if (type === 'text/plain') {
       ret.responseType = 'text';
     } else {
-      throw new TwitarrError('Unhandled "Accept" header: ' + type);
+      throw new Error('Unhandled "Accept" header: ' + type);
     }
 
     if (allOptions.parameters) {
@@ -279,7 +278,7 @@ export class BrowserHTTP extends AbstractHTTP {
     if (!this.axiosObj) {
       const server = this.getServer(options);
       if (!server) {
-        throw new TwitarrError('You must set a server before attempting to make queries using Axios!');
+        throw new Error('You must set a server before attempting to make queries using Axios!');
       }
       const allOptions = this.getOptions(options);
 

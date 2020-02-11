@@ -61,7 +61,9 @@ var config = {
     ],
     extensions: ['.webpack.js', '.web.js', '.ts', '.js']
   },
-  plugins: [],
+  plugins: [
+    new webpack.IgnorePlugin(/^encoding$/, /node-fetch/),
+  ],
   node: {
     fs: 'empty',
     __dirname: true,

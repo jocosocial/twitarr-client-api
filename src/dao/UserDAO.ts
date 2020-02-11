@@ -1,5 +1,4 @@
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
-import { TwitarrError } from '../api/TwitarrError';
 
 import { Util } from '../internal/Util';
 
@@ -22,7 +21,7 @@ export class UserDAO extends AbstractDAO {
       this.http.setKey(data.key);
       return data.key;
     }
-    throw new TwitarrError('No key returned from user auth', result.code, undefined, undefined, result);
+    Util.throwError('No key returned from user auth', result.code, result.data);
   }
 
   public async profile(username?: string) {
@@ -107,7 +106,7 @@ export class UserDAO extends AbstractDAO {
 
   public async changePassword(currentPassword: string, newPassword: string) {
     if (Util.isEmpty(newPassword)) {
-      throw new TwitarrError('password must not be blank!');
+      throw new Error('password must not be blank!');
     }
     const options = new TwitarrHTTPOptions().withData({
       current_password: currentPassword,
@@ -118,7 +117,7 @@ export class UserDAO extends AbstractDAO {
 
   public async resetPassword(username: string, registrationCode: string, newPassword: string) {
     if (Util.isEmpty(newPassword)) {
-      throw new TwitarrError('password must not be blank!');
+      throw new Error('password must not be blank!');
     }
     const options = new TwitarrHTTPOptions().withData({
       username: username,
