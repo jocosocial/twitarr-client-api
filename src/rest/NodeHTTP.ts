@@ -6,7 +6,7 @@ import { BrowserHTTP } from './BrowserHTTP';
 const FormData = require('form-data'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 export class NodeHTTP extends BrowserHTTP {
-  protected getFetchObject(fileName: string, contentType: string, data: Buffer, options: TwitarrHTTPOptions): any {
+  protected getFetchObject(fileName: string, contentType: string, data: Blob, options: TwitarrHTTPOptions): any {
     const fd = new FormData();
     fd.append('name', fileName);
     fd.append('file', data, fileName);

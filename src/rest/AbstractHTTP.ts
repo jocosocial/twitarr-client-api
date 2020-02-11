@@ -114,7 +114,7 @@ export abstract class AbstractHTTP implements ITwitarrHTTP {
   public abstract httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 
   /** POST a file.  This must be overridden by the concrete implementation. */
-  public abstract postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
+  public abstract postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 
   /**
    * A convenience method for implementers to use to turn JSON into a javascript object.

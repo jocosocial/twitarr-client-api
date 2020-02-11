@@ -285,18 +285,15 @@ export class MockHTTP extends AbstractHTTP {
             status: 'ok',
           });
         } else if (options.data.current_password === 'badPassword') {
-          const result = this.handleError(
-            {
-              response: {
-                code: 400,
-                data: {
-                  status: 'error',
-                  message: 'Current password is incorrect.',
-                },
+          const result = this.handleError({
+            response: {
+              code: 400,
+              data: {
+                status: 'error',
+                message: 'Current password is incorrect.',
               },
             },
-            options,
-          );
+          });
           return Promise.reject(result);
         }
       }
@@ -307,20 +304,17 @@ export class MockHTTP extends AbstractHTTP {
             message: 'Your password has been changed.',
           });
         } else if (options.data.username === 'rangerrick' && options.data.registration_code !== '123456') {
-          const result = this.handleError(
-            {
-              response: {
-                code: 400,
-                data: {
-                  status: 'error',
-                  errors: {
-                    username: ['Username and registration code combination not found.'],
-                  },
+          const result = this.handleError({
+            response: {
+              code: 400,
+              data: {
+                status: 'error',
+                errors: {
+                  username: ['Username and registration code combination not found.'],
                 },
               },
             },
-            options,
-          );
+          });
           return Promise.reject(result);
         }
       }
@@ -380,7 +374,7 @@ export class MockHTTP extends AbstractHTTP {
     return Promise.reject(getError('DELETE', urlObj, options));
   }
 
-  public postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
+  public postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
     const urlObj = new URI(url);
     if (options && options.parameters) {
       urlObj.search(options.parameters);

@@ -79,5 +79,5 @@ export interface ITwitarrHTTP {
    * @param options The [[TwitarrHTTPOptions]] options to use when connecting.
    * @returns A [[TwitarrResult]] result object.
    */
-  postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
+  postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
 }

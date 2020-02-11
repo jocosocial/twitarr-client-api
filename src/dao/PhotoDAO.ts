@@ -2,8 +2,6 @@ import { AbstractDAO } from './AbstractDAO';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { PhotoDetails } from '../model/PhotoDetails';
 
-require('buffer');
-
 export class PhotoDAO extends AbstractDAO {
   /**
    * Retrieve a photo's metadata.
@@ -29,7 +27,7 @@ export class PhotoDAO extends AbstractDAO {
   /**
    * Post a photo.
    */
-  public async post(fileName: string, photoData: Buffer) {
+  public async post(fileName: string, photoData: Blob) {
     const options = new TwitarrHTTPOptions().withHeader('cache-control', 'no-cache');
 
     let mimeType;
@@ -45,8 +43,8 @@ export class PhotoDAO extends AbstractDAO {
 
     return this.http
       .postFile('/api/v2/photo', fileName, mimeType, photoData, options)
-      .then(result => this.handleErrors(result))
-      .then(data => {
+      .then((result: any) => this.handleErrors(result))
+      .then((data: any) => {
         return PhotoDetails.fromRest(data.photo);
       });
   }
@@ -54,7 +52,7 @@ export class PhotoDAO extends AbstractDAO {
   /**
    * Post a profile photo.
    */
-  public async profile(username: string, fileName: string, photoData: Buffer) {
+  public async profile(username: string, fileName: string, photoData: Blob) {
     const options = new TwitarrHTTPOptions().withHeader('cache-control', 'no-cache');
 
     let mimeType;
@@ -70,8 +68,8 @@ export class PhotoDAO extends AbstractDAO {
 
     return this.http
       .postFile('/api/v2/user/photo', fileName, mimeType, photoData, options)
-      .then(result => this.handleErrors(result))
-      .then(data => {
+      .then((result: any) => this.handleErrors(result))
+      .then((data: any) => {
         return PhotoDetails.fromRest(data.photo);
       });
   }

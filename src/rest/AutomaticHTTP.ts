@@ -75,7 +75,7 @@ export class AutomaticHTTP implements ITwitarrHTTP {
     return this.impl.httpDelete(url, options);
   }
 
-  public postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions) {
+  public postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions) {
     return this.impl.postFile(url, fileName, contentType, data, options);
   }
 }

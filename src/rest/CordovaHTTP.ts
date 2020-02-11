@@ -117,7 +117,7 @@ export class CordovaHTTP extends AbstractHTTP {
 
   /** POST a file. */
   // eslint-disable-next-line
-  public async postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
+  public async postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
     throw new Error('Not yet implemented!');
     /*
     const opts = this.getOptions(options)
@@ -146,7 +146,7 @@ export class CordovaHTTP extends AbstractHTTP {
   }
 
   /*
-  protected getFetchObject(fileName: string, contentType: string, data: Buffer, options: TwitarrHTTPOptions): any {
+  protected getFetchObject(fileName: string, contentType: string, data: Blob, options: TwitarrHTTPOptions): any {
     const fd = new FormData();
     fd.append('name', fileName);
     fd.append('file', new Blob([data], { type: contentType }), fileName);
@@ -186,7 +186,7 @@ export class CordovaHTTP extends AbstractHTTP {
         return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
       })
       .catch(err => {
-        throw this.handleError(err, opts);
+        throw this.handleError(err);
       });
   }
 

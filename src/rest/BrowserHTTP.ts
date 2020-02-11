@@ -62,7 +62,7 @@ export class BrowserHTTP extends AbstractHTTP {
         return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
       })
       .catch(err => {
-        throw this.handleError(err, opts);
+        throw this.handleError(err);
       });
   }
 
@@ -95,7 +95,7 @@ export class BrowserHTTP extends AbstractHTTP {
         return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
       })
       .catch(err => {
-        throw this.handleError(err, opts);
+        throw this.handleError(err);
       });
   }
 
@@ -127,7 +127,7 @@ export class BrowserHTTP extends AbstractHTTP {
         return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
       })
       .catch(err => {
-        throw this.handleError(err, opts);
+        throw this.handleError(err);
       });
   }
 
@@ -159,12 +159,12 @@ export class BrowserHTTP extends AbstractHTTP {
         return TwitarrResult.ok(this.getData(response), undefined, response.status, type);
       })
       .catch(err => {
-        throw this.handleError(err, opts);
+        throw this.handleError(err);
       });
   }
 
   /** POST a file. */
-  public async postFile(url: string, fileName: string, contentType: string, data: Buffer, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
+  public async postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>> {
     const opts = this.getOptions(options)
       .withHeader('content-type', 'multipart/form-data')
       .withParameter('key', this.getKey());
@@ -193,10 +193,10 @@ export class BrowserHTTP extends AbstractHTTP {
     });
   }
 
-  protected getFetchObject(fileName: string, contentType: string, data: Buffer, options: TwitarrHTTPOptions): any {
+  protected getFetchObject(fileName: string, contentType: string, data: Blob, options: TwitarrHTTPOptions): any {
     const fd = new FormData();
     fd.append('name', fileName);
-    fd.append('file', new Blob([data], { type: contentType }), fileName);
+    fd.append('file', data.slice(undefined, undefined, contentType), fileName);
 
     return {
       body: fd,
