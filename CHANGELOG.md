@@ -1,5 +1,5 @@
 <a name="0.1.2-beta.1"></a>
-## [0.1.2-beta.1](https://github.com/seamonkeysocial/twitarr-client-api/compare/v0.1.1...v0.1.2-beta.1) (2020-02-10)
+## [0.1.2-beta.1](https://github.com/seamonkeysocial/twitarr-client-api/compare/v0.1.1...v0.1.2-beta.1) (2020-02-11)
 
 
 ### Bug Fixes
@@ -7,6 +7,7 @@
 * **client:** connect should return the client ([1e1846f](https://github.com/seamonkeysocial/twitarr-client-api/commit/1e1846f))
 * **http:** use `window.cordova` rather than `cordova` ([bc724c9](https://github.com/seamonkeysocial/twitarr-client-api/commit/bc724c9))
 * **rest:** minor changes to CordovaHTTP ([cab286e](https://github.com/seamonkeysocial/twitarr-client-api/commit/cab286e))
+* proper import for urijs ([4e7751b](https://github.com/seamonkeysocial/twitarr-client-api/commit/4e7751b))
 
 
 ### Features
