@@ -16,6 +16,7 @@
 * **build:** run pure-lockfile install in release build ([435f906](https://github.com/seamonkeysocial/twitarr-client-api/commit/435f906))
 * **client:** skip login if username was not passed ([cb944c8](https://github.com/seamonkeysocial/twitarr-client-api/commit/cb944c8))
 * **rest:** cordova.plugin.http impl ([f8e2e2b](https://github.com/seamonkeysocial/twitarr-client-api/commit/f8e2e2b))
+* switch to moment and fetch rather than luxon and axios ([4a6b094](https://github.com/seamonkeysocial/twitarr-client-api/commit/4a6b094))
 
 
 
