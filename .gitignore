@@ -33,7 +33,3 @@ fig.yml
 profile.cov
 grafana
 .notouch
-
-dist/cli.*
-dist/twitarr.*
-dist/docs
