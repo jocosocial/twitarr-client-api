@@ -12,16 +12,14 @@ declare const OPTIONS_PROP: unique symbol;
 export declare abstract class AbstractHTTP implements ITwitarrHTTP {
     private [OPTIONS_PROP];
     /** The default set of HTTP options associated with this ReST client. */
-    get options(): TwitarrHTTPOptions;
-    set options(o: TwitarrHTTPOptions);
+    options: TwitarrHTTPOptions;
     /**
      * The server metadata we'll use for constructing ReST calls.
      * @hidden
      */
     private serverObj;
     /** The server associated with this HTTP implementation. */
-    get server(): TwitarrServer | undefined;
-    set server(server: TwitarrServer | undefined);
+    server: TwitarrServer | undefined;
     /**
      * Create a new HTTP instance.
      * @constructor

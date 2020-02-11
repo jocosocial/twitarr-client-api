@@ -46,7 +46,7 @@ export declare class TwitarrServer {
     /**
      * Get the hostname portion of the URL associated with this server.
      */
-    get host(): string | undefined;
+    readonly host: string | undefined;
     /** A string representation of this server suitable for display. */
     toString(): string;
 }

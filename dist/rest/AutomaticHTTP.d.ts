@@ -4,10 +4,8 @@ import { TwitarrServer } from '../api/TwitarrServer';
 export declare class AutomaticHTTP implements ITwitarrHTTP {
     private impl;
     constructor(server?: TwitarrServer, timeout?: number);
-    get server(): TwitarrServer | undefined;
-    set server(server: TwitarrServer | undefined);
-    get options(): TwitarrHTTPOptions;
-    set options(options: TwitarrHTTPOptions);
+    server: TwitarrServer | undefined;
+    options: TwitarrHTTPOptions;
     getUsername(): string | null;
     setUsername(username: string): ITwitarrHTTP;
     getPassword(): string | null;

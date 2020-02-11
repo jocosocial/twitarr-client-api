@@ -9,7 +9,7 @@ export declare class StreamResponse {
     next_page: Moment | undefined;
     /** The stream posts. */
     posts: StreamPost[];
-    get post(): StreamPost;
+    readonly post: StreamPost;
     /** Whether this is a single thread or multiple posts. */
     is_thread: boolean;
     toJSON(): any;

@@ -18,7 +18,7 @@ export declare class UserProfileInfo {
     /** The user's recent posts */
     recentStreamPosts: StreamPost[];
     /** A comment about the user */
-    get comment(): string | undefined;
+    readonly comment: string | undefined;
     /** Whether the user is starred */
-    get starred(): boolean;
+    readonly starred: boolean;
 }
