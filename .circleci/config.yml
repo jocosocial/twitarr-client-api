@@ -94,7 +94,7 @@ workflows:
                 - develop
       - merge-master:
           requires:
-            - run-tests
+            - build
           filters:
             branches:
               only:
