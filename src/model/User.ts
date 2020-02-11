@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -75,10 +75,10 @@ export class User {
   public empty_password: boolean | undefined;
 
   /** The last time the user logged in. */
-  public last_login: DateTime | undefined;
+  public last_login: Moment | undefined;
 
   /** The last time the user's photo was updated. */
-  public last_photo_updated: DateTime | undefined;
+  public last_photo_updated: Moment | undefined;
 
   /** The user's room number. */
   public room_number: number | undefined;

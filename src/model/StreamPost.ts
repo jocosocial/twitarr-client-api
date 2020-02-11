@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -21,7 +21,7 @@ export class StreamPost {
     this.author = User.fromRest(data.author);
     this.id = data.id;
     this.text = data.text;
-    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
+    this.timestamp = Util.toDateTime(data.timestamp) as Moment;
 
     Util.setProperties(this, data, 'locked');
     if (!Util.isEmpty(data.reactions)) {
@@ -48,7 +48,7 @@ export class StreamPost {
   public locked?: boolean;
 
   /** The time the post was created. */
-  public timestamp: DateTime;
+  public timestamp: Moment;
 
   /** The text (contents) of the post. */
   public text: string;
@@ -75,7 +75,7 @@ export class StreamPost {
       photo: this.photo ? this.photo.toJSON() : undefined,
       reactions: this.reactions ? this.reactions.toJSON() : undefined,
       text: this.text,
-      timestamp: this.timestamp ? this.timestamp.toMillis() : undefined,
+      timestamp: this.timestamp ? this.timestamp.valueOf() : undefined,
     };
   }
 }

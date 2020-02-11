@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -65,7 +65,7 @@ export class ForumThread {
   public posts: ForumPost[] = [];
 
   /** The last time the thread was posted to */
-  public timestamp?: DateTime;
+  public timestamp?: Moment;
 
   /** The last page read in the thread */
   public last_post_page?: number;
@@ -89,7 +89,7 @@ export class ForumThread {
   public post_count?: number;
 
   /** The timestamp of the latest read post */
-  public latest_read?: DateTime;
+  public latest_read?: Moment;
 
   public toJSON() {
     const ret = {} as any;

@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { SeamailMessage } from './SeamailMessage';
 import { User } from './User';
@@ -19,7 +19,7 @@ export class SeamailThread {
 
     this.id = data.id;
     this.subject = data.subject;
-    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
+    this.timestamp = Util.toDateTime(data.timestamp) as Moment;
 
     Util.setProperties(this, data, 'message_count', 'count_is_unread', 'is_unread');
     if (!Util.isEmpty(data.users)) {
@@ -46,7 +46,7 @@ export class SeamailThread {
   public message_count?: number;
 
   /** The time the most recent message was created. */
-  public timestamp: DateTime;
+  public timestamp: Moment;
 
   /** Whether `message_count` is unread or total. */
   public count_is_unread = false;

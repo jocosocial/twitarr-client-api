@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -41,7 +41,7 @@ export class PhotoDetails {
   public uploader?: string;
 
   /** When the photo was uploaded. */
-  public upload_time?: DateTime;
+  public upload_time?: Moment;
 
   /** The sizes available. */
   public sizes: { [key: string]: string } = {};

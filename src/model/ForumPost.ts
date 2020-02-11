@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -19,7 +19,7 @@ export class ForumPost {
     this.id = data.id;
     this.forum_id = data.forum_id;
     this.author = User.fromRest(data.author);
-    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
+    this.timestamp = Util.toDateTime(data.timestamp) as Moment;
 
     Util.setProperties(this, data, 'thread_locked', 'text');
     if (!Util.isEmpty(data.new)) {
@@ -46,7 +46,7 @@ export class ForumPost {
   public text?: string;
 
   /** The time the post was made */
-  public timestamp: DateTime;
+  public timestamp: Moment;
 
   /** Photos in the post */
   public photos: PhotoDetails[] = [];

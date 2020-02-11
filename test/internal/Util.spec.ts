@@ -1,8 +1,6 @@
-declare const describe, beforeEach, it, expect, require;
-
 import { Util } from '../../src/internal/Util';
 
-import { DateTime } from 'luxon';
+import moment from 'moment';
 
 /** @hidden */
 const ARBITRARY_STRING = '2017-08-08T12:29:56.000Z';
@@ -19,7 +17,7 @@ describe('internal/Util', () => {
       expect(Util.isDateObject(null)).toEqual(false);
     });
     it('DateTime.fromMillis(0)', () => {
-      expect(Util.isDateObject(DateTime.fromMillis(0, { zone: 'utc' }))).toEqual(true);
+      expect(Util.isDateObject(moment.utc(0))).toEqual(true);
     });
     it('0', () => {
       expect(Util.isDateObject(0)).toEqual(false);
@@ -46,19 +44,19 @@ describe('internal/Util', () => {
       expect(Util.toDateTime(null)).toBeUndefined();
     });
     it('DateTime.fromMillis(0)', () => {
-      expect(Util.toDateTime(DateTime.fromMillis(0, { zone: 'utc' })).toMillis()).toEqual(0);
+      expect(Util.toDateTime(moment.utc(0)).valueOf()).toEqual(0);
     });
     it('0', () => {
-      expect(Util.toDateTime(0).toMillis()).toEqual(0);
+      expect(Util.toDateTime(0).valueOf()).toEqual(0);
     });
     it('new Date()', () => {
-      expect(Util.toDateTime(new Date(ARBITRARY_EPOCH)).toMillis()).toEqual(ARBITRARY_EPOCH);
+      expect(Util.toDateTime(new Date(ARBITRARY_EPOCH)).valueOf()).toEqual(ARBITRARY_EPOCH);
     });
     it(ARBITRARY_STRING, () => {
-      expect(Util.toDateTime(ARBITRARY_STRING).toMillis()).toEqual(ARBITRARY_EPOCH);
+      expect(Util.toDateTime(ARBITRARY_STRING).valueOf()).toEqual(ARBITRARY_EPOCH);
     });
     it('2017-08-08T12:29:56Z', () => {
-      expect(Util.toDateTime('2017-08-08T12:29:56Z').toMillis()).toEqual(ARBITRARY_EPOCH);
+      expect(Util.toDateTime('2017-08-08T12:29:56Z').valueOf()).toEqual(ARBITRARY_EPOCH);
     });
   });
 
@@ -70,7 +68,7 @@ describe('internal/Util', () => {
       expect(Util.toDateString(null)).toBeUndefined();
     });
     it('DateTime.fromMillis(0)', () => {
-      expect(Util.toDateString(DateTime.fromMillis(0).toUTC())).toEqual('1970-01-01T00:00:00.000Z');
+      expect(Util.toDateString(moment.utc(0))).toEqual('1970-01-01T00:00:00.000Z');
     });
     it('0', () => {
       expect(Util.toDateString(0)).toEqual('1970-01-01T00:00:00.000Z');

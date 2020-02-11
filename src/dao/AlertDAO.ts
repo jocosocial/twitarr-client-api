@@ -1,11 +1,8 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
-
 import { AlertResponse } from '../model/AlertResponse';
-
 import { Util } from '../internal/Util';
-
 import { AbstractDAO } from './AbstractDAO';
 
 interface IAlertCounts {
@@ -20,10 +17,10 @@ export class AlertDAO extends AbstractDAO {
   /**
    * Retrieve an alert response containing all posts/etc. that are un-viewed.
    */
-  public async get(last_checked_time?: DateTime | number, no_reset?: boolean) {
+  public async get(last_checked_time?: Moment | number, no_reset?: boolean) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (last_checked_time) {
-      options.parameters.last_checked_time = String((Util.toDateTime(last_checked_time) as DateTime).toMillis());
+      options.parameters.last_checked_time = String(Util.toMillis(last_checked_time));
     }
     if (no_reset) {
       options.parameters.no_reset = '' + no_reset;
@@ -36,9 +33,9 @@ export class AlertDAO extends AbstractDAO {
       });
   }
 
-  public async lastChecked(last_checked_time: DateTime | number) {
+  public async lastChecked(last_checked_time: Moment | number) {
     const options = new TwitarrHTTPOptions().withData({
-      last_checked_time: (Util.toDateTime(last_checked_time) as DateTime).toMillis(),
+      last_checked_time: Util.toMillis(last_checked_time),
     });
 
     return this.http
@@ -49,10 +46,10 @@ export class AlertDAO extends AbstractDAO {
       });
   }
 
-  public async count(last_checked_time?: DateTime | number) {
+  public async count(last_checked_time?: Moment | number) {
     const options = new TwitarrHTTPOptions().withParameter('app', 'plain');
     if (last_checked_time) {
-      options.parameters.last_checked_time = String((Util.toDateTime(last_checked_time) as DateTime).toMillis());
+      options.parameters.last_checked_time = String(Util.toMillis(last_checked_time));
     }
     return this.http
       .get('/api/v2/alerts/check', options)

@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -18,7 +18,7 @@ export class Announcement {
     this.id = data.id;
     this.author = User.fromRest(data.author);
     this.text = data.text;
-    this.timestamp = Util.toDateTime(data.timestamp) as DateTime;
+    this.timestamp = Util.toDateTime(data.timestamp) as Moment;
   }
 
   /** The unique announcement ID. */
@@ -31,7 +31,7 @@ export class Announcement {
   public text: string;
 
   /** The announcement time. */
-  public timestamp: DateTime;
+  public timestamp: Moment;
 
   public toJSON() {
     const ret = {} as any;

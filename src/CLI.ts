@@ -1,7 +1,7 @@
 import { API, Rest, Client } from './API';
 import { Util } from './internal/Util';
 import { IStreamOptions } from './dao/StreamDAO';
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 /** @hidden */
 const fakeRequire = require('./__fake_require'); // eslint-disable-line @typescript-eslint/no-var-requires
@@ -288,7 +288,7 @@ const CLI = () => {
         continue;
       }
       if (Util.isDateObject(value)) {
-        value = (Util.toDateTime(value) as DateTime).toRelative();
+        value = (Util.toDateTime(value) as Moment).fromNow();
       }
       t.push([name + ':', value]);
     }
@@ -350,7 +350,7 @@ const CLI = () => {
     const t = new Table(format);
 
     for (const thread of seamail.threads) {
-      const row = [thread.id, thread.subject, thread.timestamp.toRelative()];
+      const row = [thread.id, thread.subject, thread.timestamp.fromNow()];
       if (!n) {
         row.unshift(thread.is_unread ? '*' : '');
       }
@@ -369,14 +369,14 @@ const CLI = () => {
 
     const thread = seamail.threads[0];
     t.push(['Subject:', thread.subject]);
-    t.push(['Last Updated:', thread.timestamp.toRelative()]);
+    t.push(['Last Updated:', thread.timestamp.fromNow()]);
     t.push(['Participants:', thread.users.map(user => user.toString()).join('\n')]);
     console.log(t.toString());
     console.log('');
     t = new Table(tableFormat);
     thread.messages.reverse().forEach(message => {
       if (message.author) {
-        t.push([message.author.getDisplayName(), message.text, message.timestamp.toRelative()]);
+        t.push([message.author.getDisplayName(), message.text, message.timestamp.fromNow()]);
       }
     });
     console.log(t.toString());
@@ -403,7 +403,7 @@ const CLI = () => {
     for (const post of response.posts.reverse()) {
       console.log(post.author.toString());
       console.log(wrap(post.text.trim(), { indent: '  ', width: 60 }));
-      console.log('  - ' + post.timestamp.toRelative() + ' (id: ' + post.id + ')');
+      console.log('  - ' + post.timestamp.fromNow() + ' (id: ' + post.id + ')');
       console.log('');
     }
   };
@@ -487,7 +487,7 @@ const CLI = () => {
 
   const doListEvents = async (mine?: boolean, today?: boolean) => {
     const client = getClient();
-    const now = Util.toDateTime(new Date().getTime()) as DateTime;
+    const now = Util.toDateTime(new Date().getTime()) as Moment;
     let events;
     if (mine || today) {
       events = await client.events().getDay(now, mine);
@@ -519,7 +519,7 @@ const CLI = () => {
     const event = await getClient()
       .events()
       .update(id, title, description, location, start, end);
-    const day = event.start_time.toFormat('ccc, MMM dd');
+    const day = event.start_time.format('ccc, MMM DD');
     console.log('[ ' + day + ' ]');
     printEvent(event);
   };

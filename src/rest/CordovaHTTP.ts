@@ -1,11 +1,6 @@
 import clonedeep from 'lodash.clonedeep';
 import URI from 'urijs';
 
-let fetch: any;
-if (!fetch) {
-  fetch = require('node-fetch');
-}
-
 import { AbstractHTTP } from './AbstractHTTP';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';

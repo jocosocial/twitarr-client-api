@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { SeamailThread } from './SeamailThread';
 
@@ -11,7 +11,7 @@ export class SeamailResponse {
 
   public constructor(data: any) {
     if (!Util.isEmpty(data.last_checked)) {
-      this.last_checked = Util.toDateTime(data.last_checked) as DateTime;
+      this.last_checked = Util.toDateTime(data.last_checked) as Moment;
     }
 
     if (Util.isEmpty(data.seamail) && Util.isEmpty(data.seamail_meta) && Util.isEmpty(data.seamail_threads)) {
@@ -32,7 +32,7 @@ export class SeamailResponse {
   }
 
   /** When the metadata was last checked. */
-  public last_checked?: DateTime;
+  public last_checked?: Moment;
 
   /** The list of threads. */
   public threads = [] as SeamailThread[];
@@ -43,7 +43,7 @@ export class SeamailResponse {
   public toJSON() {
     const ret = {} as any;
     if (this.last_checked) {
-      ret.last_checked = this.last_checked.toMillis();
+      ret.last_checked = this.last_checked.valueOf();
     }
     if (this.is_meta) {
       ret.seamail_meta = this.threads;

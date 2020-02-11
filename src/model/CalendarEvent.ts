@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { Moment } from 'moment';
 
 import { Util } from '../internal/Util';
 
@@ -15,7 +15,7 @@ export class CalendarEvent {
     Util.assertHasProperties(data, 'id', 'title', 'start_time');
     this.id = data.id;
     this.title = data.title;
-    this.start_time = Util.toDateTime(data.start_time) as DateTime;
+    this.start_time = Util.toDateTime(data.start_time) as Moment;
 
     Util.setProperties(this, data, 'location', 'official', 'description', 'following');
     Util.setDateProperties(this, data, 'end_time');
@@ -31,10 +31,10 @@ export class CalendarEvent {
   public location?: string;
 
   /** The event's starting time. */
-  public start_time: DateTime;
+  public start_time: Moment;
 
   /** The event's ending time. */
-  public end_time?: DateTime;
+  public end_time?: Moment;
 
   /** Whether the event is official or not. */
   public official?: boolean;
