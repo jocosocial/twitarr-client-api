@@ -90,7 +90,7 @@ export class Client implements IHasHTTP {
   /**
    * Connect to an Twitarr server and return a [[TwitarrServer]] for that connection.
    */
-  public async connect(name: string, url: string, username?: string, password?: string, timeout?: number) {
+  public async connect(name: string, url: string, username?: string, password?: string, timeout?: number): Promise<Client> {
     const server = new TwitarrServer(name, url, username, password);
 
     await Client.checkServer(server, undefined, timeout);
