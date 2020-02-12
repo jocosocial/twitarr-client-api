@@ -17,6 +17,7 @@ export declare abstract class AbstractDAO {
     /**
      * The HTTP implementation to use internally when making DAO requests.
      */
-    http: ITwitarrHTTP;
+    get http(): ITwitarrHTTP;
+    set http(impl: ITwitarrHTTP);
     protected handleErrors(result: TwitarrResult<any>): any;
 }

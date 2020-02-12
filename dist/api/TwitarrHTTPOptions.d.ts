@@ -11,9 +11,11 @@ declare const AUTH_PROP: unique symbol;
  */
 export declare class TwitarrHTTPOptions {
     /** How long to wait for ReST calls to time out. */
-    timeout: number;
+    get timeout(): number;
+    set timeout(t: number);
     /** The authentication config that should be used when no auth is associated with the [[TwitarrServer]]. */
-    auth: TwitarrAuthConfig;
+    get auth(): TwitarrAuthConfig;
+    set auth(a: TwitarrAuthConfig);
     /** The server to use if no server is set on the HTTP implementation. */
     server: TwitarrServer | undefined;
     /** HTTP headers to be passed to the request. */
