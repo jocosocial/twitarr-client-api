@@ -67,7 +67,7 @@
     "typedoc": "^0.16.9",
     "typedoc-plugin-external-module-name": "^3.0.0",
     "typedoc-webpack-plugin": "^1.1.4",
-    "typescript": "~3.6.0",
+    "typescript": "~3.7.5",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-closure-compiler": "^2.1.6",
