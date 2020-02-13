@@ -8,6 +8,8 @@ import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';
 import { TwitarrServer } from '../api/TwitarrServer';
 
+let fetchWarn = false;
+
 /**
  * Implementation of the [[ITwitarrHTTP]] interface using `fetch`
  * @module BrowserHTTP
@@ -230,8 +232,9 @@ export class BrowserHTTP extends AbstractHTTP {
       redirect: 'follow',
     };
 
-    if (allOptions.timeout) {
+    if (allOptions.timeout && !fetchWarn) {
       console.warn('Fetch does not support timeouts.');
+      fetchWarn = true;
       // ret.timeout = allOptions.timeout;
     }
 
