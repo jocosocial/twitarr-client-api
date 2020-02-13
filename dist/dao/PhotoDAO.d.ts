@@ -8,7 +8,7 @@ export declare class PhotoDAO extends AbstractDAO {
     /**
      * Delete/remove a photo..
      */
-    remove(id: string): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
+    remove(id: string): Promise<import("../API").TwitarrResult<any>>;
     /**
      * Post a photo.
      */

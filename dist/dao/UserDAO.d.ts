@@ -7,9 +7,9 @@ export declare class UserDAO extends AbstractDAO {
     comment(username: string, comment: string): Promise<UserProfileInfo>;
     toggleStarred(username: string): Promise<boolean>;
     starred(): Promise<any>;
-    createUser(registrationCode: string, username: string, password: string, displayName?: string): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
-    changePassword(currentPassword: string, newPassword: string): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
-    resetPassword(username: string, registrationCode: string, newPassword: string): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
+    createUser(registrationCode: string, username: string, password: string, displayName?: string): Promise<import("../API").TwitarrResult<any>>;
+    changePassword(currentPassword: string, newPassword: string): Promise<import("../API").TwitarrResult<any>>;
+    resetPassword(username: string, registrationCode: string, newPassword: string): Promise<import("../API").TwitarrResult<any>>;
     getMentions(): Promise<number>;
     resetMentions(): Promise<number>;
 }

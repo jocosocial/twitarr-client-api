@@ -1,87 +1,122 @@
 import { ErrorMessage } from './api/ErrorMessage';
+export * from './api/ErrorMessage';
 import { TwitarrAuthConfig } from './api/TwitarrAuthConfig';
+export * from './api/TwitarrAuthConfig';
 import { TwitarrHTTPOptions } from './api/TwitarrHTTPOptions';
+export * from './api/TwitarrHTTPOptions';
 import { TwitarrResult } from './api/TwitarrResult';
+export * from './api/TwitarrResult';
 import { TwitarrServer } from './api/TwitarrServer';
+export * from './api/TwitarrServer';
+/** @hidden */
+declare const API: {
+    readonly ErrorMessage: typeof ErrorMessage;
+    readonly TwitarrAuthConfig: typeof TwitarrAuthConfig;
+    readonly TwitarrHTTPOptions: typeof TwitarrHTTPOptions;
+    readonly TwitarrResult: typeof TwitarrResult;
+    readonly TwitarrServer: typeof TwitarrServer;
+};
 import { AlertDAO } from './dao/AlertDAO';
+export * from './dao/AlertDAO';
 import { AutocompleteDAO } from './dao/AutocompleteDAO';
+export * from './dao/AutocompleteDAO';
 import { EventDAO } from './dao/EventDAO';
+export * from './dao/EventDAO';
 import { ForumDAO } from './dao/ForumDAO';
+export * from './dao/ForumDAO';
 import { PhotoDAO } from './dao/PhotoDAO';
+export * from './dao/PhotoDAO';
 import { SeamailDAO } from './dao/SeamailDAO';
+export * from './dao/SeamailDAO';
 import { SearchDAO } from './dao/SearchDAO';
+export * from './dao/SearchDAO';
 import { StreamDAO } from './dao/StreamDAO';
+export * from './dao/StreamDAO';
 import { TextDAO } from './dao/TextDAO';
+export * from './dao/TextDAO';
 import { UserDAO } from './dao/UserDAO';
+export * from './dao/UserDAO';
+/** @hidden */
+declare const DAO: {
+    readonly AlertDAO: typeof AlertDAO;
+    readonly AutocompleteDAO: typeof AutocompleteDAO;
+    readonly EventDAO: typeof EventDAO;
+    readonly ForumDAO: typeof ForumDAO;
+    readonly PhotoDAO: typeof PhotoDAO;
+    readonly SeamailDAO: typeof SeamailDAO;
+    readonly SearchDAO: typeof SearchDAO;
+    readonly StreamDAO: typeof StreamDAO;
+    readonly TextDAO: typeof TextDAO;
+    readonly UserDAO: typeof UserDAO;
+};
 import { AlertResponse } from './model/AlertResponse';
+export * from './model/AlertResponse';
 import { Announcement } from './model/Announcement';
+export * from './model/Announcement';
 import { CalendarEvent } from './model/CalendarEvent';
+export * from './model/CalendarEvent';
 import { ForumPost } from './model/ForumPost';
+export * from './model/ForumPost';
 import { ForumResponse } from './model/ForumResponse';
+export * from './model/ForumResponse';
 import { ForumThread } from './model/ForumThread';
+export * from './model/ForumThread';
 import { PhotoDetails } from './model/PhotoDetails';
+export * from './model/PhotoDetails';
 import { ReactionDetail } from './model/ReactionDetail';
+export * from './model/ReactionDetail';
 import { ReactionsSummary } from './model/ReactionsSummary';
+export * from './model/ReactionsSummary';
 import { SeamailMessage } from './model/SeamailMessage';
+export * from './model/SeamailMessage';
 import { SeamailResponse } from './model/SeamailResponse';
+export * from './model/SeamailResponse';
 import { SeamailThread } from './model/SeamailThread';
+export * from './model/SeamailThread';
 import { SearchResponse } from './model/SearchResponse';
+export * from './model/SearchResponse';
 import { StreamPost } from './model/StreamPost';
+export * from './model/StreamPost';
 import { StreamResponse } from './model/StreamResponse';
+export * from './model/StreamResponse';
 import { User } from './model/User';
+export * from './model/User';
 import { UserProfileInfo } from './model/UserProfileInfo';
+export * from './model/UserProfileInfo';
+/** @hidden */
+declare const Model: {
+    readonly AlertResponse: typeof AlertResponse;
+    readonly Announcement: typeof Announcement;
+    readonly CalendarEvent: typeof CalendarEvent;
+    readonly ForumPost: typeof ForumPost;
+    readonly ForumResponse: typeof ForumResponse;
+    readonly ForumThread: typeof ForumThread;
+    readonly PhotoDetails: typeof PhotoDetails;
+    readonly ReactionDetail: typeof ReactionDetail;
+    readonly ReactionsSummary: typeof ReactionsSummary;
+    readonly SeamailMessage: typeof SeamailMessage;
+    readonly SeamailResponse: typeof SeamailResponse;
+    readonly SeamailThread: typeof SeamailThread;
+    readonly SearchResponse: typeof SearchResponse;
+    readonly StreamPost: typeof StreamPost;
+    readonly StreamResponse: typeof StreamResponse;
+    readonly User: typeof User;
+    readonly UserProfileInfo: typeof UserProfileInfo;
+};
 import { AutomaticHTTP } from './rest/AutomaticHTTP';
+export * from './rest/AutomaticHTTP';
 import { BrowserHTTP } from './rest/BrowserHTTP';
+export * from './rest/BrowserHTTP';
 import { CordovaHTTP } from './rest/CordovaHTTP';
+export * from './rest/CordovaHTTP';
 import { NodeHTTP } from './rest/NodeHTTP';
+export * from './rest/NodeHTTP';
+/** @hidden */
+declare const Rest: {
+    readonly AutomaticHTTP: typeof AutomaticHTTP;
+    readonly BrowserHTTP: typeof BrowserHTTP;
+    readonly CordovaHTTP: typeof CordovaHTTP;
+    readonly NodeHTTP: typeof NodeHTTP;
+};
 import { Client } from './Client';
-/** @hidden */
-declare const API: Readonly<{
-    ErrorMessage: typeof ErrorMessage;
-    TwitarrAuthConfig: typeof TwitarrAuthConfig;
-    TwitarrHTTPOptions: typeof TwitarrHTTPOptions;
-    TwitarrResult: typeof TwitarrResult;
-    TwitarrServer: typeof TwitarrServer;
-}>;
-/** @hidden */
-declare const DAO: Readonly<{
-    AlertDAO: typeof AlertDAO;
-    AutocompleteDAO: typeof AutocompleteDAO;
-    EventDAO: typeof EventDAO;
-    ForumDAO: typeof ForumDAO;
-    PhotoDAO: typeof PhotoDAO;
-    SeamailDAO: typeof SeamailDAO;
-    SearchDAO: typeof SearchDAO;
-    StreamDAO: typeof StreamDAO;
-    TextDAO: typeof TextDAO;
-    UserDAO: typeof UserDAO;
-}>;
-/** @hidden */
-declare const Model: Readonly<{
-    AlertResponse: typeof AlertResponse;
-    Announcement: typeof Announcement;
-    CalendarEvent: typeof CalendarEvent;
-    ForumPost: typeof ForumPost;
-    ForumResponse: typeof ForumResponse;
-    ForumThread: typeof ForumThread;
-    PhotoDetails: typeof PhotoDetails;
-    ReactionDetail: typeof ReactionDetail;
-    ReactionsSummary: typeof ReactionsSummary;
-    SeamailMessage: typeof SeamailMessage;
-    SeamailResponse: typeof SeamailResponse;
-    SeamailThread: typeof SeamailThread;
-    SearchResponse: typeof SearchResponse;
-    StreamPost: typeof StreamPost;
-    StreamResponse: typeof StreamResponse;
-    User: typeof User;
-    UserProfileInfo: typeof UserProfileInfo;
-}>;
-/** @hidden */
-declare const Rest: Readonly<{
-    AutomaticHTTP: typeof AutomaticHTTP;
-    BrowserHTTP: typeof BrowserHTTP;
-    CordovaHTTP: typeof CordovaHTTP;
-    NodeHTTP: typeof NodeHTTP;
-}>;
-/** @hidden */
-export { API, DAO, Model, Rest, Client };
+export { Client, API, DAO, Model, Rest };

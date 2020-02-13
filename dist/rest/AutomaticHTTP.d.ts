@@ -14,9 +14,9 @@ export declare class AutomaticHTTP implements ITwitarrHTTP {
     setPassword(password: string): ITwitarrHTTP;
     getKey(): string | null;
     setKey(key: string): ITwitarrHTTP;
-    get(url: string, options?: TwitarrHTTPOptions): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
-    put(url: string, options?: TwitarrHTTPOptions): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
-    post(url: string, options?: TwitarrHTTPOptions): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
-    httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
-    postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions): Promise<import("../api/TwitarrResult").TwitarrResult<any>>;
+    get(url: string, options?: TwitarrHTTPOptions): Promise<import("../API").TwitarrResult<any>>;
+    put(url: string, options?: TwitarrHTTPOptions): Promise<import("../API").TwitarrResult<any>>;
+    post(url: string, options?: TwitarrHTTPOptions): Promise<import("../API").TwitarrResult<any>>;
+    httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<import("../API").TwitarrResult<any>>;
+    postFile(url: string, fileName: string, contentType: string, data: Blob, options?: TwitarrHTTPOptions): Promise<import("../API").TwitarrResult<any>>;
 }

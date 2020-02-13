@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import { AbstractHTTP } from './AbstractHTTP';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
 import { TwitarrResult } from '../api/TwitarrResult';
@@ -16,19 +15,19 @@ export declare class BrowserHTTP extends AbstractHTTP {
      */
     constructor(server?: TwitarrServer, timeout?: number);
     /**
-     * Make an HTTP GET call using `window.fetch({method:'GET'})`.
+     * Make an HTTP GET call using `fetch({method:'GET'})`.
      */
     get(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
     /**
-     * Make an HTTP PUT call using `window.fetch({method:'PUT'})`.
+     * Make an HTTP PUT call using `fetch({method:'PUT'})`.
      */
     put(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
     /**
-     * Make an HTTP POST call using `window.fetch({method:'POST'})`.
+     * Make an HTTP POST call using `fetch({method:'POST'})`.
      */
     post(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
     /**
-     * Make an HTTP DELETE call using `window.fetch({method:'DELETE'})`.
+     * Make an HTTP DELETE call using `fetch({method:'DELETE'})`.
      */
     httpDelete(url: string, options?: TwitarrHTTPOptions): Promise<TwitarrResult<any>>;
     /** POST a file. */

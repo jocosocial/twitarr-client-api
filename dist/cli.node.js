@@ -185,17 +185,6 @@ module.exports = __webpack_require__(/*! core-js/library/fn/object/define-proper
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs2/core-js/object/freeze.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/core-js/object/freeze.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! core-js/library/fn/object/freeze */ "./node_modules/core-js/library/fn/object/freeze.js");
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js":
 /*!********************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js ***!
@@ -408,19 +397,6 @@ var $Object = __webpack_require__(/*! ../../modules/_core */ "./node_modules/cor
 module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js/library/fn/object/freeze.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/core-js/library/fn/object/freeze.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ../../modules/es6.object.freeze */ "./node_modules/core-js/library/modules/es6.object.freeze.js");
-module.exports = __webpack_require__(/*! ../../modules/_core */ "./node_modules/core-js/library/modules/_core.js").Object.freeze;
 
 
 /***/ }),
@@ -2672,26 +2648,6 @@ $export($export.S, 'Object', { create: __webpack_require__(/*! ./_object-create 
 var $export = __webpack_require__(/*! ./_export */ "./node_modules/core-js/library/modules/_export.js");
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !__webpack_require__(/*! ./_descriptors */ "./node_modules/core-js/library/modules/_descriptors.js"), 'Object', { defineProperty: __webpack_require__(/*! ./_object-dp */ "./node_modules/core-js/library/modules/_object-dp.js").f });
-
-
-/***/ }),
-
-/***/ "./node_modules/core-js/library/modules/es6.object.freeze.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/core-js/library/modules/es6.object.freeze.js ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.5 Object.freeze(O)
-var isObject = __webpack_require__(/*! ./_is-object */ "./node_modules/core-js/library/modules/_is-object.js");
-var meta = __webpack_require__(/*! ./_meta */ "./node_modules/core-js/library/modules/_meta.js").onFreeze;
-
-__webpack_require__(/*! ./_object-sap */ "./node_modules/core-js/library/modules/_object-sap.js")('freeze', function ($freeze) {
-  return function freeze(it) {
-    return $freeze && isObject(it) ? $freeze(meta(it)) : it;
-  };
-});
 
 
 /***/ }),
@@ -5388,6 +5344,51 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
     if (explicit) for (key in $iterators) if (!proto[key]) redefine(proto, key, $iterators[key], true);
   }
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/fetch-ponyfill/fetch-node.js":
+/*!***************************************************!*\
+  !*** ./node_modules/fetch-ponyfill/fetch-node.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var fetch = __webpack_require__(/*! node-fetch */ "./node_modules/node-fetch/lib/index.mjs");
+
+function wrapFetchForNode(fetch) {
+  // Support schemaless URIs on the server for parity with the browser.
+  // https://github.com/matthew-andrews/isomorphic-fetch/pull/10
+  return function (u, options) {
+    if (typeof u === 'string' && u.slice(0, 2) === '//') {
+      return fetch('https:' + u, options);
+    }
+
+    return fetch(u, options);
+  };
+}
+
+module.exports = function (context) {
+  // This modifies the global `node-fetch` object, which isn't great, since
+  // different callers to `fetch-ponyfill` which pass a different Promise
+  // implementation would each expect to have their implementation used. But,
+  // given the way `node-fetch` is implemented, this is the only way to make
+  // it work at all.
+  if (context && context.Promise) {
+    fetch.Promise = context.Promise;
+  }
+
+  return {
+    fetch: wrapFetchForNode(fetch),
+    Headers: fetch.Headers,
+    Request: fetch.Request,
+    Response: fetch.Response
+  };
+};
 
 
 /***/ }),
@@ -24757,6 +24758,1659 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ }),
 
+/***/ "./node_modules/node-fetch/lib/index.mjs":
+/*!***********************************************!*\
+  !*** ./node_modules/node-fetch/lib/index.mjs ***!
+  \***********************************************/
+/*! exports provided: default, Headers, Request, Response, FetchError */
+/***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Headers", function() { return Headers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Request", function() { return Request; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Response", function() { return Response; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FetchError", function() { return FetchError; });
+/* harmony import */ var stream__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! stream */ "stream");
+/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! http */ "http");
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! url */ "url");
+/* harmony import */ var https__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! https */ "https");
+/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! zlib */ "zlib");
+
+
+
+
+
+
+// Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
+
+// fix for "Readable" isn't a named export issue
+const Readable = stream__WEBPACK_IMPORTED_MODULE_0__.Readable;
+
+const BUFFER = Symbol('buffer');
+const TYPE = Symbol('type');
+
+class Blob {
+	constructor() {
+		this[TYPE] = '';
+
+		const blobParts = arguments[0];
+		const options = arguments[1];
+
+		const buffers = [];
+		let size = 0;
+
+		if (blobParts) {
+			const a = blobParts;
+			const length = Number(a.length);
+			for (let i = 0; i < length; i++) {
+				const element = a[i];
+				let buffer;
+				if (element instanceof Buffer) {
+					buffer = element;
+				} else if (ArrayBuffer.isView(element)) {
+					buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
+				} else if (element instanceof ArrayBuffer) {
+					buffer = Buffer.from(element);
+				} else if (element instanceof Blob) {
+					buffer = element[BUFFER];
+				} else {
+					buffer = Buffer.from(typeof element === 'string' ? element : String(element));
+				}
+				size += buffer.length;
+				buffers.push(buffer);
+			}
+		}
+
+		this[BUFFER] = Buffer.concat(buffers);
+
+		let type = options && options.type !== undefined && String(options.type).toLowerCase();
+		if (type && !/[^\u0020-\u007E]/.test(type)) {
+			this[TYPE] = type;
+		}
+	}
+	get size() {
+		return this[BUFFER].length;
+	}
+	get type() {
+		return this[TYPE];
+	}
+	text() {
+		return Promise.resolve(this[BUFFER].toString());
+	}
+	arrayBuffer() {
+		const buf = this[BUFFER];
+		const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+		return Promise.resolve(ab);
+	}
+	stream() {
+		const readable = new Readable();
+		readable._read = function () {};
+		readable.push(this[BUFFER]);
+		readable.push(null);
+		return readable;
+	}
+	toString() {
+		return '[object Blob]';
+	}
+	slice() {
+		const size = this.size;
+
+		const start = arguments[0];
+		const end = arguments[1];
+		let relativeStart, relativeEnd;
+		if (start === undefined) {
+			relativeStart = 0;
+		} else if (start < 0) {
+			relativeStart = Math.max(size + start, 0);
+		} else {
+			relativeStart = Math.min(start, size);
+		}
+		if (end === undefined) {
+			relativeEnd = size;
+		} else if (end < 0) {
+			relativeEnd = Math.max(size + end, 0);
+		} else {
+			relativeEnd = Math.min(end, size);
+		}
+		const span = Math.max(relativeEnd - relativeStart, 0);
+
+		const buffer = this[BUFFER];
+		const slicedBuffer = buffer.slice(relativeStart, relativeStart + span);
+		const blob = new Blob([], { type: arguments[2] });
+		blob[BUFFER] = slicedBuffer;
+		return blob;
+	}
+}
+
+Object.defineProperties(Blob.prototype, {
+	size: { enumerable: true },
+	type: { enumerable: true },
+	slice: { enumerable: true }
+});
+
+Object.defineProperty(Blob.prototype, Symbol.toStringTag, {
+	value: 'Blob',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+/**
+ * fetch-error.js
+ *
+ * FetchError interface for operational errors
+ */
+
+/**
+ * Create FetchError instance
+ *
+ * @param   String      message      Error message for human
+ * @param   String      type         Error type for machine
+ * @param   String      systemError  For Node.js system error
+ * @return  FetchError
+ */
+function FetchError(message, type, systemError) {
+  Error.call(this, message);
+
+  this.message = message;
+  this.type = type;
+
+  // when err.type is `system`, err.code contains system error code
+  if (systemError) {
+    this.code = this.errno = systemError.code;
+  }
+
+  // hide custom error implementation details from end-users
+  Error.captureStackTrace(this, this.constructor);
+}
+
+FetchError.prototype = Object.create(Error.prototype);
+FetchError.prototype.constructor = FetchError;
+FetchError.prototype.name = 'FetchError';
+
+let convert;
+try {
+	convert = require('encoding').convert;
+} catch (e) {}
+
+const INTERNALS = Symbol('Body internals');
+
+// fix an issue where "PassThrough" isn't a named export for node <10
+const PassThrough = stream__WEBPACK_IMPORTED_MODULE_0__.PassThrough;
+
+/**
+ * Body mixin
+ *
+ * Ref: https://fetch.spec.whatwg.org/#body
+ *
+ * @param   Stream  body  Readable stream
+ * @param   Object  opts  Response options
+ * @return  Void
+ */
+function Body(body) {
+	var _this = this;
+
+	var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+	    _ref$size = _ref.size;
+
+	let size = _ref$size === undefined ? 0 : _ref$size;
+	var _ref$timeout = _ref.timeout;
+	let timeout = _ref$timeout === undefined ? 0 : _ref$timeout;
+
+	if (body == null) {
+		// body is undefined or null
+		body = null;
+	} else if (isURLSearchParams(body)) {
+		// body is a URLSearchParams
+		body = Buffer.from(body.toString());
+	} else if (isBlob(body)) ; else if (Buffer.isBuffer(body)) ; else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
+		// body is ArrayBuffer
+		body = Buffer.from(body);
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
+		body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
+	} else if (body instanceof stream__WEBPACK_IMPORTED_MODULE_0__) ; else {
+		// none of the above
+		// coerce to string then buffer
+		body = Buffer.from(String(body));
+	}
+	this[INTERNALS] = {
+		body,
+		disturbed: false,
+		error: null
+	};
+	this.size = size;
+	this.timeout = timeout;
+
+	if (body instanceof stream__WEBPACK_IMPORTED_MODULE_0__) {
+		body.on('error', function (err) {
+			const error = err.name === 'AbortError' ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, 'system', err);
+			_this[INTERNALS].error = error;
+		});
+	}
+}
+
+Body.prototype = {
+	get body() {
+		return this[INTERNALS].body;
+	},
+
+	get bodyUsed() {
+		return this[INTERNALS].disturbed;
+	},
+
+	/**
+  * Decode response as ArrayBuffer
+  *
+  * @return  Promise
+  */
+	arrayBuffer() {
+		return consumeBody.call(this).then(function (buf) {
+			return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+		});
+	},
+
+	/**
+  * Return raw response as Blob
+  *
+  * @return Promise
+  */
+	blob() {
+		let ct = this.headers && this.headers.get('content-type') || '';
+		return consumeBody.call(this).then(function (buf) {
+			return Object.assign(
+			// Prevent copying
+			new Blob([], {
+				type: ct.toLowerCase()
+			}), {
+				[BUFFER]: buf
+			});
+		});
+	},
+
+	/**
+  * Decode response as json
+  *
+  * @return  Promise
+  */
+	json() {
+		var _this2 = this;
+
+		return consumeBody.call(this).then(function (buffer) {
+			try {
+				return JSON.parse(buffer.toString());
+			} catch (err) {
+				return Body.Promise.reject(new FetchError(`invalid json response body at ${_this2.url} reason: ${err.message}`, 'invalid-json'));
+			}
+		});
+	},
+
+	/**
+  * Decode response as text
+  *
+  * @return  Promise
+  */
+	text() {
+		return consumeBody.call(this).then(function (buffer) {
+			return buffer.toString();
+		});
+	},
+
+	/**
+  * Decode response as buffer (non-spec api)
+  *
+  * @return  Promise
+  */
+	buffer() {
+		return consumeBody.call(this);
+	},
+
+	/**
+  * Decode response as text, while automatically detecting the encoding and
+  * trying to decode to UTF-8 (non-spec api)
+  *
+  * @return  Promise
+  */
+	textConverted() {
+		var _this3 = this;
+
+		return consumeBody.call(this).then(function (buffer) {
+			return convertBody(buffer, _this3.headers);
+		});
+	}
+};
+
+// In browsers, all properties are enumerable.
+Object.defineProperties(Body.prototype, {
+	body: { enumerable: true },
+	bodyUsed: { enumerable: true },
+	arrayBuffer: { enumerable: true },
+	blob: { enumerable: true },
+	json: { enumerable: true },
+	text: { enumerable: true }
+});
+
+Body.mixIn = function (proto) {
+	for (const name of Object.getOwnPropertyNames(Body.prototype)) {
+		// istanbul ignore else: future proof
+		if (!(name in proto)) {
+			const desc = Object.getOwnPropertyDescriptor(Body.prototype, name);
+			Object.defineProperty(proto, name, desc);
+		}
+	}
+};
+
+/**
+ * Consume and convert an entire Body to a Buffer.
+ *
+ * Ref: https://fetch.spec.whatwg.org/#concept-body-consume-body
+ *
+ * @return  Promise
+ */
+function consumeBody() {
+	var _this4 = this;
+
+	if (this[INTERNALS].disturbed) {
+		return Body.Promise.reject(new TypeError(`body used already for: ${this.url}`));
+	}
+
+	this[INTERNALS].disturbed = true;
+
+	if (this[INTERNALS].error) {
+		return Body.Promise.reject(this[INTERNALS].error);
+	}
+
+	let body = this.body;
+
+	// body is null
+	if (body === null) {
+		return Body.Promise.resolve(Buffer.alloc(0));
+	}
+
+	// body is blob
+	if (isBlob(body)) {
+		body = body.stream();
+	}
+
+	// body is buffer
+	if (Buffer.isBuffer(body)) {
+		return Body.Promise.resolve(body);
+	}
+
+	// istanbul ignore if: should never happen
+	if (!(body instanceof stream__WEBPACK_IMPORTED_MODULE_0__)) {
+		return Body.Promise.resolve(Buffer.alloc(0));
+	}
+
+	// body is stream
+	// get ready to actually consume the body
+	let accum = [];
+	let accumBytes = 0;
+	let abort = false;
+
+	return new Body.Promise(function (resolve, reject) {
+		let resTimeout;
+
+		// allow timeout on slow response body
+		if (_this4.timeout) {
+			resTimeout = setTimeout(function () {
+				abort = true;
+				reject(new FetchError(`Response timeout while trying to fetch ${_this4.url} (over ${_this4.timeout}ms)`, 'body-timeout'));
+			}, _this4.timeout);
+		}
+
+		// handle stream errors
+		body.on('error', function (err) {
+			if (err.name === 'AbortError') {
+				// if the request was aborted, reject with this Error
+				abort = true;
+				reject(err);
+			} else {
+				// other errors, such as incorrect content-encoding
+				reject(new FetchError(`Invalid response body while trying to fetch ${_this4.url}: ${err.message}`, 'system', err));
+			}
+		});
+
+		body.on('data', function (chunk) {
+			if (abort || chunk === null) {
+				return;
+			}
+
+			if (_this4.size && accumBytes + chunk.length > _this4.size) {
+				abort = true;
+				reject(new FetchError(`content size at ${_this4.url} over limit: ${_this4.size}`, 'max-size'));
+				return;
+			}
+
+			accumBytes += chunk.length;
+			accum.push(chunk);
+		});
+
+		body.on('end', function () {
+			if (abort) {
+				return;
+			}
+
+			clearTimeout(resTimeout);
+
+			try {
+				resolve(Buffer.concat(accum, accumBytes));
+			} catch (err) {
+				// handle streams that have accumulated too much data (issue #414)
+				reject(new FetchError(`Could not create Buffer from response body for ${_this4.url}: ${err.message}`, 'system', err));
+			}
+		});
+	});
+}
+
+/**
+ * Detect buffer encoding and convert to target encoding
+ * ref: http://www.w3.org/TR/2011/WD-html5-20110113/parsing.html#determining-the-character-encoding
+ *
+ * @param   Buffer  buffer    Incoming buffer
+ * @param   String  encoding  Target encoding
+ * @return  String
+ */
+function convertBody(buffer, headers) {
+	if (typeof convert !== 'function') {
+		throw new Error('The package `encoding` must be installed to use the textConverted() function');
+	}
+
+	const ct = headers.get('content-type');
+	let charset = 'utf-8';
+	let res, str;
+
+	// header
+	if (ct) {
+		res = /charset=([^;]*)/i.exec(ct);
+	}
+
+	// no charset in content type, peek at response body for at most 1024 bytes
+	str = buffer.slice(0, 1024).toString();
+
+	// html5
+	if (!res && str) {
+		res = /<meta.+?charset=(['"])(.+?)\1/i.exec(str);
+	}
+
+	// html4
+	if (!res && str) {
+		res = /<meta[\s]+?http-equiv=(['"])content-type\1[\s]+?content=(['"])(.+?)\2/i.exec(str);
+
+		if (res) {
+			res = /charset=(.*)/i.exec(res.pop());
+		}
+	}
+
+	// xml
+	if (!res && str) {
+		res = /<\?xml.+?encoding=(['"])(.+?)\1/i.exec(str);
+	}
+
+	// found charset
+	if (res) {
+		charset = res.pop();
+
+		// prevent decode issues when sites use incorrect encoding
+		// ref: https://hsivonen.fi/encoding-menu/
+		if (charset === 'gb2312' || charset === 'gbk') {
+			charset = 'gb18030';
+		}
+	}
+
+	// turn raw buffers into a single utf-8 buffer
+	return convert(buffer, 'UTF-8', charset).toString();
+}
+
+/**
+ * Detect a URLSearchParams object
+ * ref: https://github.com/bitinn/node-fetch/issues/296#issuecomment-307598143
+ *
+ * @param   Object  obj     Object to detect by type or brand
+ * @return  String
+ */
+function isURLSearchParams(obj) {
+	// Duck-typing as a necessary condition.
+	if (typeof obj !== 'object' || typeof obj.append !== 'function' || typeof obj.delete !== 'function' || typeof obj.get !== 'function' || typeof obj.getAll !== 'function' || typeof obj.has !== 'function' || typeof obj.set !== 'function') {
+		return false;
+	}
+
+	// Brand-checking and more duck-typing as optional condition.
+	return obj.constructor.name === 'URLSearchParams' || Object.prototype.toString.call(obj) === '[object URLSearchParams]' || typeof obj.sort === 'function';
+}
+
+/**
+ * Check if `obj` is a W3C `Blob` object (which `File` inherits from)
+ * @param  {*} obj
+ * @return {boolean}
+ */
+function isBlob(obj) {
+	return typeof obj === 'object' && typeof obj.arrayBuffer === 'function' && typeof obj.type === 'string' && typeof obj.stream === 'function' && typeof obj.constructor === 'function' && typeof obj.constructor.name === 'string' && /^(Blob|File)$/.test(obj.constructor.name) && /^(Blob|File)$/.test(obj[Symbol.toStringTag]);
+}
+
+/**
+ * Clone body given Res/Req instance
+ *
+ * @param   Mixed  instance  Response or Request instance
+ * @return  Mixed
+ */
+function clone(instance) {
+	let p1, p2;
+	let body = instance.body;
+
+	// don't allow cloning a used body
+	if (instance.bodyUsed) {
+		throw new Error('cannot clone body after it is used');
+	}
+
+	// check that body is a stream and not form-data object
+	// note: we can't clone the form-data object without having it as a dependency
+	if (body instanceof stream__WEBPACK_IMPORTED_MODULE_0__ && typeof body.getBoundary !== 'function') {
+		// tee instance body
+		p1 = new PassThrough();
+		p2 = new PassThrough();
+		body.pipe(p1);
+		body.pipe(p2);
+		// set instance body to teed body and return the other teed body
+		instance[INTERNALS].body = p1;
+		body = p2;
+	}
+
+	return body;
+}
+
+/**
+ * Performs the operation "extract a `Content-Type` value from |object|" as
+ * specified in the specification:
+ * https://fetch.spec.whatwg.org/#concept-bodyinit-extract
+ *
+ * This function assumes that instance.body is present.
+ *
+ * @param   Mixed  instance  Any options.body input
+ */
+function extractContentType(body) {
+	if (body === null) {
+		// body is null
+		return null;
+	} else if (typeof body === 'string') {
+		// body is string
+		return 'text/plain;charset=UTF-8';
+	} else if (isURLSearchParams(body)) {
+		// body is a URLSearchParams
+		return 'application/x-www-form-urlencoded;charset=UTF-8';
+	} else if (isBlob(body)) {
+		// body is blob
+		return body.type || null;
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		return null;
+	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
+		// body is ArrayBuffer
+		return null;
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
+		return null;
+	} else if (typeof body.getBoundary === 'function') {
+		// detect form data input from form-data module
+		return `multipart/form-data;boundary=${body.getBoundary()}`;
+	} else if (body instanceof stream__WEBPACK_IMPORTED_MODULE_0__) {
+		// body is stream
+		// can't really do much about this
+		return null;
+	} else {
+		// Body constructor defaults other things to string
+		return 'text/plain;charset=UTF-8';
+	}
+}
+
+/**
+ * The Fetch Standard treats this as if "total bytes" is a property on the body.
+ * For us, we have to explicitly get it with a function.
+ *
+ * ref: https://fetch.spec.whatwg.org/#concept-body-total-bytes
+ *
+ * @param   Body    instance   Instance of Body
+ * @return  Number?            Number of bytes, or null if not possible
+ */
+function getTotalBytes(instance) {
+	const body = instance.body;
+
+
+	if (body === null) {
+		// body is null
+		return 0;
+	} else if (isBlob(body)) {
+		return body.size;
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		return body.length;
+	} else if (body && typeof body.getLengthSync === 'function') {
+		// detect form data input from form-data module
+		if (body._lengthRetrievers && body._lengthRetrievers.length == 0 || // 1.x
+		body.hasKnownLength && body.hasKnownLength()) {
+			// 2.x
+			return body.getLengthSync();
+		}
+		return null;
+	} else {
+		// body is stream
+		return null;
+	}
+}
+
+/**
+ * Write a Body to a Node.js WritableStream (e.g. http.Request) object.
+ *
+ * @param   Body    instance   Instance of Body
+ * @return  Void
+ */
+function writeToStream(dest, instance) {
+	const body = instance.body;
+
+
+	if (body === null) {
+		// body is null
+		dest.end();
+	} else if (isBlob(body)) {
+		body.stream().pipe(dest);
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		dest.write(body);
+		dest.end();
+	} else {
+		// body is stream
+		body.pipe(dest);
+	}
+}
+
+// expose Promise
+Body.Promise = global.Promise;
+
+/**
+ * headers.js
+ *
+ * Headers class offers convenient helpers
+ */
+
+const invalidTokenRegex = /[^\^_`a-zA-Z\-0-9!#$%&'*+.|~]/;
+const invalidHeaderCharRegex = /[^\t\x20-\x7e\x80-\xff]/;
+
+function validateName(name) {
+	name = `${name}`;
+	if (invalidTokenRegex.test(name) || name === '') {
+		throw new TypeError(`${name} is not a legal HTTP header name`);
+	}
+}
+
+function validateValue(value) {
+	value = `${value}`;
+	if (invalidHeaderCharRegex.test(value)) {
+		throw new TypeError(`${value} is not a legal HTTP header value`);
+	}
+}
+
+/**
+ * Find the key in the map object given a header name.
+ *
+ * Returns undefined if not found.
+ *
+ * @param   String  name  Header name
+ * @return  String|Undefined
+ */
+function find(map, name) {
+	name = name.toLowerCase();
+	for (const key in map) {
+		if (key.toLowerCase() === name) {
+			return key;
+		}
+	}
+	return undefined;
+}
+
+const MAP = Symbol('map');
+class Headers {
+	/**
+  * Headers class
+  *
+  * @param   Object  headers  Response headers
+  * @return  Void
+  */
+	constructor() {
+		let init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+		this[MAP] = Object.create(null);
+
+		if (init instanceof Headers) {
+			const rawHeaders = init.raw();
+			const headerNames = Object.keys(rawHeaders);
+
+			for (const headerName of headerNames) {
+				for (const value of rawHeaders[headerName]) {
+					this.append(headerName, value);
+				}
+			}
+
+			return;
+		}
+
+		// We don't worry about converting prop to ByteString here as append()
+		// will handle it.
+		if (init == null) ; else if (typeof init === 'object') {
+			const method = init[Symbol.iterator];
+			if (method != null) {
+				if (typeof method !== 'function') {
+					throw new TypeError('Header pairs must be iterable');
+				}
+
+				// sequence<sequence<ByteString>>
+				// Note: per spec we have to first exhaust the lists then process them
+				const pairs = [];
+				for (const pair of init) {
+					if (typeof pair !== 'object' || typeof pair[Symbol.iterator] !== 'function') {
+						throw new TypeError('Each header pair must be iterable');
+					}
+					pairs.push(Array.from(pair));
+				}
+
+				for (const pair of pairs) {
+					if (pair.length !== 2) {
+						throw new TypeError('Each header pair must be a name/value tuple');
+					}
+					this.append(pair[0], pair[1]);
+				}
+			} else {
+				// record<ByteString, ByteString>
+				for (const key of Object.keys(init)) {
+					const value = init[key];
+					this.append(key, value);
+				}
+			}
+		} else {
+			throw new TypeError('Provided initializer must be an object');
+		}
+	}
+
+	/**
+  * Return combined header value given name
+  *
+  * @param   String  name  Header name
+  * @return  Mixed
+  */
+	get(name) {
+		name = `${name}`;
+		validateName(name);
+		const key = find(this[MAP], name);
+		if (key === undefined) {
+			return null;
+		}
+
+		return this[MAP][key].join(', ');
+	}
+
+	/**
+  * Iterate over all headers
+  *
+  * @param   Function  callback  Executed for each item with parameters (value, name, thisArg)
+  * @param   Boolean   thisArg   `this` context for callback function
+  * @return  Void
+  */
+	forEach(callback) {
+		let thisArg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+
+		let pairs = getHeaders(this);
+		let i = 0;
+		while (i < pairs.length) {
+			var _pairs$i = pairs[i];
+			const name = _pairs$i[0],
+			      value = _pairs$i[1];
+
+			callback.call(thisArg, value, name, this);
+			pairs = getHeaders(this);
+			i++;
+		}
+	}
+
+	/**
+  * Overwrite header values given name
+  *
+  * @param   String  name   Header name
+  * @param   String  value  Header value
+  * @return  Void
+  */
+	set(name, value) {
+		name = `${name}`;
+		value = `${value}`;
+		validateName(name);
+		validateValue(value);
+		const key = find(this[MAP], name);
+		this[MAP][key !== undefined ? key : name] = [value];
+	}
+
+	/**
+  * Append a value onto existing header
+  *
+  * @param   String  name   Header name
+  * @param   String  value  Header value
+  * @return  Void
+  */
+	append(name, value) {
+		name = `${name}`;
+		value = `${value}`;
+		validateName(name);
+		validateValue(value);
+		const key = find(this[MAP], name);
+		if (key !== undefined) {
+			this[MAP][key].push(value);
+		} else {
+			this[MAP][name] = [value];
+		}
+	}
+
+	/**
+  * Check for header name existence
+  *
+  * @param   String   name  Header name
+  * @return  Boolean
+  */
+	has(name) {
+		name = `${name}`;
+		validateName(name);
+		return find(this[MAP], name) !== undefined;
+	}
+
+	/**
+  * Delete all header values given name
+  *
+  * @param   String  name  Header name
+  * @return  Void
+  */
+	delete(name) {
+		name = `${name}`;
+		validateName(name);
+		const key = find(this[MAP], name);
+		if (key !== undefined) {
+			delete this[MAP][key];
+		}
+	}
+
+	/**
+  * Return raw headers (non-spec api)
+  *
+  * @return  Object
+  */
+	raw() {
+		return this[MAP];
+	}
+
+	/**
+  * Get an iterator on keys.
+  *
+  * @return  Iterator
+  */
+	keys() {
+		return createHeadersIterator(this, 'key');
+	}
+
+	/**
+  * Get an iterator on values.
+  *
+  * @return  Iterator
+  */
+	values() {
+		return createHeadersIterator(this, 'value');
+	}
+
+	/**
+  * Get an iterator on entries.
+  *
+  * This is the default iterator of the Headers object.
+  *
+  * @return  Iterator
+  */
+	[Symbol.iterator]() {
+		return createHeadersIterator(this, 'key+value');
+	}
+}
+Headers.prototype.entries = Headers.prototype[Symbol.iterator];
+
+Object.defineProperty(Headers.prototype, Symbol.toStringTag, {
+	value: 'Headers',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+Object.defineProperties(Headers.prototype, {
+	get: { enumerable: true },
+	forEach: { enumerable: true },
+	set: { enumerable: true },
+	append: { enumerable: true },
+	has: { enumerable: true },
+	delete: { enumerable: true },
+	keys: { enumerable: true },
+	values: { enumerable: true },
+	entries: { enumerable: true }
+});
+
+function getHeaders(headers) {
+	let kind = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'key+value';
+
+	const keys = Object.keys(headers[MAP]).sort();
+	return keys.map(kind === 'key' ? function (k) {
+		return k.toLowerCase();
+	} : kind === 'value' ? function (k) {
+		return headers[MAP][k].join(', ');
+	} : function (k) {
+		return [k.toLowerCase(), headers[MAP][k].join(', ')];
+	});
+}
+
+const INTERNAL = Symbol('internal');
+
+function createHeadersIterator(target, kind) {
+	const iterator = Object.create(HeadersIteratorPrototype);
+	iterator[INTERNAL] = {
+		target,
+		kind,
+		index: 0
+	};
+	return iterator;
+}
+
+const HeadersIteratorPrototype = Object.setPrototypeOf({
+	next() {
+		// istanbul ignore if
+		if (!this || Object.getPrototypeOf(this) !== HeadersIteratorPrototype) {
+			throw new TypeError('Value of `this` is not a HeadersIterator');
+		}
+
+		var _INTERNAL = this[INTERNAL];
+		const target = _INTERNAL.target,
+		      kind = _INTERNAL.kind,
+		      index = _INTERNAL.index;
+
+		const values = getHeaders(target, kind);
+		const len = values.length;
+		if (index >= len) {
+			return {
+				value: undefined,
+				done: true
+			};
+		}
+
+		this[INTERNAL].index = index + 1;
+
+		return {
+			value: values[index],
+			done: false
+		};
+	}
+}, Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]())));
+
+Object.defineProperty(HeadersIteratorPrototype, Symbol.toStringTag, {
+	value: 'HeadersIterator',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+/**
+ * Export the Headers object in a form that Node.js can consume.
+ *
+ * @param   Headers  headers
+ * @return  Object
+ */
+function exportNodeCompatibleHeaders(headers) {
+	const obj = Object.assign({ __proto__: null }, headers[MAP]);
+
+	// http.request() only supports string as Host header. This hack makes
+	// specifying custom Host header possible.
+	const hostHeaderKey = find(headers[MAP], 'Host');
+	if (hostHeaderKey !== undefined) {
+		obj[hostHeaderKey] = obj[hostHeaderKey][0];
+	}
+
+	return obj;
+}
+
+/**
+ * Create a Headers object from an object of headers, ignoring those that do
+ * not conform to HTTP grammar productions.
+ *
+ * @param   Object  obj  Object of headers
+ * @return  Headers
+ */
+function createHeadersLenient(obj) {
+	const headers = new Headers();
+	for (const name of Object.keys(obj)) {
+		if (invalidTokenRegex.test(name)) {
+			continue;
+		}
+		if (Array.isArray(obj[name])) {
+			for (const val of obj[name]) {
+				if (invalidHeaderCharRegex.test(val)) {
+					continue;
+				}
+				if (headers[MAP][name] === undefined) {
+					headers[MAP][name] = [val];
+				} else {
+					headers[MAP][name].push(val);
+				}
+			}
+		} else if (!invalidHeaderCharRegex.test(obj[name])) {
+			headers[MAP][name] = [obj[name]];
+		}
+	}
+	return headers;
+}
+
+const INTERNALS$1 = Symbol('Response internals');
+
+// fix an issue where "STATUS_CODES" aren't a named export for node <10
+const STATUS_CODES = http__WEBPACK_IMPORTED_MODULE_1__.STATUS_CODES;
+
+/**
+ * Response class
+ *
+ * @param   Stream  body  Readable stream
+ * @param   Object  opts  Response options
+ * @return  Void
+ */
+class Response {
+	constructor() {
+		let body = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+		let opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+		Body.call(this, body, opts);
+
+		const status = opts.status || 200;
+		const headers = new Headers(opts.headers);
+
+		if (body != null && !headers.has('Content-Type')) {
+			const contentType = extractContentType(body);
+			if (contentType) {
+				headers.append('Content-Type', contentType);
+			}
+		}
+
+		this[INTERNALS$1] = {
+			url: opts.url,
+			status,
+			statusText: opts.statusText || STATUS_CODES[status],
+			headers,
+			counter: opts.counter
+		};
+	}
+
+	get url() {
+		return this[INTERNALS$1].url || '';
+	}
+
+	get status() {
+		return this[INTERNALS$1].status;
+	}
+
+	/**
+  * Convenience property representing if the request ended normally
+  */
+	get ok() {
+		return this[INTERNALS$1].status >= 200 && this[INTERNALS$1].status < 300;
+	}
+
+	get redirected() {
+		return this[INTERNALS$1].counter > 0;
+	}
+
+	get statusText() {
+		return this[INTERNALS$1].statusText;
+	}
+
+	get headers() {
+		return this[INTERNALS$1].headers;
+	}
+
+	/**
+  * Clone this response
+  *
+  * @return  Response
+  */
+	clone() {
+		return new Response(clone(this), {
+			url: this.url,
+			status: this.status,
+			statusText: this.statusText,
+			headers: this.headers,
+			ok: this.ok,
+			redirected: this.redirected
+		});
+	}
+}
+
+Body.mixIn(Response.prototype);
+
+Object.defineProperties(Response.prototype, {
+	url: { enumerable: true },
+	status: { enumerable: true },
+	ok: { enumerable: true },
+	redirected: { enumerable: true },
+	statusText: { enumerable: true },
+	headers: { enumerable: true },
+	clone: { enumerable: true }
+});
+
+Object.defineProperty(Response.prototype, Symbol.toStringTag, {
+	value: 'Response',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+const INTERNALS$2 = Symbol('Request internals');
+
+// fix an issue where "format", "parse" aren't a named export for node <10
+const parse_url = url__WEBPACK_IMPORTED_MODULE_2__.parse;
+const format_url = url__WEBPACK_IMPORTED_MODULE_2__.format;
+
+const streamDestructionSupported = 'destroy' in stream__WEBPACK_IMPORTED_MODULE_0__.Readable.prototype;
+
+/**
+ * Check if a value is an instance of Request.
+ *
+ * @param   Mixed   input
+ * @return  Boolean
+ */
+function isRequest(input) {
+	return typeof input === 'object' && typeof input[INTERNALS$2] === 'object';
+}
+
+function isAbortSignal(signal) {
+	const proto = signal && typeof signal === 'object' && Object.getPrototypeOf(signal);
+	return !!(proto && proto.constructor.name === 'AbortSignal');
+}
+
+/**
+ * Request class
+ *
+ * @param   Mixed   input  Url or Request instance
+ * @param   Object  init   Custom options
+ * @return  Void
+ */
+class Request {
+	constructor(input) {
+		let init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+		let parsedURL;
+
+		// normalize input
+		if (!isRequest(input)) {
+			if (input && input.href) {
+				// in order to support Node.js' Url objects; though WHATWG's URL objects
+				// will fall into this branch also (since their `toString()` will return
+				// `href` property anyway)
+				parsedURL = parse_url(input.href);
+			} else {
+				// coerce input to a string before attempting to parse
+				parsedURL = parse_url(`${input}`);
+			}
+			input = {};
+		} else {
+			parsedURL = parse_url(input.url);
+		}
+
+		let method = init.method || input.method || 'GET';
+		method = method.toUpperCase();
+
+		if ((init.body != null || isRequest(input) && input.body !== null) && (method === 'GET' || method === 'HEAD')) {
+			throw new TypeError('Request with GET/HEAD method cannot have body');
+		}
+
+		let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
+
+		Body.call(this, inputBody, {
+			timeout: init.timeout || input.timeout || 0,
+			size: init.size || input.size || 0
+		});
+
+		const headers = new Headers(init.headers || input.headers || {});
+
+		if (inputBody != null && !headers.has('Content-Type')) {
+			const contentType = extractContentType(inputBody);
+			if (contentType) {
+				headers.append('Content-Type', contentType);
+			}
+		}
+
+		let signal = isRequest(input) ? input.signal : null;
+		if ('signal' in init) signal = init.signal;
+
+		if (signal != null && !isAbortSignal(signal)) {
+			throw new TypeError('Expected signal to be an instanceof AbortSignal');
+		}
+
+		this[INTERNALS$2] = {
+			method,
+			redirect: init.redirect || input.redirect || 'follow',
+			headers,
+			parsedURL,
+			signal
+		};
+
+		// node-fetch-only options
+		this.follow = init.follow !== undefined ? init.follow : input.follow !== undefined ? input.follow : 20;
+		this.compress = init.compress !== undefined ? init.compress : input.compress !== undefined ? input.compress : true;
+		this.counter = init.counter || input.counter || 0;
+		this.agent = init.agent || input.agent;
+	}
+
+	get method() {
+		return this[INTERNALS$2].method;
+	}
+
+	get url() {
+		return format_url(this[INTERNALS$2].parsedURL);
+	}
+
+	get headers() {
+		return this[INTERNALS$2].headers;
+	}
+
+	get redirect() {
+		return this[INTERNALS$2].redirect;
+	}
+
+	get signal() {
+		return this[INTERNALS$2].signal;
+	}
+
+	/**
+  * Clone this request
+  *
+  * @return  Request
+  */
+	clone() {
+		return new Request(this);
+	}
+}
+
+Body.mixIn(Request.prototype);
+
+Object.defineProperty(Request.prototype, Symbol.toStringTag, {
+	value: 'Request',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+Object.defineProperties(Request.prototype, {
+	method: { enumerable: true },
+	url: { enumerable: true },
+	headers: { enumerable: true },
+	redirect: { enumerable: true },
+	clone: { enumerable: true },
+	signal: { enumerable: true }
+});
+
+/**
+ * Convert a Request to Node.js http request options.
+ *
+ * @param   Request  A Request instance
+ * @return  Object   The options object to be passed to http.request
+ */
+function getNodeRequestOptions(request) {
+	const parsedURL = request[INTERNALS$2].parsedURL;
+	const headers = new Headers(request[INTERNALS$2].headers);
+
+	// fetch step 1.3
+	if (!headers.has('Accept')) {
+		headers.set('Accept', '*/*');
+	}
+
+	// Basic fetch
+	if (!parsedURL.protocol || !parsedURL.hostname) {
+		throw new TypeError('Only absolute URLs are supported');
+	}
+
+	if (!/^https?:$/.test(parsedURL.protocol)) {
+		throw new TypeError('Only HTTP(S) protocols are supported');
+	}
+
+	if (request.signal && request.body instanceof stream__WEBPACK_IMPORTED_MODULE_0__.Readable && !streamDestructionSupported) {
+		throw new Error('Cancellation of streamed requests with AbortSignal is not supported in node < 8');
+	}
+
+	// HTTP-network-or-cache fetch steps 2.4-2.7
+	let contentLengthValue = null;
+	if (request.body == null && /^(POST|PUT)$/i.test(request.method)) {
+		contentLengthValue = '0';
+	}
+	if (request.body != null) {
+		const totalBytes = getTotalBytes(request);
+		if (typeof totalBytes === 'number') {
+			contentLengthValue = String(totalBytes);
+		}
+	}
+	if (contentLengthValue) {
+		headers.set('Content-Length', contentLengthValue);
+	}
+
+	// HTTP-network-or-cache fetch step 2.11
+	if (!headers.has('User-Agent')) {
+		headers.set('User-Agent', 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)');
+	}
+
+	// HTTP-network-or-cache fetch step 2.15
+	if (request.compress && !headers.has('Accept-Encoding')) {
+		headers.set('Accept-Encoding', 'gzip,deflate');
+	}
+
+	let agent = request.agent;
+	if (typeof agent === 'function') {
+		agent = agent(parsedURL);
+	}
+
+	if (!headers.has('Connection') && !agent) {
+		headers.set('Connection', 'close');
+	}
+
+	// HTTP-network fetch step 4.2
+	// chunked encoding is handled by Node.js
+
+	return Object.assign({}, parsedURL, {
+		method: request.method,
+		headers: exportNodeCompatibleHeaders(headers),
+		agent
+	});
+}
+
+/**
+ * abort-error.js
+ *
+ * AbortError interface for cancelled requests
+ */
+
+/**
+ * Create AbortError instance
+ *
+ * @param   String      message      Error message for human
+ * @return  AbortError
+ */
+function AbortError(message) {
+  Error.call(this, message);
+
+  this.type = 'aborted';
+  this.message = message;
+
+  // hide custom error implementation details from end-users
+  Error.captureStackTrace(this, this.constructor);
+}
+
+AbortError.prototype = Object.create(Error.prototype);
+AbortError.prototype.constructor = AbortError;
+AbortError.prototype.name = 'AbortError';
+
+// fix an issue where "PassThrough", "resolve" aren't a named export for node <10
+const PassThrough$1 = stream__WEBPACK_IMPORTED_MODULE_0__.PassThrough;
+const resolve_url = url__WEBPACK_IMPORTED_MODULE_2__.resolve;
+
+/**
+ * Fetch function
+ *
+ * @param   Mixed    url   Absolute url or Request instance
+ * @param   Object   opts  Fetch options
+ * @return  Promise
+ */
+function fetch(url, opts) {
+
+	// allow custom promise
+	if (!fetch.Promise) {
+		throw new Error('native promise missing, set fetch.Promise to your favorite alternative');
+	}
+
+	Body.Promise = fetch.Promise;
+
+	// wrap http.request into fetch
+	return new fetch.Promise(function (resolve, reject) {
+		// build request object
+		const request = new Request(url, opts);
+		const options = getNodeRequestOptions(request);
+
+		const send = (options.protocol === 'https:' ? https__WEBPACK_IMPORTED_MODULE_3__ : http__WEBPACK_IMPORTED_MODULE_1__).request;
+		const signal = request.signal;
+
+		let response = null;
+
+		const abort = function abort() {
+			let error = new AbortError('The user aborted a request.');
+			reject(error);
+			if (request.body && request.body instanceof stream__WEBPACK_IMPORTED_MODULE_0__.Readable) {
+				request.body.destroy(error);
+			}
+			if (!response || !response.body) return;
+			response.body.emit('error', error);
+		};
+
+		if (signal && signal.aborted) {
+			abort();
+			return;
+		}
+
+		const abortAndFinalize = function abortAndFinalize() {
+			abort();
+			finalize();
+		};
+
+		// send request
+		const req = send(options);
+		let reqTimeout;
+
+		if (signal) {
+			signal.addEventListener('abort', abortAndFinalize);
+		}
+
+		function finalize() {
+			req.abort();
+			if (signal) signal.removeEventListener('abort', abortAndFinalize);
+			clearTimeout(reqTimeout);
+		}
+
+		if (request.timeout) {
+			req.once('socket', function (socket) {
+				reqTimeout = setTimeout(function () {
+					reject(new FetchError(`network timeout at: ${request.url}`, 'request-timeout'));
+					finalize();
+				}, request.timeout);
+			});
+		}
+
+		req.on('error', function (err) {
+			reject(new FetchError(`request to ${request.url} failed, reason: ${err.message}`, 'system', err));
+			finalize();
+		});
+
+		req.on('response', function (res) {
+			clearTimeout(reqTimeout);
+
+			const headers = createHeadersLenient(res.headers);
+
+			// HTTP fetch step 5
+			if (fetch.isRedirect(res.statusCode)) {
+				// HTTP fetch step 5.2
+				const location = headers.get('Location');
+
+				// HTTP fetch step 5.3
+				const locationURL = location === null ? null : resolve_url(request.url, location);
+
+				// HTTP fetch step 5.5
+				switch (request.redirect) {
+					case 'error':
+						reject(new FetchError(`redirect mode is set to error: ${request.url}`, 'no-redirect'));
+						finalize();
+						return;
+					case 'manual':
+						// node-fetch-specific step: make manual redirect a bit easier to use by setting the Location header value to the resolved URL.
+						if (locationURL !== null) {
+							// handle corrupted header
+							try {
+								headers.set('Location', locationURL);
+							} catch (err) {
+								// istanbul ignore next: nodejs server prevent invalid response headers, we can't test this through normal request
+								reject(err);
+							}
+						}
+						break;
+					case 'follow':
+						// HTTP-redirect fetch step 2
+						if (locationURL === null) {
+							break;
+						}
+
+						// HTTP-redirect fetch step 5
+						if (request.counter >= request.follow) {
+							reject(new FetchError(`maximum redirect reached at: ${request.url}`, 'max-redirect'));
+							finalize();
+							return;
+						}
+
+						// HTTP-redirect fetch step 6 (counter increment)
+						// Create a new Request object.
+						const requestOpts = {
+							headers: new Headers(request.headers),
+							follow: request.follow,
+							counter: request.counter + 1,
+							agent: request.agent,
+							compress: request.compress,
+							method: request.method,
+							body: request.body,
+							signal: request.signal,
+							timeout: request.timeout
+						};
+
+						// HTTP-redirect fetch step 9
+						if (res.statusCode !== 303 && request.body && getTotalBytes(request) === null) {
+							reject(new FetchError('Cannot follow redirect with body being a readable stream', 'unsupported-redirect'));
+							finalize();
+							return;
+						}
+
+						// HTTP-redirect fetch step 11
+						if (res.statusCode === 303 || (res.statusCode === 301 || res.statusCode === 302) && request.method === 'POST') {
+							requestOpts.method = 'GET';
+							requestOpts.body = undefined;
+							requestOpts.headers.delete('content-length');
+						}
+
+						// HTTP-redirect fetch step 15
+						resolve(fetch(new Request(locationURL, requestOpts)));
+						finalize();
+						return;
+				}
+			}
+
+			// prepare response
+			res.once('end', function () {
+				if (signal) signal.removeEventListener('abort', abortAndFinalize);
+			});
+			let body = res.pipe(new PassThrough$1());
+
+			const response_options = {
+				url: request.url,
+				status: res.statusCode,
+				statusText: res.statusMessage,
+				headers: headers,
+				size: request.size,
+				timeout: request.timeout,
+				counter: request.counter
+			};
+
+			// HTTP-network fetch step 12.1.1.3
+			const codings = headers.get('Content-Encoding');
+
+			// HTTP-network fetch step 12.1.1.4: handle content codings
+
+			// in following scenarios we ignore compression support
+			// 1. compression support is disabled
+			// 2. HEAD request
+			// 3. no Content-Encoding header
+			// 4. no content response (204)
+			// 5. content not modified response (304)
+			if (!request.compress || request.method === 'HEAD' || codings === null || res.statusCode === 204 || res.statusCode === 304) {
+				response = new Response(body, response_options);
+				resolve(response);
+				return;
+			}
+
+			// For Node v6+
+			// Be less strict when decoding compressed responses, since sometimes
+			// servers send slightly invalid responses that are still accepted
+			// by common browsers.
+			// Always using Z_SYNC_FLUSH is what cURL does.
+			const zlibOptions = {
+				flush: zlib__WEBPACK_IMPORTED_MODULE_4__.Z_SYNC_FLUSH,
+				finishFlush: zlib__WEBPACK_IMPORTED_MODULE_4__.Z_SYNC_FLUSH
+			};
+
+			// for gzip
+			if (codings == 'gzip' || codings == 'x-gzip') {
+				body = body.pipe(zlib__WEBPACK_IMPORTED_MODULE_4__.createGunzip(zlibOptions));
+				response = new Response(body, response_options);
+				resolve(response);
+				return;
+			}
+
+			// for deflate
+			if (codings == 'deflate' || codings == 'x-deflate') {
+				// handle the infamous raw deflate response from old servers
+				// a hack for old IIS and Apache servers
+				const raw = res.pipe(new PassThrough$1());
+				raw.once('data', function (chunk) {
+					// see http://stackoverflow.com/questions/37519828
+					if ((chunk[0] & 0x0F) === 0x08) {
+						body = body.pipe(zlib__WEBPACK_IMPORTED_MODULE_4__.createInflate());
+					} else {
+						body = body.pipe(zlib__WEBPACK_IMPORTED_MODULE_4__.createInflateRaw());
+					}
+					response = new Response(body, response_options);
+					resolve(response);
+				});
+				return;
+			}
+
+			// for br
+			if (codings == 'br' && typeof zlib__WEBPACK_IMPORTED_MODULE_4__.createBrotliDecompress === 'function') {
+				body = body.pipe(zlib__WEBPACK_IMPORTED_MODULE_4__.createBrotliDecompress());
+				response = new Response(body, response_options);
+				resolve(response);
+				return;
+			}
+
+			// otherwise, use response as-is
+			response = new Response(body, response_options);
+			resolve(response);
+		});
+
+		writeToStream(req, request);
+	});
+}
+/**
+ * Redirect code matching
+ *
+ * @param   Number   code  Status code
+ * @return  Boolean
+ */
+fetch.isRedirect = function (code) {
+	return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
+};
+
+// expose Promise
+fetch.Promise = global.Promise;
+
+/* harmony default export */ __webpack_exports__["default"] = (fetch);
+
+
+
+/***/ }),
+
 /***/ "./node_modules/regenerator-runtime/runtime.js":
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
@@ -28892,547 +30546,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./node_modules/whatwg-fetch/dist/fetch.umd.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/whatwg-fetch/dist/fetch.umd.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function (global, factory) {
-   true ? factory(exports) :
-  undefined;
-}(this, (function (exports) { 'use strict';
-
-  var support = {
-    searchParams: 'URLSearchParams' in self,
-    iterable: 'Symbol' in self && 'iterator' in Symbol,
-    blob:
-      'FileReader' in self &&
-      'Blob' in self &&
-      (function() {
-        try {
-          new Blob();
-          return true
-        } catch (e) {
-          return false
-        }
-      })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  };
-
-  function isDataView(obj) {
-    return obj && DataView.prototype.isPrototypeOf(obj)
-  }
-
-  if (support.arrayBuffer) {
-    var viewClasses = [
-      '[object Int8Array]',
-      '[object Uint8Array]',
-      '[object Uint8ClampedArray]',
-      '[object Int16Array]',
-      '[object Uint16Array]',
-      '[object Int32Array]',
-      '[object Uint32Array]',
-      '[object Float32Array]',
-      '[object Float64Array]'
-    ];
-
-    var isArrayBufferView =
-      ArrayBuffer.isView ||
-      function(obj) {
-        return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
-      };
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name);
-    }
-    if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value);
-    }
-    return value
-  }
-
-  // Build a destructive iterator for the value list
-  function iteratorFor(items) {
-    var iterator = {
-      next: function() {
-        var value = items.shift();
-        return {done: value === undefined, value: value}
-      }
-    };
-
-    if (support.iterable) {
-      iterator[Symbol.iterator] = function() {
-        return iterator
-      };
-    }
-
-    return iterator
-  }
-
-  function Headers(headers) {
-    this.map = {};
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value);
-      }, this);
-    } else if (Array.isArray(headers)) {
-      headers.forEach(function(header) {
-        this.append(header[0], header[1]);
-      }, this);
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name]);
-      }, this);
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name);
-    value = normalizeValue(value);
-    var oldValue = this.map[name];
-    this.map[name] = oldValue ? oldValue + ', ' + value : value;
-  };
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)];
-  };
-
-  Headers.prototype.get = function(name) {
-    name = normalizeName(name);
-    return this.has(name) ? this.map[name] : null
-  };
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  };
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = normalizeValue(value);
-  };
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    for (var name in this.map) {
-      if (this.map.hasOwnProperty(name)) {
-        callback.call(thisArg, this.map[name], name, this);
-      }
-    }
-  };
-
-  Headers.prototype.keys = function() {
-    var items = [];
-    this.forEach(function(value, name) {
-      items.push(name);
-    });
-    return iteratorFor(items)
-  };
-
-  Headers.prototype.values = function() {
-    var items = [];
-    this.forEach(function(value) {
-      items.push(value);
-    });
-    return iteratorFor(items)
-  };
-
-  Headers.prototype.entries = function() {
-    var items = [];
-    this.forEach(function(value, name) {
-      items.push([name, value]);
-    });
-    return iteratorFor(items)
-  };
-
-  if (support.iterable) {
-    Headers.prototype[Symbol.iterator] = Headers.prototype.entries;
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true;
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result);
-      };
-      reader.onerror = function() {
-        reject(reader.error);
-      };
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader();
-    var promise = fileReaderReady(reader);
-    reader.readAsArrayBuffer(blob);
-    return promise
-  }
-
-  function readBlobAsText(blob) {
-    var reader = new FileReader();
-    var promise = fileReaderReady(reader);
-    reader.readAsText(blob);
-    return promise
-  }
-
-  function readArrayBufferAsText(buf) {
-    var view = new Uint8Array(buf);
-    var chars = new Array(view.length);
-
-    for (var i = 0; i < view.length; i++) {
-      chars[i] = String.fromCharCode(view[i]);
-    }
-    return chars.join('')
-  }
-
-  function bufferClone(buf) {
-    if (buf.slice) {
-      return buf.slice(0)
-    } else {
-      var view = new Uint8Array(buf.byteLength);
-      view.set(new Uint8Array(buf));
-      return view.buffer
-    }
-  }
-
-  function Body() {
-    this.bodyUsed = false;
-
-    this._initBody = function(body) {
-      this._bodyInit = body;
-      if (!body) {
-        this._bodyText = '';
-      } else if (typeof body === 'string') {
-        this._bodyText = body;
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body;
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body;
-      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-        this._bodyText = body.toString();
-      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
-        this._bodyArrayBuffer = bufferClone(body.buffer);
-        // IE 10-11 can't handle a DataView body.
-        this._bodyInit = new Blob([this._bodyArrayBuffer]);
-      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
-        this._bodyArrayBuffer = bufferClone(body);
-      } else {
-        this._bodyText = body = Object.prototype.toString.call(body);
-      }
-
-      if (!this.headers.get('content-type')) {
-        if (typeof body === 'string') {
-          this.headers.set('content-type', 'text/plain;charset=UTF-8');
-        } else if (this._bodyBlob && this._bodyBlob.type) {
-          this.headers.set('content-type', this._bodyBlob.type);
-        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        }
-      }
-    };
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this);
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyArrayBuffer) {
-          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      };
-
-      this.arrayBuffer = function() {
-        if (this._bodyArrayBuffer) {
-          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
-        } else {
-          return this.blob().then(readBlobAsArrayBuffer)
-        }
-      };
-    }
-
-    this.text = function() {
-      var rejected = consumed(this);
-      if (rejected) {
-        return rejected
-      }
-
-      if (this._bodyBlob) {
-        return readBlobAsText(this._bodyBlob)
-      } else if (this._bodyArrayBuffer) {
-        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
-      } else if (this._bodyFormData) {
-        throw new Error('could not read FormData body as text')
-      } else {
-        return Promise.resolve(this._bodyText)
-      }
-    };
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      };
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    };
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase();
-    return methods.indexOf(upcased) > -1 ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {};
-    var body = options.body;
-
-    if (input instanceof Request) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url;
-      this.credentials = input.credentials;
-      if (!options.headers) {
-        this.headers = new Headers(input.headers);
-      }
-      this.method = input.method;
-      this.mode = input.mode;
-      this.signal = input.signal;
-      if (!body && input._bodyInit != null) {
-        body = input._bodyInit;
-        input.bodyUsed = true;
-      }
-    } else {
-      this.url = String(input);
-    }
-
-    this.credentials = options.credentials || this.credentials || 'same-origin';
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers);
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET');
-    this.mode = options.mode || this.mode || null;
-    this.signal = options.signal || this.signal;
-    this.referrer = null;
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body);
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this, {body: this._bodyInit})
-  };
-
-  function decode(body) {
-    var form = new FormData();
-    body
-      .trim()
-      .split('&')
-      .forEach(function(bytes) {
-        if (bytes) {
-          var split = bytes.split('=');
-          var name = split.shift().replace(/\+/g, ' ');
-          var value = split.join('=').replace(/\+/g, ' ');
-          form.append(decodeURIComponent(name), decodeURIComponent(value));
-        }
-      });
-    return form
-  }
-
-  function parseHeaders(rawHeaders) {
-    var headers = new Headers();
-    // Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
-    // https://tools.ietf.org/html/rfc7230#section-3.2
-    var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ');
-    preProcessedHeaders.split(/\r?\n/).forEach(function(line) {
-      var parts = line.split(':');
-      var key = parts.shift().trim();
-      if (key) {
-        var value = parts.join(':').trim();
-        headers.append(key, value);
-      }
-    });
-    return headers
-  }
-
-  Body.call(Request.prototype);
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {};
-    }
-
-    this.type = 'default';
-    this.status = options.status === undefined ? 200 : options.status;
-    this.ok = this.status >= 200 && this.status < 300;
-    this.statusText = 'statusText' in options ? options.statusText : 'OK';
-    this.headers = new Headers(options.headers);
-    this.url = options.url || '';
-    this._initBody(bodyInit);
-  }
-
-  Body.call(Response.prototype);
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  };
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''});
-    response.type = 'error';
-    return response
-  };
-
-  var redirectStatuses = [301, 302, 303, 307, 308];
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  };
-
-  exports.DOMException = self.DOMException;
-  try {
-    new exports.DOMException();
-  } catch (err) {
-    exports.DOMException = function(message, name) {
-      this.message = message;
-      this.name = name;
-      var error = Error(message);
-      this.stack = error.stack;
-    };
-    exports.DOMException.prototype = Object.create(Error.prototype);
-    exports.DOMException.prototype.constructor = exports.DOMException;
-  }
-
-  function fetch(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request = new Request(input, init);
-
-      if (request.signal && request.signal.aborted) {
-        return reject(new exports.DOMException('Aborted', 'AbortError'))
-      }
-
-      var xhr = new XMLHttpRequest();
-
-      function abortXhr() {
-        xhr.abort();
-      }
-
-      xhr.onload = function() {
-        var options = {
-          status: xhr.status,
-          statusText: xhr.statusText,
-          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
-        };
-        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL');
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-        resolve(new Response(body, options));
-      };
-
-      xhr.onerror = function() {
-        reject(new TypeError('Network request failed'));
-      };
-
-      xhr.ontimeout = function() {
-        reject(new TypeError('Network request failed'));
-      };
-
-      xhr.onabort = function() {
-        reject(new exports.DOMException('Aborted', 'AbortError'));
-      };
-
-      xhr.open(request.method, request.url, true);
-
-      if (request.credentials === 'include') {
-        xhr.withCredentials = true;
-      } else if (request.credentials === 'omit') {
-        xhr.withCredentials = false;
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob';
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value);
-      });
-
-      if (request.signal) {
-        request.signal.addEventListener('abort', abortXhr);
-
-        xhr.onreadystatechange = function() {
-          // DONE (success or failure)
-          if (xhr.readyState === 4) {
-            request.signal.removeEventListener('abort', abortXhr);
-          }
-        };
-      }
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
-    })
-  }
-
-  fetch.polyfill = true;
-
-  if (!self.fetch) {
-    self.fetch = fetch;
-    self.Headers = Headers;
-    self.Request = Request;
-    self.Response = Response;
-  }
-
-  exports.Headers = Headers;
-  exports.Request = Request;
-  exports.Response = Response;
-  exports.fetch = fetch;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-
-
-/***/ }),
-
 /***/ "./src/API.ts":
 /*!********************!*\
   !*** ./src/API.ts ***!
@@ -29443,11 +30556,21 @@ module.exports = function(module) {
 "use strict";
 
 
+var _Object$keys = __webpack_require__(/*! @babel/runtime-corejs2/core-js/object/keys */ "./node_modules/@babel/runtime-corejs2/core-js/object/keys.js");
+
 var _Object$defineProperty = __webpack_require__(/*! @babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js");
 
 _Object$defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _exportNames = {
+  API: true,
+  DAO: true,
+  Model: true,
+  Rest: true,
+  Client: true
+};
 
 _Object$defineProperty(exports, "Client", {
   enumerable: true,
@@ -29458,96 +30581,530 @@ _Object$defineProperty(exports, "Client", {
 
 exports.Rest = exports.Model = exports.DAO = exports.API = void 0;
 
-var _freeze = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/object/freeze */ "./node_modules/@babel/runtime-corejs2/core-js/object/freeze.js"));
-
 var _ErrorMessage = __webpack_require__(/*! ./api/ErrorMessage */ "./src/api/ErrorMessage.ts");
+
+_Object$keys(_ErrorMessage).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ErrorMessage[key];
+    }
+  });
+});
 
 var _TwitarrAuthConfig = __webpack_require__(/*! ./api/TwitarrAuthConfig */ "./src/api/TwitarrAuthConfig.ts");
 
+_Object$keys(_TwitarrAuthConfig).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _TwitarrAuthConfig[key];
+    }
+  });
+});
+
 var _TwitarrHTTPOptions = __webpack_require__(/*! ./api/TwitarrHTTPOptions */ "./src/api/TwitarrHTTPOptions.ts");
+
+_Object$keys(_TwitarrHTTPOptions).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _TwitarrHTTPOptions[key];
+    }
+  });
+});
 
 var _TwitarrResult = __webpack_require__(/*! ./api/TwitarrResult */ "./src/api/TwitarrResult.ts");
 
+_Object$keys(_TwitarrResult).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _TwitarrResult[key];
+    }
+  });
+});
+
 var _TwitarrServer = __webpack_require__(/*! ./api/TwitarrServer */ "./src/api/TwitarrServer.ts");
+
+_Object$keys(_TwitarrServer).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _TwitarrServer[key];
+    }
+  });
+});
 
 var _AlertDAO = __webpack_require__(/*! ./dao/AlertDAO */ "./src/dao/AlertDAO.ts");
 
+_Object$keys(_AlertDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _AlertDAO[key];
+    }
+  });
+});
+
 var _AutocompleteDAO = __webpack_require__(/*! ./dao/AutocompleteDAO */ "./src/dao/AutocompleteDAO.ts");
+
+_Object$keys(_AutocompleteDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _AutocompleteDAO[key];
+    }
+  });
+});
 
 var _EventDAO = __webpack_require__(/*! ./dao/EventDAO */ "./src/dao/EventDAO.ts");
 
+_Object$keys(_EventDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _EventDAO[key];
+    }
+  });
+});
+
 var _ForumDAO = __webpack_require__(/*! ./dao/ForumDAO */ "./src/dao/ForumDAO.ts");
+
+_Object$keys(_ForumDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ForumDAO[key];
+    }
+  });
+});
 
 var _PhotoDAO = __webpack_require__(/*! ./dao/PhotoDAO */ "./src/dao/PhotoDAO.ts");
 
+_Object$keys(_PhotoDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _PhotoDAO[key];
+    }
+  });
+});
+
 var _SeamailDAO = __webpack_require__(/*! ./dao/SeamailDAO */ "./src/dao/SeamailDAO.ts");
+
+_Object$keys(_SeamailDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SeamailDAO[key];
+    }
+  });
+});
 
 var _SearchDAO = __webpack_require__(/*! ./dao/SearchDAO */ "./src/dao/SearchDAO.ts");
 
+_Object$keys(_SearchDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SearchDAO[key];
+    }
+  });
+});
+
 var _StreamDAO = __webpack_require__(/*! ./dao/StreamDAO */ "./src/dao/StreamDAO.ts");
+
+_Object$keys(_StreamDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _StreamDAO[key];
+    }
+  });
+});
 
 var _TextDAO = __webpack_require__(/*! ./dao/TextDAO */ "./src/dao/TextDAO.ts");
 
+_Object$keys(_TextDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _TextDAO[key];
+    }
+  });
+});
+
 var _UserDAO = __webpack_require__(/*! ./dao/UserDAO */ "./src/dao/UserDAO.ts");
+
+_Object$keys(_UserDAO).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _UserDAO[key];
+    }
+  });
+});
 
 var _AlertResponse = __webpack_require__(/*! ./model/AlertResponse */ "./src/model/AlertResponse.ts");
 
+_Object$keys(_AlertResponse).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _AlertResponse[key];
+    }
+  });
+});
+
 var _Announcement = __webpack_require__(/*! ./model/Announcement */ "./src/model/Announcement.ts");
+
+_Object$keys(_Announcement).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Announcement[key];
+    }
+  });
+});
 
 var _CalendarEvent = __webpack_require__(/*! ./model/CalendarEvent */ "./src/model/CalendarEvent.ts");
 
+_Object$keys(_CalendarEvent).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _CalendarEvent[key];
+    }
+  });
+});
+
 var _ForumPost = __webpack_require__(/*! ./model/ForumPost */ "./src/model/ForumPost.ts");
+
+_Object$keys(_ForumPost).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ForumPost[key];
+    }
+  });
+});
 
 var _ForumResponse = __webpack_require__(/*! ./model/ForumResponse */ "./src/model/ForumResponse.ts");
 
+_Object$keys(_ForumResponse).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ForumResponse[key];
+    }
+  });
+});
+
 var _ForumThread = __webpack_require__(/*! ./model/ForumThread */ "./src/model/ForumThread.ts");
+
+_Object$keys(_ForumThread).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ForumThread[key];
+    }
+  });
+});
 
 var _PhotoDetails = __webpack_require__(/*! ./model/PhotoDetails */ "./src/model/PhotoDetails.ts");
 
+_Object$keys(_PhotoDetails).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _PhotoDetails[key];
+    }
+  });
+});
+
 var _ReactionDetail = __webpack_require__(/*! ./model/ReactionDetail */ "./src/model/ReactionDetail.ts");
+
+_Object$keys(_ReactionDetail).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ReactionDetail[key];
+    }
+  });
+});
 
 var _ReactionsSummary = __webpack_require__(/*! ./model/ReactionsSummary */ "./src/model/ReactionsSummary.ts");
 
+_Object$keys(_ReactionsSummary).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ReactionsSummary[key];
+    }
+  });
+});
+
 var _SeamailMessage = __webpack_require__(/*! ./model/SeamailMessage */ "./src/model/SeamailMessage.ts");
+
+_Object$keys(_SeamailMessage).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SeamailMessage[key];
+    }
+  });
+});
 
 var _SeamailResponse = __webpack_require__(/*! ./model/SeamailResponse */ "./src/model/SeamailResponse.ts");
 
+_Object$keys(_SeamailResponse).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SeamailResponse[key];
+    }
+  });
+});
+
 var _SeamailThread = __webpack_require__(/*! ./model/SeamailThread */ "./src/model/SeamailThread.ts");
+
+_Object$keys(_SeamailThread).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SeamailThread[key];
+    }
+  });
+});
 
 var _SearchResponse = __webpack_require__(/*! ./model/SearchResponse */ "./src/model/SearchResponse.ts");
 
+_Object$keys(_SearchResponse).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SearchResponse[key];
+    }
+  });
+});
+
 var _StreamPost = __webpack_require__(/*! ./model/StreamPost */ "./src/model/StreamPost.ts");
+
+_Object$keys(_StreamPost).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _StreamPost[key];
+    }
+  });
+});
 
 var _StreamResponse = __webpack_require__(/*! ./model/StreamResponse */ "./src/model/StreamResponse.ts");
 
+_Object$keys(_StreamResponse).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _StreamResponse[key];
+    }
+  });
+});
+
 var _User = __webpack_require__(/*! ./model/User */ "./src/model/User.ts");
+
+_Object$keys(_User).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _User[key];
+    }
+  });
+});
 
 var _UserProfileInfo = __webpack_require__(/*! ./model/UserProfileInfo */ "./src/model/UserProfileInfo.ts");
 
+_Object$keys(_UserProfileInfo).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _UserProfileInfo[key];
+    }
+  });
+});
+
 var _AutomaticHTTP = __webpack_require__(/*! ./rest/AutomaticHTTP */ "./src/rest/AutomaticHTTP.ts");
+
+_Object$keys(_AutomaticHTTP).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _AutomaticHTTP[key];
+    }
+  });
+});
 
 var _BrowserHTTP = __webpack_require__(/*! ./rest/BrowserHTTP */ "./src/rest/BrowserHTTP.ts");
 
+_Object$keys(_BrowserHTTP).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _BrowserHTTP[key];
+    }
+  });
+});
+
 var _CordovaHTTP = __webpack_require__(/*! ./rest/CordovaHTTP */ "./src/rest/CordovaHTTP.ts");
+
+_Object$keys(_CordovaHTTP).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _CordovaHTTP[key];
+    }
+  });
+});
 
 var _NodeHTTP = __webpack_require__(/*! ./rest/NodeHTTP */ "./src/rest/NodeHTTP.ts");
 
+_Object$keys(_NodeHTTP).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+
+  _Object$defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _NodeHTTP[key];
+    }
+  });
+});
+
 var _Client = __webpack_require__(/*! ./Client */ "./src/Client.ts");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/* API
+--------------------------- */
 
 /** @hidden */
-var API = (0, _freeze.default)({
+var API = {
   ErrorMessage: _ErrorMessage.ErrorMessage,
   TwitarrAuthConfig: _TwitarrAuthConfig.TwitarrAuthConfig,
   TwitarrHTTPOptions: _TwitarrHTTPOptions.TwitarrHTTPOptions,
   TwitarrResult: _TwitarrResult.TwitarrResult,
   TwitarrServer: _TwitarrServer.TwitarrServer
-});
-/** @hidden */
+};
+/* DAO
+--------------------------- */
 
 exports.API = API;
-var DAO = (0, _freeze.default)({
+
+/** @hidden */
+var DAO = {
   AlertDAO: _AlertDAO.AlertDAO,
   AutocompleteDAO: _AutocompleteDAO.AutocompleteDAO,
   EventDAO: _EventDAO.EventDAO,
@@ -29558,11 +31115,14 @@ var DAO = (0, _freeze.default)({
   StreamDAO: _StreamDAO.StreamDAO,
   TextDAO: _TextDAO.TextDAO,
   UserDAO: _UserDAO.UserDAO
-});
-/** @hidden */
+};
+/* Model
+--------------------------- */
 
 exports.DAO = DAO;
-var Model = (0, _freeze.default)({
+
+/** @hidden */
+var Model = {
   AlertResponse: _AlertResponse.AlertResponse,
   Announcement: _Announcement.Announcement,
   CalendarEvent: _CalendarEvent.CalendarEvent,
@@ -29580,18 +31140,19 @@ var Model = (0, _freeze.default)({
   StreamResponse: _StreamResponse.StreamResponse,
   User: _User.User,
   UserProfileInfo: _UserProfileInfo.UserProfileInfo
-});
-/** @hidden */
+};
+/* ReST
+--------------------------- */
 
 exports.Model = Model;
-var Rest = (0, _freeze.default)({
+
+/** @hidden */
+var Rest = {
   AutomaticHTTP: _AutomaticHTTP.AutomaticHTTP,
   BrowserHTTP: _BrowserHTTP.BrowserHTTP,
   CordovaHTTP: _CordovaHTTP.CordovaHTTP,
   NodeHTTP: _NodeHTTP.NodeHTTP
-});
-/** @hidden */
-
+};
 exports.Rest = Rest;
 
 /***/ }),
@@ -39860,7 +41421,7 @@ __webpack_require__(/*! ../../node_modules/regenerator-runtime/runtime */ "./nod
 
 var _URI = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/urijs/src/URI */ "./node_modules/urijs/src/URI.js"));
 
-__webpack_require__(/*! ../../node_modules/whatwg-fetch/dist/fetch.umd */ "./node_modules/whatwg-fetch/dist/fetch.umd.js");
+var _fetchNode = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/fetch-ponyfill/fetch-node */ "./node_modules/fetch-ponyfill/fetch-node.js"));
 
 var _AbstractHTTP2 = __webpack_require__(/*! ./AbstractHTTP */ "./src/rest/AbstractHTTP.ts");
 
@@ -39890,6 +41451,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var _fetchPonyfill = (0, _fetchNode.default)(),
+    fetch = _fetchPonyfill.fetch,
+    Headers = _fetchPonyfill.Headers;
+
 /**
  * Implementation of the [[ITwitarrHTTP]] interface using `fetch`
  * @module BrowserHTTP
@@ -39913,7 +41478,7 @@ function (_AbstractHTTP) {
     return _possibleConstructorReturn(this, _getPrototypeOf(BrowserHTTP).call(this, server, timeout));
   }
   /**
-   * Make an HTTP GET call using `window.fetch({method:'GET'})`.
+   * Make an HTTP GET call using `fetch({method:'GET'})`.
    */
 
 
@@ -39969,10 +41534,9 @@ function (_AbstractHTTP) {
                             throw response;
 
                           case 6:
-                            console.log('data:', data);
                             return _context.abrupt("return", _TwitarrResult.TwitarrResult.ok(data, undefined, response.status, type));
 
-                          case 8:
+                          case 7:
                           case "end":
                             return _context.stop();
                         }
@@ -40002,7 +41566,7 @@ function (_AbstractHTTP) {
       return get;
     }()
     /**
-     * Make an HTTP PUT call using `window.fetch({method:'PUT'})`.
+     * Make an HTTP PUT call using `fetch({method:'PUT'})`.
      */
 
   }, {
@@ -40094,7 +41658,7 @@ function (_AbstractHTTP) {
       return put;
     }()
     /**
-     * Make an HTTP POST call using `window.fetch({method:'POST'})`.
+     * Make an HTTP POST call using `fetch({method:'POST'})`.
      */
 
   }, {
@@ -40190,7 +41754,7 @@ function (_AbstractHTTP) {
       return post;
     }()
     /**
-     * Make an HTTP DELETE call using `window.fetch({method:'DELETE'})`.
+     * Make an HTTP DELETE call using `fetch({method:'DELETE'})`.
      */
 
   }, {
@@ -40308,7 +41872,7 @@ function (_AbstractHTTP) {
                   mode: 'cors',
                   redirect: 'follow'
                 }, fetchObj);
-                return _context10.abrupt("return", window.fetch(u.toString(), fetchOpts).then(
+                return _context10.abrupt("return", fetch(u.toString(), fetchOpts).then(
                 /*#__PURE__*/
                 function () {
                   var _ref5 = _asyncToGenerator(
@@ -40991,6 +42555,61 @@ function (_BrowserHTTP) {
 }(_BrowserHTTP2.BrowserHTTP);
 
 exports.NodeHTTP = NodeHTTP;
+
+/***/ }),
+
+/***/ "http":
+/*!***********************!*\
+  !*** external "http" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+
+/***/ "https":
+/*!************************!*\
+  !*** external "https" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("https");
+
+/***/ }),
+
+/***/ "stream":
+/*!*************************!*\
+  !*** external "stream" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("stream");
+
+/***/ }),
+
+/***/ "url":
+/*!**********************!*\
+  !*** external "url" ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("url");
+
+/***/ }),
+
+/***/ "zlib":
+/*!***********************!*\
+  !*** external "zlib" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("zlib");
 
 /***/ })
 

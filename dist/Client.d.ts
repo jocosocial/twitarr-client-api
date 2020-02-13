@@ -42,7 +42,7 @@ export declare class Client implements IHasHTTP {
     /**
      * Connect to an Twitarr server and return a [[TwitarrServer]] for that connection.
      */
-    connect(name: string, url: string, username?: string, password?: string, timeout?: number): Promise<this>;
+    connect(name: string, url: string, username?: string, password?: string, timeout?: number): Promise<Client>;
     /**
      * Get an alerts DAO.
      */
