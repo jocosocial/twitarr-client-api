@@ -37061,11 +37061,13 @@ var _fetchPonyfill = (0, _fetchNode.default)(),
     fetch = _fetchPonyfill.fetch,
     Headers = _fetchPonyfill.Headers;
 
+var fetchWarn = false;
 /**
  * Implementation of the [[ITwitarrHTTP]] interface using `fetch`
  * @module BrowserHTTP
  * @implements ITwitarrHTTP
  */
+
 var BrowserHTTP =
 /*#__PURE__*/
 function (_AbstractHTTP) {
@@ -37591,8 +37593,9 @@ function (_AbstractHTTP) {
         redirect: 'follow'
       };
 
-      if (allOptions.timeout) {
-        console.warn('Fetch does not support timeouts.'); // ret.timeout = allOptions.timeout;
+      if (allOptions.timeout && !fetchWarn) {
+        console.warn('Fetch does not support timeouts.');
+        fetchWarn = true; // ret.timeout = allOptions.timeout;
       }
 
       if (allOptions.auth && allOptions.auth.username && allOptions.auth.password) {

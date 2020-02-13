@@ -19,6 +19,7 @@
 * **rest:** cordova.plugin.http impl ([f8e2e2b](https://github.com/seamonkeysocial/twitarr-client-api/commit/f8e2e2b))
 * export type declarations ([fe96e10](https://github.com/seamonkeysocial/twitarr-client-api/commit/fe96e10))
 * integration work for CruiseMonkey ([ce1964d](https://github.com/seamonkeysocial/twitarr-client-api/commit/ce1964d))
+* only warn once about timeouts with fetch ([fc3085b](https://github.com/seamonkeysocial/twitarr-client-api/commit/fc3085b))
 * switch to moment and fetch rather than luxon and axios ([4a6b094](https://github.com/seamonkeysocial/twitarr-client-api/commit/4a6b094))
 
 
