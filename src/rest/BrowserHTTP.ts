@@ -1,6 +1,7 @@
 import URI from 'urijs';
 
-import 'whatwg-fetch';
+import fetchPonyfill from 'fetch-ponyfill';
+const { fetch, Headers } = fetchPonyfill();
 
 import { AbstractHTTP } from './AbstractHTTP';
 import { TwitarrHTTPOptions } from '../api/TwitarrHTTPOptions';
@@ -23,7 +24,7 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP GET call using `window.fetch({method:'GET'})`.
+   * Make an HTTP GET call using `fetch({method:'GET'})`.
    */
   public async get(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
@@ -48,7 +49,6 @@ export class BrowserHTTP extends AbstractHTTP {
         if (data && data.status === 'error') {
           throw response;
         }
-        console.log('data:', data);
         return TwitarrResult.ok(data, undefined, response.status, type);
       })
       .catch(err => {
@@ -57,7 +57,7 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP PUT call using `window.fetch({method:'PUT'})`.
+   * Make an HTTP PUT call using `fetch({method:'PUT'})`.
    */
   public async put(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
@@ -93,7 +93,7 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP POST call using `window.fetch({method:'POST'})`.
+   * Make an HTTP POST call using `fetch({method:'POST'})`.
    */
   public async post(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
@@ -133,7 +133,7 @@ export class BrowserHTTP extends AbstractHTTP {
   }
 
   /**
-   * Make an HTTP DELETE call using `window.fetch({method:'DELETE'})`.
+   * Make an HTTP DELETE call using `fetch({method:'DELETE'})`.
    */
   public async httpDelete(url: string, options?: TwitarrHTTPOptions) {
     const realUrl = this.getServer(options).resolveURL(url) as string;
@@ -189,7 +189,7 @@ export class BrowserHTTP extends AbstractHTTP {
       fetchObj,
     );
 
-    return window.fetch(u.toString(), fetchOpts).then(async (response: Response) => {
+    return fetch(u.toString(), fetchOpts).then(async (response: Response) => {
       const json = await response.json();
       return TwitarrResult.ok(json, undefined, response.status, response.headers.get('Content-Type') || undefined);
     });
