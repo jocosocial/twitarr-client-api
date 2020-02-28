@@ -31320,12 +31320,8 @@ var CLI = function CLI() {
     console.debug = function () {};
   }
 
-  var doConnect =
-  /*#__PURE__*/
-  function () {
-    var _ref = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee(url, username, password) {
+  var doConnect = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(url, username, password) {
       var config, auth, server, http, client, key;
       return _regenerator.default.wrap(function _callee$(_context) {
         while (1) {
@@ -31419,12 +31415,8 @@ var CLI = function CLI() {
     console.log('');
   };
 
-  var doGetProfile =
-  /*#__PURE__*/
-  function () {
-    var _ref2 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee2(username) {
+  var doGetProfile = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(username) {
       var profileInfo;
       return _regenerator.default.wrap(function _callee2$(_context2) {
         while (1) {
@@ -31450,12 +31442,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doUpdateProfile =
-  /*#__PURE__*/
-  function () {
-    var _ref3 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee3(displayName, email, homeLocation, realName, pronouns, roomNumber) {
+  var doUpdateProfile = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(displayName, email, homeLocation, realName, pronouns, roomNumber) {
       var profileInfo;
       return _regenerator.default.wrap(function _callee3$(_context3) {
         while (1) {
@@ -31481,12 +31469,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doComment =
-  /*#__PURE__*/
-  function () {
-    var _ref4 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee4(username, comment) {
+  var doComment = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(username, comment) {
       var profileInfo;
       return _regenerator.default.wrap(function _callee4$(_context4) {
         while (1) {
@@ -31520,12 +31504,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doStar =
-  /*#__PURE__*/
-  function () {
-    var _ref5 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee5(username) {
+  var doStar = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(username) {
       var starred;
       return _regenerator.default.wrap(function _callee5$(_context5) {
         while (1) {
@@ -31558,12 +31538,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doSeamailList =
-  /*#__PURE__*/
-  function () {
-    var _ref6 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee6() {
+  var doSeamailList = /*#__PURE__*/function () {
+    var _ref6 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6() {
       var n,
           client,
           seamail,
@@ -31663,12 +31639,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doSeamailRead =
-  /*#__PURE__*/
-  function () {
-    var _ref7 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee7(id) {
+  var doSeamailRead = /*#__PURE__*/function () {
+    var _ref7 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(id) {
       var client, seamail, t, thread;
       return _regenerator.default.wrap(function _callee7$(_context7) {
         while (1) {
@@ -31711,12 +31683,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doSeamailCreate =
-  /*#__PURE__*/
-  function () {
-    var _ref8 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee8(subject, message, users) {
+  var doSeamailCreate = /*#__PURE__*/function () {
+    var _ref8 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(subject, message, users) {
       var _client$seamail;
 
       var client, seamail;
@@ -31746,12 +31714,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doSeamailPost =
-  /*#__PURE__*/
-  function () {
-    var _ref9 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee9(id, message) {
+  var doSeamailPost = /*#__PURE__*/function () {
+    var _ref9 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9(id, message) {
       var client, response;
       return _regenerator.default.wrap(function _callee9$(_context9) {
         while (1) {
@@ -31779,12 +31743,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doStreamRead =
-  /*#__PURE__*/
-  function () {
-    var _ref10 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee10(options) {
+  var doStreamRead = /*#__PURE__*/function () {
+    var _ref10 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee10(options) {
       var client, response, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, post;
 
       return _regenerator.default.wrap(function _callee10$(_context10) {
@@ -31859,12 +31819,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var postPhotoIfNecessary =
-  /*#__PURE__*/
-  function () {
-    var _ref11 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee11(photo) {
+  var postPhotoIfNecessary = /*#__PURE__*/function () {
+    var _ref11 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee11(photo) {
       var filename, buf, client, photoMeta;
       return _regenerator.default.wrap(function _callee11$(_context11) {
         while (1) {
@@ -31912,12 +31868,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doStreamPost =
-  /*#__PURE__*/
-  function () {
-    var _ref12 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee12(message, parent, photo) {
+  var doStreamPost = /*#__PURE__*/function () {
+    var _ref12 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee12(message, parent, photo) {
       var client, photoArg, response;
       return _regenerator.default.wrap(function _callee12$(_context12) {
         while (1) {
@@ -31950,12 +31902,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doUpdateStreamPost =
-  /*#__PURE__*/
-  function () {
-    var _ref13 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee13(id, message, photo) {
+  var doUpdateStreamPost = /*#__PURE__*/function () {
+    var _ref13 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee13(id, message, photo) {
       var client, photoArg, response;
       return _regenerator.default.wrap(function _callee13$(_context13) {
         while (1) {
@@ -31988,12 +31936,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doDeleteStreamPost =
-  /*#__PURE__*/
-  function () {
-    var _ref14 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee14(id) {
+  var doDeleteStreamPost = /*#__PURE__*/function () {
+    var _ref14 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee14(id) {
       var client;
       return _regenerator.default.wrap(function _callee14$(_context14) {
         while (1) {
@@ -32020,12 +31964,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doLockStreamPost =
-  /*#__PURE__*/
-  function () {
-    var _ref15 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee15(id) {
+  var doLockStreamPost = /*#__PURE__*/function () {
+    var _ref15 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee15(id) {
       var client;
       return _regenerator.default.wrap(function _callee15$(_context15) {
         while (1) {
@@ -32052,12 +31992,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doUnlockStreamPost =
-  /*#__PURE__*/
-  function () {
-    var _ref16 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee16(id) {
+  var doUnlockStreamPost = /*#__PURE__*/function () {
+    var _ref16 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee16(id) {
       var client;
       return _regenerator.default.wrap(function _callee16$(_context16) {
         while (1) {
@@ -32084,12 +32020,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doReact =
-  /*#__PURE__*/
-  function () {
-    var _ref17 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee17(id, reaction) {
+  var doReact = /*#__PURE__*/function () {
+    var _ref17 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee17(id, reaction) {
       var del,
           client,
           _args17 = arguments;
@@ -32150,12 +32082,8 @@ var CLI = function CLI() {
     console.log('');
   };
 
-  var doListEvents =
-  /*#__PURE__*/
-  function () {
-    var _ref18 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee18(mine, today) {
+  var doListEvents = /*#__PURE__*/function () {
+    var _ref18 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee18(mine, today) {
       var client, now, events, lastDay, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, event, day;
 
       return _regenerator.default.wrap(function _callee18$(_context18) {
@@ -32249,12 +32177,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doDeleteEvent =
-  /*#__PURE__*/
-  function () {
-    var _ref19 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee19(id) {
+  var doDeleteEvent = /*#__PURE__*/function () {
+    var _ref19 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee19(id) {
       return _regenerator.default.wrap(function _callee19$(_context19) {
         while (1) {
           switch (_context19.prev = _context19.next) {
@@ -32279,12 +32203,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doUpdateEvent =
-  /*#__PURE__*/
-  function () {
-    var _ref20 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee20(id, title, description, location, startTime, endTime) {
+  var doUpdateEvent = /*#__PURE__*/function () {
+    var _ref20 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee20(id, title, description, location, startTime, endTime) {
       var start, end, event, day;
       return _regenerator.default.wrap(function _callee20$(_context20) {
         while (1) {
@@ -32314,12 +32234,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doFavoriteEvent =
-  /*#__PURE__*/
-  function () {
-    var _ref21 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee21(id) {
+  var doFavoriteEvent = /*#__PURE__*/function () {
+    var _ref21 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee21(id) {
       return _regenerator.default.wrap(function _callee21$(_context21) {
         while (1) {
           switch (_context21.prev = _context21.next) {
@@ -32343,12 +32259,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doUnfavoriteEvent =
-  /*#__PURE__*/
-  function () {
-    var _ref22 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee22(id) {
+  var doUnfavoriteEvent = /*#__PURE__*/function () {
+    var _ref22 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee22(id) {
       return _regenerator.default.wrap(function _callee22$(_context22) {
         while (1) {
           switch (_context22.prev = _context22.next) {
@@ -32372,12 +32284,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doPrintText =
-  /*#__PURE__*/
-  function () {
-    var _ref23 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee23(filename) {
+  var doPrintText = /*#__PURE__*/function () {
+    var _ref23 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee23(filename) {
       var contents, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, section, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, paragraph;
 
       return _regenerator.default.wrap(function _callee23$(_context23) {
@@ -32509,12 +32417,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doPrintServerTime =
-  /*#__PURE__*/
-  function () {
-    var _ref24 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee24() {
+  var doPrintServerTime = /*#__PURE__*/function () {
+    var _ref24 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee24() {
       var ret;
       return _regenerator.default.wrap(function _callee24$(_context24) {
         while (1) {
@@ -32541,12 +32445,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doPrintReactions =
-  /*#__PURE__*/
-  function () {
-    var _ref25 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee25() {
+  var doPrintReactions = /*#__PURE__*/function () {
+    var _ref25 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee25() {
       var reactions, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, reaction;
 
       return _regenerator.default.wrap(function _callee25$(_context25) {
@@ -32617,12 +32517,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doPrintAnnouncements =
-  /*#__PURE__*/
-  function () {
-    var _ref26 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee26() {
+  var doPrintAnnouncements = /*#__PURE__*/function () {
+    var _ref26 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee26() {
       var announcements, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, announcement;
 
       return _regenerator.default.wrap(function _callee26$(_context26) {
@@ -32749,12 +32645,8 @@ var CLI = function CLI() {
     }
   };
 
-  var doListForumThreads =
-  /*#__PURE__*/
-  function () {
-    var _ref27 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee27(page, limit) {
+  var doListForumThreads = /*#__PURE__*/function () {
+    var _ref27 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee27(page, limit) {
       var response, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, thread;
 
       return _regenerator.default.wrap(function _callee27$(_context27) {
@@ -32822,12 +32714,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doReadForumThread =
-  /*#__PURE__*/
-  function () {
-    var _ref28 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee28(id, page, limit) {
+  var doReadForumThread = /*#__PURE__*/function () {
+    var _ref28 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee28(id, page, limit) {
       var thread;
       return _regenerator.default.wrap(function _callee28$(_context28) {
         while (1) {
@@ -32853,12 +32741,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doCreateForumThread =
-  /*#__PURE__*/
-  function () {
-    var _ref29 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee29(subject, text, photos) {
+  var doCreateForumThread = /*#__PURE__*/function () {
+    var _ref29 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee29(subject, text, photos) {
       var photoIds, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, photo, thread;
 
       return _regenerator.default.wrap(function _callee29$(_context29) {
@@ -32955,12 +32839,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doPostToForumThread =
-  /*#__PURE__*/
-  function () {
-    var _ref30 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee30(id, text, photos) {
+  var doPostToForumThread = /*#__PURE__*/function () {
+    var _ref30 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee30(id, text, photos) {
       var photoIds, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, photo, post;
 
       return _regenerator.default.wrap(function _callee30$(_context30) {
@@ -33057,12 +32937,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doSticky =
-  /*#__PURE__*/
-  function () {
-    var _ref31 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee31(id, sticky) {
+  var doSticky = /*#__PURE__*/function () {
+    var _ref31 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee31(id, sticky) {
       return _regenerator.default.wrap(function _callee31$(_context31) {
         while (1) {
           switch (_context31.prev = _context31.next) {
@@ -33087,12 +32963,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doLocked =
-  /*#__PURE__*/
-  function () {
-    var _ref32 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee32(id, locked) {
+  var doLocked = /*#__PURE__*/function () {
+    var _ref32 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee32(id, locked) {
       return _regenerator.default.wrap(function _callee32$(_context32) {
         while (1) {
           switch (_context32.prev = _context32.next) {
@@ -33117,12 +32989,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doReadPost =
-  /*#__PURE__*/
-  function () {
-    var _ref33 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee33(threadId, postId) {
+  var doReadPost = /*#__PURE__*/function () {
+    var _ref33 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee33(threadId, postId) {
       var post;
       return _regenerator.default.wrap(function _callee33$(_context33) {
         while (1) {
@@ -33148,12 +33016,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doDeletePost =
-  /*#__PURE__*/
-  function () {
-    var _ref34 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee34(threadId, postId) {
+  var doDeletePost = /*#__PURE__*/function () {
+    var _ref34 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee34(threadId, postId) {
       var deleted;
       return _regenerator.default.wrap(function _callee34$(_context34) {
         while (1) {
@@ -33186,12 +33050,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doUpdatePost =
-  /*#__PURE__*/
-  function () {
-    var _ref35 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee35(threadId, postId, text, photos) {
+  var doUpdatePost = /*#__PURE__*/function () {
+    var _ref35 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee35(threadId, postId, text, photos) {
       var photoIds, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, photo, post;
 
       return _regenerator.default.wrap(function _callee35$(_context35) {
@@ -33288,12 +33148,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doReactToPost =
-  /*#__PURE__*/
-  function () {
-    var _ref36 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee36(threadId, postId, reaction) {
+  var doReactToPost = /*#__PURE__*/function () {
+    var _ref36 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee36(threadId, postId, reaction) {
       return _regenerator.default.wrap(function _callee36$(_context36) {
         while (1) {
           switch (_context36.prev = _context36.next) {
@@ -33318,12 +33174,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var doDeleteReactToPost =
-  /*#__PURE__*/
-  function () {
-    var _ref37 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee37(threadId, postId, reaction) {
+  var doDeleteReactToPost = /*#__PURE__*/function () {
+    var _ref37 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee37(threadId, postId, reaction) {
       return _regenerator.default.wrap(function _callee37$(_context37) {
         while (1) {
           switch (_context37.prev = _context37.next) {
@@ -33348,12 +33200,8 @@ var CLI = function CLI() {
     };
   }();
 
-  var processArgs =
-  /*#__PURE__*/
-  function () {
-    var _ref38 = _asyncToGenerator(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee38(args) {
+  var processArgs = /*#__PURE__*/function () {
+    var _ref38 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee38(args) {
       var command, _command, _command2, options, _command3, _command4, _command5;
 
       return _regenerator.default.wrap(function _callee38$(_context38) {
@@ -33837,9 +33685,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * The Twitarr client.  This is the primary interface to Twitarr servers.
  * @module Client
  */
-var Client =
-/*#__PURE__*/
-function () {
+var Client = /*#__PURE__*/function () {
   _createClass(Client, null, [{
     key: "checkServer",
 
@@ -33851,9 +33697,7 @@ function () {
      * @param timeout - how long to wait before giving up when making ReST calls
      */
     value: function () {
-      var _checkServer = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(server, httpImpl, timeout) {
+      var _checkServer = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(server, httpImpl, timeout) {
         var opts, welcomeUrl;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
@@ -33941,9 +33785,7 @@ function () {
   _createClass(Client, [{
     key: "isLoggedIn",
     value: function () {
-      var _isLoggedIn = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2() {
+      var _isLoggedIn = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -33979,9 +33821,7 @@ function () {
   }, {
     key: "connect",
     value: function () {
-      var _connect = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(name, url, username, password, timeout) {
+      var _connect = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(name, url, username, password, timeout) {
         var _this = this;
 
         var server, profile;
@@ -34207,9 +34047,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { (0, _defineProperty2.default)(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var ErrorMessage =
-/*#__PURE__*/
-function () {
+var ErrorMessage = /*#__PURE__*/function () {
   function ErrorMessage(data) {
     _classCallCheck(this, ErrorMessage);
 
@@ -34270,9 +34108,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents server authentication config.
  * @module TwitarrAuthConfig
  */
-var TwitarrAuthConfig =
-/*#__PURE__*/
-function () {
+var TwitarrAuthConfig = /*#__PURE__*/function () {
   /** The password to authenticate with. */
 
   /** The username to connect as. */
@@ -34364,9 +34200,7 @@ var AUTH_PROP = (0, _for.default)('auth');
  * @module TwitarrHTTPOptions
  */
 
-var TwitarrHTTPOptions =
-/*#__PURE__*/
-function () {
+var TwitarrHTTPOptions = /*#__PURE__*/function () {
   _createClass(TwitarrHTTPOptions, [{
     key: "timeout",
 
@@ -34532,9 +34366,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * An [[ITwitarrHTTP]] query result.
  * @module TwitarrResult
  */
-var TwitarrResult =
-/*#__PURE__*/
-function () {
+var TwitarrResult = /*#__PURE__*/function () {
   _createClass(TwitarrResult, null, [{
     key: "ok",
 
@@ -34652,9 +34484,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a remote Twitarr server.
  * @module TwitarrServer
  */
-var TwitarrServer =
-/*#__PURE__*/
-function () {
+var TwitarrServer = /*#__PURE__*/function () {
   /** A unique identifier for this server. */
 
   /** An optional name associated with this server. */
@@ -34815,9 +34645,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { (0, _defineProperty2.default)(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var AbstractDAO =
-/*#__PURE__*/
-function () {
+var AbstractDAO = /*#__PURE__*/function () {
   /**
    * The [[ITwitarrHTTP]] implementation to use internally when making requests.
    * @hidden
@@ -34944,9 +34772,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var AlertDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var AlertDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(AlertDAO, _AbstractDAO);
 
   function AlertDAO() {
@@ -34962,9 +34788,7 @@ function (_AbstractDAO) {
      * Retrieve an alert response containing all posts/etc. that are un-viewed.
      */
     value: function () {
-      var _get = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(last_checked_time, no_reset) {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(last_checked_time, no_reset) {
         var _this = this;
 
         var options;
@@ -35005,9 +34829,7 @@ function (_AbstractDAO) {
   }, {
     key: "lastChecked",
     value: function () {
-      var _lastChecked = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(last_checked_time) {
+      var _lastChecked = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(last_checked_time) {
         var _this2 = this;
 
         var options;
@@ -35041,9 +34863,7 @@ function (_AbstractDAO) {
   }, {
     key: "count",
     value: function () {
-      var _count = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(last_checked_time) {
+      var _count = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(last_checked_time) {
         var _this3 = this;
 
         var options;
@@ -35160,9 +34980,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var AutocompleteDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var AutocompleteDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(AutocompleteDAO, _AbstractDAO);
 
   function AutocompleteDAO() {
@@ -35178,9 +34996,7 @@ function (_AbstractDAO) {
      * Retrieve a list of hashtags that match the given query.
      */
     value: function () {
-      var _hashtags = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(query) {
+      var _hashtags = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(query) {
         var _this = this;
 
         var q;
@@ -35233,9 +35049,7 @@ function (_AbstractDAO) {
   }, {
     key: "users",
     value: function () {
-      var _users = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(query) {
+      var _users = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(query) {
         var _this2 = this;
 
         var q;
@@ -35395,9 +35209,7 @@ var sortEvents = function sortEvents(a, b) {
   return ret;
 };
 
-var EventDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var EventDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(EventDAO, _AbstractDAO);
 
   function EventDAO() {
@@ -35413,9 +35225,7 @@ function (_AbstractDAO) {
      * Retrieve the complete list of events.
      */
     value: function () {
-      var _all = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
+      var _all = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {
         var _this = this;
 
         return _regenerator.default.wrap(function _callee$(_context) {
@@ -35452,9 +35262,7 @@ function (_AbstractDAO) {
   }, {
     key: "get",
     value: function () {
-      var _get = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(id) {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(id) {
         var _this2 = this;
 
         return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -35488,9 +35296,7 @@ function (_AbstractDAO) {
   }, {
     key: "favorite",
     value: function () {
-      var _favorite = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(id) {
+      var _favorite = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(id) {
         var _this3 = this;
 
         return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -35524,9 +35330,7 @@ function (_AbstractDAO) {
   }, {
     key: "unfavorite",
     value: function () {
-      var _unfavorite = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(id) {
+      var _unfavorite = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(id) {
         var _this4 = this;
 
         return _regenerator.default.wrap(function _callee4$(_context4) {
@@ -35560,9 +35364,7 @@ function (_AbstractDAO) {
   }, {
     key: "remove",
     value: function () {
-      var _remove = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(id) {
+      var _remove = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(id) {
         var _this5 = this;
 
         return _regenerator.default.wrap(function _callee5$(_context5) {
@@ -35596,9 +35398,7 @@ function (_AbstractDAO) {
   }, {
     key: "update",
     value: function () {
-      var _update = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6(id, title, description, location, start_time, end_time) {
+      var _update = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6(id, title, description, location, start_time, end_time) {
         var _this6 = this;
 
         var options;
@@ -35655,9 +35455,7 @@ function (_AbstractDAO) {
   }, {
     key: "getDay",
     value: function () {
-      var _getDay = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee7(date, mine) {
+      var _getDay = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(date, mine) {
         var _this7 = this;
 
         var epoch, url;
@@ -35778,9 +35576,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var ForumDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var ForumDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(ForumDAO, _AbstractDAO);
 
   function ForumDAO() {
@@ -35796,9 +35592,7 @@ function (_AbstractDAO) {
      * Get a list of forum threads.
      */
     value: function () {
-      var _list = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(page, limit, participated) {
+      var _list = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(page, limit, participated) {
         var _this = this;
 
         var options;
@@ -35847,9 +35641,7 @@ function (_AbstractDAO) {
   }, {
     key: "markRead",
     value: function () {
-      var _markRead = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(participated) {
+      var _markRead = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(participated) {
         var _this2 = this;
 
         var options;
@@ -35888,9 +35680,7 @@ function (_AbstractDAO) {
   }, {
     key: "create",
     value: function () {
-      var _create = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(subject, text, photos, as_mod) {
+      var _create = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(subject, text, photos, as_mod) {
         var _this3 = this;
 
         var options;
@@ -35936,9 +35726,7 @@ function (_AbstractDAO) {
   }, {
     key: "get",
     value: function () {
-      var _get = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(id, page, limit) {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(id, page, limit) {
         var _this4 = this;
 
         var options;
@@ -35981,9 +35769,7 @@ function (_AbstractDAO) {
   }, {
     key: "post",
     value: function () {
-      var _post = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(id, text, photos, as_mod) {
+      var _post = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(id, text, photos, as_mod) {
         var _this5 = this;
 
         var options;
@@ -36028,9 +35814,7 @@ function (_AbstractDAO) {
   }, {
     key: "remove",
     value: function () {
-      var _remove = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6(id) {
+      var _remove = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6(id) {
         var _this6 = this;
 
         return _regenerator.default.wrap(function _callee6$(_context6) {
@@ -36062,9 +35846,7 @@ function (_AbstractDAO) {
   }, {
     key: "sticky",
     value: function () {
-      var _sticky2 = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee7(id, _sticky) {
+      var _sticky2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(id, _sticky) {
         var _this7 = this;
 
         return _regenerator.default.wrap(function _callee7$(_context7) {
@@ -36096,9 +35878,7 @@ function (_AbstractDAO) {
   }, {
     key: "locked",
     value: function () {
-      var _locked2 = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee8(id, _locked) {
+      var _locked2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(id, _locked) {
         var _this8 = this;
 
         return _regenerator.default.wrap(function _callee8$(_context8) {
@@ -36130,9 +35910,7 @@ function (_AbstractDAO) {
   }, {
     key: "react",
     value: function () {
-      var _react = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee9(threadId, postId, reaction) {
+      var _react = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9(threadId, postId, reaction) {
         var _this9 = this;
 
         return _regenerator.default.wrap(function _callee9$(_context9) {
@@ -36164,9 +35942,7 @@ function (_AbstractDAO) {
   }, {
     key: "deleteReact",
     value: function () {
-      var _deleteReact = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee10(threadId, postId, reaction) {
+      var _deleteReact = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee10(threadId, postId, reaction) {
         var _this10 = this;
 
         return _regenerator.default.wrap(function _callee10$(_context10) {
@@ -36198,9 +35974,7 @@ function (_AbstractDAO) {
   }, {
     key: "reactions",
     value: function () {
-      var _reactions = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee11(threadId, postId) {
+      var _reactions = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee11(threadId, postId) {
         var _this11 = this;
 
         return _regenerator.default.wrap(function _callee11$(_context11) {
@@ -36234,9 +36008,7 @@ function (_AbstractDAO) {
   }, {
     key: "getPost",
     value: function () {
-      var _getPost = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee12(threadId, postId) {
+      var _getPost = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee12(threadId, postId) {
         var _this12 = this;
 
         var options;
@@ -36270,9 +36042,7 @@ function (_AbstractDAO) {
   }, {
     key: "updatePost",
     value: function () {
-      var _updatePost = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee13(threadId, postId, text, photos) {
+      var _updatePost = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee13(threadId, postId, text, photos) {
         var _this13 = this;
 
         var options;
@@ -36315,9 +36085,7 @@ function (_AbstractDAO) {
   }, {
     key: "removePost",
     value: function () {
-      var _removePost = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee14(threadId, postId) {
+      var _removePost = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee14(threadId, postId) {
         var _this14 = this;
 
         return _regenerator.default.wrap(function _callee14$(_context14) {
@@ -36421,9 +36189,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var PhotoDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var PhotoDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(PhotoDAO, _AbstractDAO);
 
   function PhotoDAO() {
@@ -36439,9 +36205,7 @@ function (_AbstractDAO) {
      * Retrieve a photo's metadata.
      */
     value: function () {
-      var _get = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(id) {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(id) {
         var _this = this;
 
         var options;
@@ -36477,9 +36241,7 @@ function (_AbstractDAO) {
   }, {
     key: "remove",
     value: function () {
-      var _remove = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(id) {
+      var _remove = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(id) {
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -36507,9 +36269,7 @@ function (_AbstractDAO) {
   }, {
     key: "post",
     value: function () {
-      var _post = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(fileName, photoData) {
+      var _post = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(fileName, photoData) {
         var _this2 = this;
 
         var options, mimeType;
@@ -36579,9 +36339,7 @@ function (_AbstractDAO) {
   }, {
     key: "profile",
     value: function () {
-      var _profile = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(username, fileName, photoData) {
+      var _profile = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(username, fileName, photoData) {
         var _this3 = this;
 
         var options, mimeType;
@@ -36651,9 +36409,7 @@ function (_AbstractDAO) {
   }, {
     key: "removeProfile",
     value: function () {
-      var _removeProfile = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5() {
+      var _removeProfile = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5() {
         var _this4 = this;
 
         return _regenerator.default.wrap(function _callee5$(_context5) {
@@ -36759,9 +36515,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var SeamailDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var SeamailDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(SeamailDAO, _AbstractDAO);
 
   function SeamailDAO() {
@@ -36773,9 +36527,7 @@ function (_AbstractDAO) {
   _createClass(SeamailDAO, [{
     key: "get",
     value: function () {
-      var _get = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(id, skip_mark_read) {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(id, skip_mark_read) {
         var _this = this;
 
         var options;
@@ -36820,9 +36572,7 @@ function (_AbstractDAO) {
   }, {
     key: "getMetadata",
     value: function () {
-      var _getMetadata = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(unread, after) {
+      var _getMetadata = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(unread, after) {
         var _this2 = this;
 
         var options;
@@ -36863,9 +36613,7 @@ function (_AbstractDAO) {
   }, {
     key: "getThreads",
     value: function () {
-      var _getThreads = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(unread, exclude_read_messages, after) {
+      var _getThreads = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(unread, exclude_read_messages, after) {
         var options;
         return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
@@ -36906,9 +36654,7 @@ function (_AbstractDAO) {
   }, {
     key: "create",
     value: function () {
-      var _create = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(subject, message) {
+      var _create = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(subject, message) {
         var options,
             _len,
             users,
@@ -36951,9 +36697,7 @@ function (_AbstractDAO) {
   }, {
     key: "post",
     value: function () {
-      var _post = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(id, message) {
+      var _post = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(id, message) {
         var options;
         return _regenerator.default.wrap(function _callee5$(_context5) {
           while (1) {
@@ -36984,9 +36728,7 @@ function (_AbstractDAO) {
   }, {
     key: "unreadCount",
     value: function () {
-      var _unreadCount = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6() {
+      var _unreadCount = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6() {
         return _regenerator.default.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
@@ -37084,9 +36826,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var SearchDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var SearchDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(SearchDAO, _AbstractDAO);
 
   function SearchDAO() {
@@ -37102,9 +36842,7 @@ function (_AbstractDAO) {
      * Search all metadata (seamail, twarrts, etc.)
      */
     value: function () {
-      var _all = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(query, limit, page) {
+      var _all = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(query, limit, page) {
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -37132,9 +36870,7 @@ function (_AbstractDAO) {
   }, {
     key: "events",
     value: function () {
-      var _events = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(query, limit, page) {
+      var _events = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(query, limit, page) {
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -37162,9 +36898,7 @@ function (_AbstractDAO) {
   }, {
     key: "forums",
     value: function () {
-      var _forums = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(query, limit, page) {
+      var _forums = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(query, limit, page) {
         return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -37192,9 +36926,7 @@ function (_AbstractDAO) {
   }, {
     key: "seamails",
     value: function () {
-      var _seamails = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(query, limit, page) {
+      var _seamails = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(query, limit, page) {
         return _regenerator.default.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -37222,9 +36954,7 @@ function (_AbstractDAO) {
   }, {
     key: "tweets",
     value: function () {
-      var _tweets = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(query, limit, page) {
+      var _tweets = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(query, limit, page) {
         return _regenerator.default.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
@@ -37252,9 +36982,7 @@ function (_AbstractDAO) {
   }, {
     key: "users",
     value: function () {
-      var _users = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6(query, limit, page) {
+      var _users = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6(query, limit, page) {
         return _regenerator.default.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
@@ -37278,9 +37006,7 @@ function (_AbstractDAO) {
   }, {
     key: "doSearch",
     value: function () {
-      var _doSearch = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee7(url, limit, page) {
+      var _doSearch = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(url, limit, page) {
         var options;
         return _regenerator.default.wrap(function _callee7$(_context7) {
           while (1) {
@@ -37393,9 +37119,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var StreamDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var StreamDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(StreamDAO, _AbstractDAO);
 
   function StreamDAO() {
@@ -37411,9 +37135,7 @@ function (_AbstractDAO) {
      * Retrieve a collection of twarrts.
      */
     value: function () {
-      var _posts = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(streamOptions) {
+      var _posts = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(streamOptions) {
         var options;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
@@ -37454,9 +37176,7 @@ function (_AbstractDAO) {
   }, {
     key: "thread",
     value: function () {
-      var _thread = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(id, limit, page) {
+      var _thread = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(id, limit, page) {
         var options;
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
@@ -37497,9 +37217,7 @@ function (_AbstractDAO) {
   }, {
     key: "mentions",
     value: function () {
-      var _mentions = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(username, limit, page, after) {
+      var _mentions = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(username, limit, page, after) {
         var options;
         return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
@@ -37544,9 +37262,7 @@ function (_AbstractDAO) {
   }, {
     key: "hashtag",
     value: function () {
-      var _hashtag2 = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(_hashtag, limit, page, after) {
+      var _hashtag2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(_hashtag, limit, page, after) {
         var options;
         return _regenerator.default.wrap(function _callee4$(_context4) {
           while (1) {
@@ -37591,9 +37307,7 @@ function (_AbstractDAO) {
   }, {
     key: "send",
     value: function () {
-      var _send = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(message, parent, photo) {
+      var _send = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(message, parent, photo) {
         var options;
         return _regenerator.default.wrap(function _callee5$(_context5) {
           while (1) {
@@ -37636,9 +37350,7 @@ function (_AbstractDAO) {
   }, {
     key: "updatePost",
     value: function () {
-      var _updatePost = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6(id, message, photo) {
+      var _updatePost = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6(id, message, photo) {
         var options;
         return _regenerator.default.wrap(function _callee6$(_context6) {
           while (1) {
@@ -37677,9 +37389,7 @@ function (_AbstractDAO) {
   }, {
     key: "deletePost",
     value: function () {
-      var _deletePost = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee7(id) {
+      var _deletePost = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(id) {
         return _regenerator.default.wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
@@ -37709,9 +37419,7 @@ function (_AbstractDAO) {
   }, {
     key: "lockPost",
     value: function () {
-      var _lockPost = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee8(id) {
+      var _lockPost = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(id) {
         return _regenerator.default.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
@@ -37741,9 +37449,7 @@ function (_AbstractDAO) {
   }, {
     key: "unlockPost",
     value: function () {
-      var _unlockPost = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee9(id) {
+      var _unlockPost = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9(id) {
         return _regenerator.default.wrap(function _callee9$(_context9) {
           while (1) {
             switch (_context9.prev = _context9.next) {
@@ -37773,9 +37479,7 @@ function (_AbstractDAO) {
   }, {
     key: "reactions",
     value: function () {
-      var _reactions = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee10(id) {
+      var _reactions = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee10(id) {
         return _regenerator.default.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
@@ -37805,9 +37509,7 @@ function (_AbstractDAO) {
   }, {
     key: "react",
     value: function () {
-      var _react = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee11(id, reaction) {
+      var _react = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee11(id, reaction) {
         return _regenerator.default.wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
@@ -37837,9 +37539,7 @@ function (_AbstractDAO) {
   }, {
     key: "deleteReact",
     value: function () {
-      var _deleteReact = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee12(id, reaction) {
+      var _deleteReact = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee12(id, reaction) {
         return _regenerator.default.wrap(function _callee12$(_context12) {
           while (1) {
             switch (_context12.prev = _context12.next) {
@@ -37939,9 +37639,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var TextDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var TextDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(TextDAO, _AbstractDAO);
 
   function TextDAO() {
@@ -37953,9 +37651,7 @@ function (_AbstractDAO) {
   _createClass(TextDAO, [{
     key: "getFile",
     value: function () {
-      var _getFile = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(filename) {
+      var _getFile = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(filename) {
         var _this = this;
 
         var options;
@@ -37987,9 +37683,7 @@ function (_AbstractDAO) {
   }, {
     key: "serverTime",
     value: function () {
-      var _serverTime = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2() {
+      var _serverTime = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
         var _this2 = this;
 
         return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -38023,9 +37717,7 @@ function (_AbstractDAO) {
   }, {
     key: "reactions",
     value: function () {
-      var _reactions = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3() {
+      var _reactions = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
         var _this3 = this;
 
         return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -38055,9 +37747,7 @@ function (_AbstractDAO) {
   }, {
     key: "announcements",
     value: function () {
-      var _announcements = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4() {
+      var _announcements = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
         var _this4 = this;
 
         return _regenerator.default.wrap(function _callee4$(_context4) {
@@ -38167,9 +37857,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var UserDAO =
-/*#__PURE__*/
-function (_AbstractDAO) {
+var UserDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(UserDAO, _AbstractDAO);
 
   function UserDAO() {
@@ -38181,9 +37869,7 @@ function (_AbstractDAO) {
   _createClass(UserDAO, [{
     key: "login",
     value: function () {
-      var _login = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
+      var _login = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {
         var options, result, data;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
@@ -38229,9 +37915,7 @@ function (_AbstractDAO) {
   }, {
     key: "profile",
     value: function () {
-      var _profile = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(username) {
+      var _profile = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(username) {
         var _this = this;
 
         var url;
@@ -38263,9 +37947,7 @@ function (_AbstractDAO) {
   }, {
     key: "update",
     value: function () {
-      var _update = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(display_name, email, home_location, real_name, pronouns, room_number) {
+      var _update = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(display_name, email, home_location, real_name, pronouns, room_number) {
         var _this2 = this;
 
         var options;
@@ -38322,9 +38004,7 @@ function (_AbstractDAO) {
   }, {
     key: "comment",
     value: function () {
-      var _comment2 = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(username, _comment) {
+      var _comment2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(username, _comment) {
         var _this3 = this;
 
         var options;
@@ -38358,9 +38038,7 @@ function (_AbstractDAO) {
   }, {
     key: "toggleStarred",
     value: function () {
-      var _toggleStarred = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(username) {
+      var _toggleStarred = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(username) {
         var _this4 = this;
 
         return _regenerator.default.wrap(function _callee5$(_context5) {
@@ -38390,9 +38068,7 @@ function (_AbstractDAO) {
   }, {
     key: "starred",
     value: function () {
-      var _starred = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6() {
+      var _starred = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6() {
         var _this5 = this;
 
         return _regenerator.default.wrap(function _callee6$(_context6) {
@@ -38424,9 +38100,7 @@ function (_AbstractDAO) {
   }, {
     key: "createUser",
     value: function () {
-      var _createUser = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee7(registrationCode, username, password, displayName) {
+      var _createUser = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(registrationCode, username, password, displayName) {
         var options;
         return _regenerator.default.wrap(function _callee7$(_context7) {
           while (1) {
@@ -38457,9 +38131,7 @@ function (_AbstractDAO) {
   }, {
     key: "changePassword",
     value: function () {
-      var _changePassword = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee8(currentPassword, newPassword) {
+      var _changePassword = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(currentPassword, newPassword) {
         var options;
         return _regenerator.default.wrap(function _callee8$(_context8) {
           while (1) {
@@ -38496,9 +38168,7 @@ function (_AbstractDAO) {
   }, {
     key: "resetPassword",
     value: function () {
-      var _resetPassword = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee9(username, registrationCode, newPassword) {
+      var _resetPassword = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9(username, registrationCode, newPassword) {
         var options;
         return _regenerator.default.wrap(function _callee9$(_context9) {
           while (1) {
@@ -38536,9 +38206,7 @@ function (_AbstractDAO) {
   }, {
     key: "getMentions",
     value: function () {
-      var _getMentions = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee10() {
+      var _getMentions = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee10() {
         return _regenerator.default.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
@@ -38564,9 +38232,7 @@ function (_AbstractDAO) {
   }, {
     key: "resetMentions",
     value: function () {
-      var _resetMentions = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee11() {
+      var _resetMentions = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee11() {
         return _regenerator.default.wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
@@ -38638,9 +38304,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * A utility class for generating UUIDs.
  * @module UUID
  */
-var UUID =
-/*#__PURE__*/
-function () {
+var UUID = /*#__PURE__*/function () {
   function UUID() {
     _classCallCheck(this, UUID);
   }
@@ -38708,9 +38372,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * A utility class for random stuff.
  * @module Util
  */
-var Util =
-/*#__PURE__*/
-function () {
+var Util = /*#__PURE__*/function () {
   function Util() {
     _classCallCheck(this, Util);
   }
@@ -38978,9 +38640,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents an alert response.
  * @module AlertResponse
  */
-var AlertResponse =
-/*#__PURE__*/
-function () {
+var AlertResponse = /*#__PURE__*/function () {
   _createClass(AlertResponse, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39096,9 +38756,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a calendar event.
  * @module Announcement
  */
-var Announcement =
-/*#__PURE__*/
-function () {
+var Announcement = /*#__PURE__*/function () {
   _createClass(Announcement, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39183,9 +38841,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a calendar event.
  * @module CalendarEvent
  */
-var CalendarEvent =
-/*#__PURE__*/
-function () {
+var CalendarEvent = /*#__PURE__*/function () {
   _createClass(CalendarEvent, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39287,9 +38943,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a forum post.
  * @module ForumPost
  */
-var ForumPost =
-/*#__PURE__*/
-function () {
+var ForumPost = /*#__PURE__*/function () {
   _createClass(ForumPost, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39396,9 +39050,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { (0, _defineProperty2.default)(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var ForumResponse =
-/*#__PURE__*/
-function () {
+var ForumResponse = /*#__PURE__*/function () {
   _createClass(ForumResponse, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39483,9 +39135,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a forum thread.
  * @module ForumThread
  */
-var ForumThread =
-/*#__PURE__*/
-function () {
+var ForumThread = /*#__PURE__*/function () {
   _createClass(ForumThread, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39619,9 +39269,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a photo.
  * @module PhotoDetails
  */
-var PhotoDetails =
-/*#__PURE__*/
-function () {
+var PhotoDetails = /*#__PURE__*/function () {
   _createClass(PhotoDetails, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39723,9 +39371,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a reaction.
  * @module ReactionDetail
  */
-var ReactionDetail =
-/*#__PURE__*/
-function () {
+var ReactionDetail = /*#__PURE__*/function () {
   _createClass(ReactionDetail, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39799,9 +39445,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a collection of stream post reaction metadata.
  * @module ReactionsSummary
  */
-var ReactionsSummary =
-/*#__PURE__*/
-function () {
+var ReactionsSummary = /*#__PURE__*/function () {
   _createClass(ReactionsSummary, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39875,9 +39519,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a Seamail message.
  * @module SeamailMessage
  */
-var SeamailMessage =
-/*#__PURE__*/
-function () {
+var SeamailMessage = /*#__PURE__*/function () {
   _createClass(SeamailMessage, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -39978,9 +39620,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { (0, _defineProperty2.default)(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var SeamailResponse =
-/*#__PURE__*/
-function () {
+var SeamailResponse = /*#__PURE__*/function () {
   _createClass(SeamailResponse, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -40093,9 +39733,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a Seamail thread.
  * @module SeamailThread
  */
-var SeamailThread =
-/*#__PURE__*/
-function () {
+var SeamailThread = /*#__PURE__*/function () {
   _createClass(SeamailThread, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -40217,9 +39855,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a search response.
  * @module SearchResponse
  */
-var SearchResponse =
-/*#__PURE__*/
-function () {
+var SearchResponse = /*#__PURE__*/function () {
   _createClass(SearchResponse, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -40377,9 +40013,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * Represents a stream post.
  * @module StreamPost
  */
-var StreamPost =
-/*#__PURE__*/
-function () {
+var StreamPost = /*#__PURE__*/function () {
   _createClass(StreamPost, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -40498,9 +40132,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { (0, _defineProperty2.default)(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var StreamResponse =
-/*#__PURE__*/
-function () {
+var StreamResponse = /*#__PURE__*/function () {
   _createClass(StreamResponse, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -40641,9 +40273,7 @@ var sortUsers = function sortUsers(a, b) {
 
 exports.sortUsers = sortUsers;
 
-var User =
-/*#__PURE__*/
-function () {
+var User = /*#__PURE__*/function () {
   _createClass(User, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -40781,9 +40411,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { (0, _defineProperty2.default)(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var UserProfileInfo =
-/*#__PURE__*/
-function () {
+var UserProfileInfo = /*#__PURE__*/function () {
   _createClass(UserProfileInfo, null, [{
     key: "fromRest",
     value: function fromRest(data) {
@@ -40926,9 +40554,7 @@ var OPTIONS_PROP = (0, _for.default)('options');
  * @implements ITwitarrHTTP
  */
 
-var AbstractHTTP =
-/*#__PURE__*/
-function () {
+var AbstractHTTP = /*#__PURE__*/function () {
   _createClass(AbstractHTTP, [{
     key: "options",
 
@@ -41267,9 +40893,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { (0, _defineProperty2.default)(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var AutomaticHTTP =
-/*#__PURE__*/
-function () {
+var AutomaticHTTP = /*#__PURE__*/function () {
   function AutomaticHTTP(server) {
     var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10000;
 
@@ -41462,9 +41086,7 @@ var fetchWarn = false;
  * @implements ITwitarrHTTP
  */
 
-var BrowserHTTP =
-/*#__PURE__*/
-function (_AbstractHTTP) {
+var BrowserHTTP = /*#__PURE__*/function (_AbstractHTTP) {
   _inherits(BrowserHTTP, _AbstractHTTP);
 
   /**
@@ -41487,9 +41109,7 @@ function (_AbstractHTTP) {
   _createClass(BrowserHTTP, [{
     key: "get",
     value: function () {
-      var _get = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(url, options) {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(url, options) {
         var _this = this;
 
         var realUrl, opts, urlObj;
@@ -41507,12 +41127,8 @@ function (_AbstractHTTP) {
 
                 console.debug('GET ' + urlObj.toString());
                 opts.method = 'GET';
-                return _context2.abrupt("return", window.fetch(urlObj.toString(), opts).then(
-                /*#__PURE__*/
-                function () {
-                  var _ref = _asyncToGenerator(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee(response) {
+                return _context2.abrupt("return", window.fetch(urlObj.toString(), opts).then( /*#__PURE__*/function () {
+                  var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(response) {
                     var type, data;
                     return _regenerator.default.wrap(function _callee$(_context) {
                       while (1) {
@@ -41574,9 +41190,7 @@ function (_AbstractHTTP) {
   }, {
     key: "put",
     value: function () {
-      var _put = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(url, options) {
+      var _put = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(url, options) {
         var _this2 = this;
 
         var realUrl, opts, urlObj;
@@ -41599,12 +41213,8 @@ function (_AbstractHTTP) {
                 }
 
                 opts.method = 'PUT';
-                return _context4.abrupt("return", window.fetch(urlObj.toString(), opts).then(
-                /*#__PURE__*/
-                function () {
-                  var _ref2 = _asyncToGenerator(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee3(response) {
+                return _context4.abrupt("return", window.fetch(urlObj.toString(), opts).then( /*#__PURE__*/function () {
+                  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(response) {
                     var type, data;
                     return _regenerator.default.wrap(function _callee3$(_context3) {
                       while (1) {
@@ -41666,9 +41276,7 @@ function (_AbstractHTTP) {
   }, {
     key: "post",
     value: function () {
-      var _post = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6(url, options) {
+      var _post = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6(url, options) {
         var _this3 = this;
 
         var realUrl, opts, urlObj;
@@ -41695,12 +41303,8 @@ function (_AbstractHTTP) {
                 }
 
                 opts.method = 'POST';
-                return _context6.abrupt("return", window.fetch(urlObj.toString(), opts).then(
-                /*#__PURE__*/
-                function () {
-                  var _ref3 = _asyncToGenerator(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee5(response) {
+                return _context6.abrupt("return", window.fetch(urlObj.toString(), opts).then( /*#__PURE__*/function () {
+                  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(response) {
                     var type, data;
                     return _regenerator.default.wrap(function _callee5$(_context5) {
                       while (1) {
@@ -41762,9 +41366,7 @@ function (_AbstractHTTP) {
   }, {
     key: "httpDelete",
     value: function () {
-      var _httpDelete = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee8(url, options) {
+      var _httpDelete = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(url, options) {
         var _this4 = this;
 
         var realUrl, opts, urlObj;
@@ -41782,12 +41384,8 @@ function (_AbstractHTTP) {
 
                 console.debug('DELETE ' + urlObj.toString());
                 opts.method = 'DELETE';
-                return _context8.abrupt("return", window.fetch(urlObj.toString(), opts).then(
-                /*#__PURE__*/
-                function () {
-                  var _ref4 = _asyncToGenerator(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee7(response) {
+                return _context8.abrupt("return", window.fetch(urlObj.toString(), opts).then( /*#__PURE__*/function () {
+                  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7(response) {
                     var type, data;
                     return _regenerator.default.wrap(function _callee7$(_context7) {
                       while (1) {
@@ -41847,9 +41445,7 @@ function (_AbstractHTTP) {
   }, {
     key: "postFile",
     value: function () {
-      var _postFile = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee10(url, fileName, contentType, data, options) {
+      var _postFile = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee10(url, fileName, contentType, data, options) {
         var opts, fetchObj, u, fetchOpts;
         return _regenerator.default.wrap(function _callee10$(_context10) {
           while (1) {
@@ -41874,12 +41470,8 @@ function (_AbstractHTTP) {
                   mode: 'cors',
                   redirect: 'follow'
                 }, fetchObj);
-                return _context10.abrupt("return", fetch(u.toString(), fetchOpts).then(
-                /*#__PURE__*/
-                function () {
-                  var _ref5 = _asyncToGenerator(
-                  /*#__PURE__*/
-                  _regenerator.default.mark(function _callee9(response) {
+                return _context10.abrupt("return", fetch(u.toString(), fetchOpts).then( /*#__PURE__*/function () {
+                  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9(response) {
                     var json;
                     return _regenerator.default.wrap(function _callee9$(_context9) {
                       while (1) {
@@ -41933,9 +41525,7 @@ function (_AbstractHTTP) {
   }, {
     key: "getResponseData",
     value: function () {
-      var _getResponseData = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee11(response) {
+      var _getResponseData = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee11(response) {
         return _regenerator.default.wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
@@ -42106,9 +41696,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
  * @module CordovaHTTP
  * @implements ITwitarrHTTP
  */
-var CordovaHTTP =
-/*#__PURE__*/
-function (_AbstractHTTP) {
+var CordovaHTTP = /*#__PURE__*/function (_AbstractHTTP) {
   _inherits(CordovaHTTP, _AbstractHTTP);
 
   /**
@@ -42208,9 +41796,7 @@ function (_AbstractHTTP) {
   }, {
     key: "postFile",
     value: function () {
-      var _postFile = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(url, fileName, contentType, data, options) {
+      var _postFile = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(url, fileName, contentType, data, options) {
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -42250,9 +41836,7 @@ function (_AbstractHTTP) {
   }, {
     key: "request",
     value: function () {
-      var _request = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(url, opts) {
+      var _request = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(url, opts) {
         var _this2 = this;
 
         return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -42353,9 +41937,7 @@ function (_AbstractHTTP) {
   }, {
     key: "initializeSSL",
     value: function () {
-      var _initializeSSL = _asyncToGenerator(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3() {
+      var _initializeSSL = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
         var _this3 = this;
 
         return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -42436,9 +42018,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Helper to transform a json string to an json object.
  */
-var JsonTransformer =
-/*#__PURE__*/
-function () {
+var JsonTransformer = /*#__PURE__*/function () {
   function JsonTransformer() {
     _classCallCheck(this, JsonTransformer);
   }
@@ -42529,9 +42109,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // import { FormData } from 'form-data';
-var NodeHTTP =
-/*#__PURE__*/
-function (_BrowserHTTP) {
+var NodeHTTP = /*#__PURE__*/function (_BrowserHTTP) {
   _inherits(NodeHTTP, _BrowserHTTP);
 
   function NodeHTTP() {
