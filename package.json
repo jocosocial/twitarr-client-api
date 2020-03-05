@@ -89,7 +89,7 @@
     "urijs": "^1.19.2",
     "whatwg-fetch": "^3.0.0",
     "word-wrap": "^1.2.3",
-    "xmldom": "^0.2.1"
+    "xmldom": "^0.3.0"
   },
   "resolutions": {
     "typescript": "^3.x"
