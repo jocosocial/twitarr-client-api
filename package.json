@@ -64,7 +64,7 @@
     "standard-changelog": "^1.0.13",
     "ts-loader": "^6.0.0",
     "ts-node": "^8.6.2",
-    "typedoc": "^0.16.9",
+    "typedoc": "^0.17.0",
     "typedoc-plugin-external-module-name": "^3.0.0",
     "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "~3.8.2",
