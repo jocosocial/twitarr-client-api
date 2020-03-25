@@ -240,6 +240,17 @@ module.exports = __webpack_require__(/*! core-js/library/fn/promise */ "./node_m
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! core-js/library/fn/reflect/construct */ "./node_modules/core-js/library/fn/reflect/construct.js");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/symbol.js":
 /*!***************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/core-js/symbol.js ***!
@@ -471,6 +482,19 @@ module.exports = __webpack_require__(/*! ../modules/_core */ "./node_modules/cor
 
 /***/ }),
 
+/***/ "./node_modules/core-js/library/fn/reflect/construct.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/core-js/library/fn/reflect/construct.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! ../../modules/es6.reflect.construct */ "./node_modules/core-js/library/modules/es6.reflect.construct.js");
+module.exports = __webpack_require__(/*! ../../modules/_core */ "./node_modules/core-js/library/modules/_core.js").Reflect.construct;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/library/fn/symbol/for.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js/library/fn/symbol/for.js ***!
@@ -602,6 +626,43 @@ module.exports = function (IS_INCLUDES) {
       if (O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/library/modules/_bind.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js/library/modules/_bind.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var aFunction = __webpack_require__(/*! ./_a-function */ "./node_modules/core-js/library/modules/_a-function.js");
+var isObject = __webpack_require__(/*! ./_is-object */ "./node_modules/core-js/library/modules/_is-object.js");
+var invoke = __webpack_require__(/*! ./_invoke */ "./node_modules/core-js/library/modules/_invoke.js");
+var arraySlice = [].slice;
+var factories = {};
+
+var construct = function (F, len, args) {
+  if (!(len in factories)) {
+    for (var n = [], i = 0; i < len; i++) n[i] = 'a[' + i + ']';
+    // eslint-disable-next-line no-new-func
+    factories[len] = Function('F,a', 'return new F(' + n.join(',') + ')');
+  } return factories[len](F, args);
+};
+
+module.exports = Function.bind || function bind(that /* , ...args */) {
+  var fn = aFunction(this);
+  var partArgs = arraySlice.call(arguments, 1);
+  var bound = function (/* args... */) {
+    var args = partArgs.concat(arraySlice.call(arguments));
+    return this instanceof bound ? construct(fn, args.length, args) : invoke(fn, args, that);
+  };
+  if (isObject(fn.prototype)) bound.prototype = fn.prototype;
+  return bound;
 };
 
 
@@ -3024,6 +3085,64 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(/*! ./_iter-
     });
     if (result.e) reject(result.v);
     return capability.promise;
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/library/modules/es6.reflect.construct.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/core-js/library/modules/es6.reflect.construct.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
+var $export = __webpack_require__(/*! ./_export */ "./node_modules/core-js/library/modules/_export.js");
+var create = __webpack_require__(/*! ./_object-create */ "./node_modules/core-js/library/modules/_object-create.js");
+var aFunction = __webpack_require__(/*! ./_a-function */ "./node_modules/core-js/library/modules/_a-function.js");
+var anObject = __webpack_require__(/*! ./_an-object */ "./node_modules/core-js/library/modules/_an-object.js");
+var isObject = __webpack_require__(/*! ./_is-object */ "./node_modules/core-js/library/modules/_is-object.js");
+var fails = __webpack_require__(/*! ./_fails */ "./node_modules/core-js/library/modules/_fails.js");
+var bind = __webpack_require__(/*! ./_bind */ "./node_modules/core-js/library/modules/_bind.js");
+var rConstruct = (__webpack_require__(/*! ./_global */ "./node_modules/core-js/library/modules/_global.js").Reflect || {}).construct;
+
+// MS Edge supports only 2 arguments and argumentsList argument is optional
+// FF Nightly sets third argument as `new.target`, but does not create `this` from it
+var NEW_TARGET_BUG = fails(function () {
+  function F() { /* empty */ }
+  return !(rConstruct(function () { /* empty */ }, [], F) instanceof F);
+});
+var ARGS_BUG = !fails(function () {
+  rConstruct(function () { /* empty */ });
+});
+
+$export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
+  construct: function construct(Target, args /* , newTarget */) {
+    aFunction(Target);
+    anObject(args);
+    var newTarget = arguments.length < 3 ? Target : aFunction(arguments[2]);
+    if (ARGS_BUG && !NEW_TARGET_BUG) return rConstruct(Target, args, newTarget);
+    if (Target == newTarget) {
+      // w/o altered newTarget, optimization for 0-4 arguments
+      switch (args.length) {
+        case 0: return new Target();
+        case 1: return new Target(args[0]);
+        case 2: return new Target(args[0], args[1]);
+        case 3: return new Target(args[0], args[1], args[2]);
+        case 4: return new Target(args[0], args[1], args[2], args[3]);
+      }
+      // w/o altered newTarget, lot of arguments case
+      var $args = [null];
+      $args.push.apply($args, args);
+      return new (bind.apply(Target, $args))();
+    }
+    // with altered newTarget, not support built-in constructors
+    var proto = newTarget.prototype;
+    var instance = create(isObject(proto) ? proto : Object.prototype);
+    var result = Function.apply.call(Target, instance, args);
+    return isObject(result) ? result : instance;
   }
 });
 
@@ -31170,15 +31289,19 @@ exports.Rest = Rest;
 "use strict";
 
 
-var _from = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/array/from */ "./node_modules/@babel/runtime-corejs2/core-js/array/from.js"));
-
 var _isIterable2 = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/is-iterable */ "./node_modules/@babel/runtime-corejs2/core-js/is-iterable.js"));
+
+var _getIterator2 = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/get-iterator */ "./node_modules/@babel/runtime-corejs2/core-js/get-iterator.js"));
 
 var _isArray = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/array/is-array */ "./node_modules/@babel/runtime-corejs2/core-js/array/is-array.js"));
 
-var _promise = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/promise */ "./node_modules/@babel/runtime-corejs2/core-js/promise.js"));
+var _iterator13 = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/symbol/iterator */ "./node_modules/@babel/runtime-corejs2/core-js/symbol/iterator.js"));
 
-var _getIterator2 = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/get-iterator */ "./node_modules/@babel/runtime-corejs2/core-js/get-iterator.js"));
+var _symbol = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/symbol */ "./node_modules/@babel/runtime-corejs2/core-js/symbol.js"));
+
+var _from = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/array/from */ "./node_modules/@babel/runtime-corejs2/core-js/array/from.js"));
+
+var _promise = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/promise */ "./node_modules/@babel/runtime-corejs2/core-js/promise.js"));
 
 var _assign = _interopRequireDefault(__webpack_require__(/*! ../node_modules/@babel/runtime-corejs2/core-js/object/assign */ "./node_modules/@babel/runtime-corejs2/core-js/object/assign.js"));
 
@@ -31204,13 +31327,19 @@ var _Util = __webpack_require__(/*! ./internal/Util */ "./src/internal/Util.ts")
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if ((0, _isIterable2.default)(Object(iter)) || Object.prototype.toString.call(iter) === "[object Arguments]") return (0, _from.default)(iter); }
+function _iterableToArray(iter) { if (typeof _symbol.default !== "undefined" && (0, _isIterable2.default)(Object(iter))) return (0, _from.default)(iter); }
 
-function _arrayWithoutHoles(arr) { if ((0, _isArray.default)(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _arrayWithoutHoles(arr) { if ((0, _isArray.default)(arr)) return _arrayLikeToArray(arr); }
+
+function _createForOfIteratorHelper(o) { if (typeof _symbol.default === "undefined" || o[_iterator13.default] == null) { if ((0, _isArray.default)(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = (0, _getIterator2.default)(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return (0, _from.default)(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { _promise.default.resolve(value).then(_next, _throw); } }
 
@@ -31548,9 +31677,6 @@ var CLI = function CLI() {
           seamail,
           format,
           t,
-          _iteratorNormalCompletion,
-          _didIteratorError,
-          _iteratorError,
           _iterator,
           _step,
           thread,
@@ -31576,65 +31702,34 @@ var CLI = function CLI() {
               }
 
               t = new Table(format);
-              _iteratorNormalCompletion = true;
-              _didIteratorError = false;
-              _iteratorError = undefined;
-              _context6.prev = 12;
+              _iterator = _createForOfIteratorHelper(seamail.threads);
 
-              for (_iterator = (0, _getIterator2.default)(seamail.threads); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                thread = _step.value;
-                row = [thread.id, thread.subject, thread.timestamp.fromNow()];
+              try {
+                for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                  thread = _step.value;
+                  row = [thread.id, thread.subject, thread.timestamp.fromNow()];
 
-                if (!n) {
-                  row.unshift(thread.is_unread ? '*' : '');
+                  if (!n) {
+                    row.unshift(thread.is_unread ? '*' : '');
+                  }
+
+                  t.push(row);
                 }
-
-                t.push(row);
+              } catch (err) {
+                _iterator.e(err);
+              } finally {
+                _iterator.f();
               }
 
-              _context6.next = 20;
-              break;
-
-            case 16:
-              _context6.prev = 16;
-              _context6.t0 = _context6["catch"](12);
-              _didIteratorError = true;
-              _iteratorError = _context6.t0;
-
-            case 20:
-              _context6.prev = 20;
-              _context6.prev = 21;
-
-              if (!_iteratorNormalCompletion && _iterator.return != null) {
-                _iterator.return();
-              }
-
-            case 23:
-              _context6.prev = 23;
-
-              if (!_didIteratorError) {
-                _context6.next = 26;
-                break;
-              }
-
-              throw _iteratorError;
-
-            case 26:
-              return _context6.finish(23);
-
-            case 27:
-              return _context6.finish(20);
-
-            case 28:
               console.log(t.toString());
               console.log('');
 
-            case 30:
+            case 13:
             case "end":
               return _context6.stop();
           }
         }
-      }, _callee6, null, [[12, 16, 20, 28], [21,, 23, 27]]);
+      }, _callee6);
     }));
 
     return function doSeamailList() {
@@ -31748,7 +31843,7 @@ var CLI = function CLI() {
 
   var doStreamRead = /*#__PURE__*/function () {
     var _ref10 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee10(options) {
-      var client, response, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, post;
+      var client, response, _iterator2, _step2, post;
 
       return _regenerator.default.wrap(function _callee10$(_context10) {
         while (1) {
@@ -31760,61 +31855,31 @@ var CLI = function CLI() {
 
             case 3:
               response = _context10.sent;
-              _iteratorNormalCompletion2 = true;
-              _didIteratorError2 = false;
-              _iteratorError2 = undefined;
-              _context10.prev = 7;
+              _iterator2 = _createForOfIteratorHelper(response.posts.reverse());
 
-              for (_iterator2 = (0, _getIterator2.default)(response.posts.reverse()); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                post = _step2.value;
-                console.log(post.author.toString());
-                console.log(wrap(post.text.trim(), {
-                  indent: '  ',
-                  width: 60
-                }));
-                console.log('  - ' + post.timestamp.fromNow() + ' (id: ' + post.id + ')');
-                console.log('');
+              try {
+                for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                  post = _step2.value;
+                  console.log(post.author.toString());
+                  console.log(wrap(post.text.trim(), {
+                    indent: '  ',
+                    width: 60
+                  }));
+                  console.log('  - ' + post.timestamp.fromNow() + ' (id: ' + post.id + ')');
+                  console.log('');
+                }
+              } catch (err) {
+                _iterator2.e(err);
+              } finally {
+                _iterator2.f();
               }
 
-              _context10.next = 15;
-              break;
-
-            case 11:
-              _context10.prev = 11;
-              _context10.t0 = _context10["catch"](7);
-              _didIteratorError2 = true;
-              _iteratorError2 = _context10.t0;
-
-            case 15:
-              _context10.prev = 15;
-              _context10.prev = 16;
-
-              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                _iterator2.return();
-              }
-
-            case 18:
-              _context10.prev = 18;
-
-              if (!_didIteratorError2) {
-                _context10.next = 21;
-                break;
-              }
-
-              throw _iteratorError2;
-
-            case 21:
-              return _context10.finish(18);
-
-            case 22:
-              return _context10.finish(15);
-
-            case 23:
+            case 6:
             case "end":
               return _context10.stop();
           }
         }
-      }, _callee10, null, [[7, 11, 15, 23], [16,, 18, 22]]);
+      }, _callee10);
     }));
 
     return function doStreamRead(_x20) {
@@ -32087,7 +32152,7 @@ var CLI = function CLI() {
 
   var doListEvents = /*#__PURE__*/function () {
     var _ref18 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee18(mine, today) {
-      var client, now, events, lastDay, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, event, day;
+      var client, now, events, lastDay, _iterator3, _step3, event, day;
 
       return _regenerator.default.wrap(function _callee18$(_context18) {
         while (1) {
@@ -32117,62 +32182,32 @@ var CLI = function CLI() {
               events = _context18.sent;
 
             case 11:
-              _iteratorNormalCompletion3 = true;
-              _didIteratorError3 = false;
-              _iteratorError3 = undefined;
-              _context18.prev = 14;
+              _iterator3 = _createForOfIteratorHelper(events);
 
-              for (_iterator3 = (0, _getIterator2.default)(events); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                event = _step3.value;
-                day = event.start_time.toFormat('ccc, MMM dd');
+              try {
+                for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                  event = _step3.value;
+                  day = event.start_time.toFormat('ccc, MMM dd');
 
-                if (day !== lastDay) {
-                  console.log('[ ' + day + ' ]');
-                  lastDay = day;
+                  if (day !== lastDay) {
+                    console.log('[ ' + day + ' ]');
+                    lastDay = day;
+                  }
+
+                  printEvent(event);
                 }
-
-                printEvent(event);
+              } catch (err) {
+                _iterator3.e(err);
+              } finally {
+                _iterator3.f();
               }
 
-              _context18.next = 22;
-              break;
-
-            case 18:
-              _context18.prev = 18;
-              _context18.t0 = _context18["catch"](14);
-              _didIteratorError3 = true;
-              _iteratorError3 = _context18.t0;
-
-            case 22:
-              _context18.prev = 22;
-              _context18.prev = 23;
-
-              if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-                _iterator3.return();
-              }
-
-            case 25:
-              _context18.prev = 25;
-
-              if (!_didIteratorError3) {
-                _context18.next = 28;
-                break;
-              }
-
-              throw _iteratorError3;
-
-            case 28:
-              return _context18.finish(25);
-
-            case 29:
-              return _context18.finish(22);
-
-            case 30:
+            case 13:
             case "end":
               return _context18.stop();
           }
         }
-      }, _callee18, null, [[14, 18, 22, 30], [23,, 25, 29]]);
+      }, _callee18);
     }));
 
     return function doListEvents(_x33, _x34) {
@@ -32289,7 +32324,7 @@ var CLI = function CLI() {
 
   var doPrintText = /*#__PURE__*/function () {
     var _ref23 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee23(filename) {
-      var contents, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, section, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, paragraph;
+      var contents, _iterator4, _step4, section, _iterator5, _step5, paragraph;
 
       return _regenerator.default.wrap(function _callee23$(_context23) {
         while (1) {
@@ -32300,119 +32335,48 @@ var CLI = function CLI() {
 
             case 2:
               contents = _context23.sent;
-              _iteratorNormalCompletion4 = true;
-              _didIteratorError4 = false;
-              _iteratorError4 = undefined;
-              _context23.prev = 6;
-              _iterator4 = (0, _getIterator2.default)(contents.sections);
+              _iterator4 = _createForOfIteratorHelper(contents.sections);
 
-            case 8:
-              if (_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done) {
-                _context23.next = 34;
-                break;
+              try {
+                for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+                  section = _step4.value;
+
+                  if (section.header) {
+                    console.log('### ' + section.header + ' ###');
+                  } else {
+                    console.log('#####');
+                  }
+
+                  console.log('');
+                  _iterator5 = _createForOfIteratorHelper(section.paragraphs);
+
+                  try {
+                    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+                      paragraph = _step5.value;
+                      console.log(wrap(paragraph.text, {
+                        indent: '  ',
+                        width: 50
+                      }));
+                      console.log('');
+                    }
+                  } catch (err) {
+                    _iterator5.e(err);
+                  } finally {
+                    _iterator5.f();
+                  }
+                }
+              } catch (err) {
+                _iterator4.e(err);
+              } finally {
+                _iterator4.f();
               }
 
-              section = _step4.value;
-
-              if (section.header) {
-                console.log('### ' + section.header + ' ###');
-              } else {
-                console.log('#####');
-              }
-
-              console.log('');
-              _iteratorNormalCompletion5 = true;
-              _didIteratorError5 = false;
-              _iteratorError5 = undefined;
-              _context23.prev = 15;
-
-              for (_iterator5 = (0, _getIterator2.default)(section.paragraphs); !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                paragraph = _step5.value;
-                console.log(wrap(paragraph.text, {
-                  indent: '  ',
-                  width: 50
-                }));
-                console.log('');
-              }
-
-              _context23.next = 23;
-              break;
-
-            case 19:
-              _context23.prev = 19;
-              _context23.t0 = _context23["catch"](15);
-              _didIteratorError5 = true;
-              _iteratorError5 = _context23.t0;
-
-            case 23:
-              _context23.prev = 23;
-              _context23.prev = 24;
-
-              if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
-                _iterator5.return();
-              }
-
-            case 26:
-              _context23.prev = 26;
-
-              if (!_didIteratorError5) {
-                _context23.next = 29;
-                break;
-              }
-
-              throw _iteratorError5;
-
-            case 29:
-              return _context23.finish(26);
-
-            case 30:
-              return _context23.finish(23);
-
-            case 31:
-              _iteratorNormalCompletion4 = true;
-              _context23.next = 8;
-              break;
-
-            case 34:
-              _context23.next = 40;
-              break;
-
-            case 36:
-              _context23.prev = 36;
-              _context23.t1 = _context23["catch"](6);
-              _didIteratorError4 = true;
-              _iteratorError4 = _context23.t1;
-
-            case 40:
-              _context23.prev = 40;
-              _context23.prev = 41;
-
-              if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-                _iterator4.return();
-              }
-
-            case 43:
-              _context23.prev = 43;
-
-              if (!_didIteratorError4) {
-                _context23.next = 46;
-                break;
-              }
-
-              throw _iteratorError4;
-
-            case 46:
-              return _context23.finish(43);
-
-            case 47:
-              return _context23.finish(40);
-
-            case 48:
+            case 5:
             case "end":
               return _context23.stop();
           }
         }
-      }, _callee23, null, [[6, 36, 40, 48], [15, 19, 23, 31], [24,, 26, 30], [41,, 43, 47]]);
+      }, _callee23);
     }));
 
     return function doPrintText(_x44) {
@@ -32450,7 +32414,7 @@ var CLI = function CLI() {
 
   var doPrintReactions = /*#__PURE__*/function () {
     var _ref25 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee25() {
-      var reactions, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, reaction;
+      var reactions, _iterator6, _step6, reaction;
 
       return _regenerator.default.wrap(function _callee25$(_context25) {
         while (1) {
@@ -32461,58 +32425,27 @@ var CLI = function CLI() {
 
             case 2:
               reactions = _context25.sent;
-              _iteratorNormalCompletion6 = true;
-              _didIteratorError6 = false;
-              _iteratorError6 = undefined;
-              _context25.prev = 6;
+              _iterator6 = _createForOfIteratorHelper(reactions);
 
-              for (_iterator6 = (0, _getIterator2.default)(reactions); !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                reaction = _step6.value;
-                console.log('* ' + reaction);
+              try {
+                for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+                  reaction = _step6.value;
+                  console.log('* ' + reaction);
+                }
+              } catch (err) {
+                _iterator6.e(err);
+              } finally {
+                _iterator6.f();
               }
 
-              _context25.next = 14;
-              break;
-
-            case 10:
-              _context25.prev = 10;
-              _context25.t0 = _context25["catch"](6);
-              _didIteratorError6 = true;
-              _iteratorError6 = _context25.t0;
-
-            case 14:
-              _context25.prev = 14;
-              _context25.prev = 15;
-
-              if (!_iteratorNormalCompletion6 && _iterator6.return != null) {
-                _iterator6.return();
-              }
-
-            case 17:
-              _context25.prev = 17;
-
-              if (!_didIteratorError6) {
-                _context25.next = 20;
-                break;
-              }
-
-              throw _iteratorError6;
-
-            case 20:
-              return _context25.finish(17);
-
-            case 21:
-              return _context25.finish(14);
-
-            case 22:
               console.log('');
 
-            case 23:
+            case 6:
             case "end":
               return _context25.stop();
           }
         }
-      }, _callee25, null, [[6, 10, 14, 22], [15,, 17, 21]]);
+      }, _callee25);
     }));
 
     return function doPrintReactions() {
@@ -32522,7 +32455,7 @@ var CLI = function CLI() {
 
   var doPrintAnnouncements = /*#__PURE__*/function () {
     var _ref26 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee26() {
-      var announcements, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, announcement;
+      var announcements, _iterator7, _step7, announcement;
 
       return _regenerator.default.wrap(function _callee26$(_context26) {
         while (1) {
@@ -32533,60 +32466,30 @@ var CLI = function CLI() {
 
             case 2:
               announcements = _context26.sent;
-              _iteratorNormalCompletion7 = true;
-              _didIteratorError7 = false;
-              _iteratorError7 = undefined;
-              _context26.prev = 6;
+              _iterator7 = _createForOfIteratorHelper(announcements);
 
-              for (_iterator7 = (0, _getIterator2.default)(announcements); !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-                announcement = _step7.value;
-                console.log(announcement.timestamp.toRelative() + ' - ' + announcement.author.toString());
-                console.log(wrap(announcement.text, {
-                  indent: '  ',
-                  size: 50
-                }));
-                console.log('');
+              try {
+                for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+                  announcement = _step7.value;
+                  console.log(announcement.timestamp.toRelative() + ' - ' + announcement.author.toString());
+                  console.log(wrap(announcement.text, {
+                    indent: '  ',
+                    size: 50
+                  }));
+                  console.log('');
+                }
+              } catch (err) {
+                _iterator7.e(err);
+              } finally {
+                _iterator7.f();
               }
 
-              _context26.next = 14;
-              break;
-
-            case 10:
-              _context26.prev = 10;
-              _context26.t0 = _context26["catch"](6);
-              _didIteratorError7 = true;
-              _iteratorError7 = _context26.t0;
-
-            case 14:
-              _context26.prev = 14;
-              _context26.prev = 15;
-
-              if (!_iteratorNormalCompletion7 && _iterator7.return != null) {
-                _iterator7.return();
-              }
-
-            case 17:
-              _context26.prev = 17;
-
-              if (!_didIteratorError7) {
-                _context26.next = 20;
-                break;
-              }
-
-              throw _iteratorError7;
-
-            case 20:
-              return _context26.finish(17);
-
-            case 21:
-              return _context26.finish(14);
-
-            case 22:
+            case 5:
             case "end":
               return _context26.stop();
           }
         }
-      }, _callee26, null, [[6, 10, 14, 22], [15,, 17, 21]]);
+      }, _callee26);
     }));
 
     return function doPrintAnnouncements() {
@@ -32622,35 +32525,25 @@ var CLI = function CLI() {
     console.log('');
 
     if (thread.posts) {
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
+      var _iterator8 = _createForOfIteratorHelper(thread.posts),
+          _step8;
 
       try {
-        for (var _iterator8 = (0, _getIterator2.default)(thread.posts), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+        for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
           var post = _step8.value;
           printForumPost(post);
         }
       } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
+        _iterator8.e(err);
       } finally {
-        try {
-          if (!_iteratorNormalCompletion8 && _iterator8.return != null) {
-            _iterator8.return();
-          }
-        } finally {
-          if (_didIteratorError8) {
-            throw _iteratorError8;
-          }
-        }
+        _iterator8.f();
       }
     }
   };
 
   var doListForumThreads = /*#__PURE__*/function () {
     var _ref27 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee27(page, limit) {
-      var response, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, thread;
+      var response, _iterator9, _step9, thread;
 
       return _regenerator.default.wrap(function _callee27$(_context27) {
         while (1) {
@@ -32661,55 +32554,25 @@ var CLI = function CLI() {
 
             case 2:
               response = _context27.sent;
-              _iteratorNormalCompletion9 = true;
-              _didIteratorError9 = false;
-              _iteratorError9 = undefined;
-              _context27.prev = 6;
+              _iterator9 = _createForOfIteratorHelper(response.threads);
 
-              for (_iterator9 = (0, _getIterator2.default)(response.threads); !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-                thread = _step9.value;
-                printThreadSummary(thread);
+              try {
+                for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+                  thread = _step9.value;
+                  printThreadSummary(thread);
+                }
+              } catch (err) {
+                _iterator9.e(err);
+              } finally {
+                _iterator9.f();
               }
 
-              _context27.next = 14;
-              break;
-
-            case 10:
-              _context27.prev = 10;
-              _context27.t0 = _context27["catch"](6);
-              _didIteratorError9 = true;
-              _iteratorError9 = _context27.t0;
-
-            case 14:
-              _context27.prev = 14;
-              _context27.prev = 15;
-
-              if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
-                _iterator9.return();
-              }
-
-            case 17:
-              _context27.prev = 17;
-
-              if (!_didIteratorError9) {
-                _context27.next = 20;
-                break;
-              }
-
-              throw _iteratorError9;
-
-            case 20:
-              return _context27.finish(17);
-
-            case 21:
-              return _context27.finish(14);
-
-            case 22:
+            case 5:
             case "end":
               return _context27.stop();
           }
         }
-      }, _callee27, null, [[6, 10, 14, 22], [15,, 17, 21]]);
+      }, _callee27);
     }));
 
     return function doListForumThreads(_x45, _x46) {
@@ -32746,7 +32609,7 @@ var CLI = function CLI() {
 
   var doCreateForumThread = /*#__PURE__*/function () {
     var _ref29 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee29(subject, text, photos) {
-      var photoIds, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, photo, thread;
+      var photoIds, _iterator10, _step10, photo, thread;
 
       return _regenerator.default.wrap(function _callee29$(_context29) {
         while (1) {
@@ -32755,86 +32618,67 @@ var CLI = function CLI() {
               photoIds = [];
 
               if (!(photos && photos.length)) {
-                _context29.next = 31;
+                _context29.next = 22;
                 break;
               }
 
-              _iteratorNormalCompletion10 = true;
-              _didIteratorError10 = false;
-              _iteratorError10 = undefined;
-              _context29.prev = 5;
-              _iterator10 = (0, _getIterator2.default)(photos);
+              _iterator10 = _createForOfIteratorHelper(photos);
+              _context29.prev = 3;
 
-            case 7:
-              if (_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done) {
-                _context29.next = 17;
+              _iterator10.s();
+
+            case 5:
+              if ((_step10 = _iterator10.n()).done) {
+                _context29.next = 14;
                 break;
               }
 
               photo = _step10.value;
               _context29.t0 = photoIds;
-              _context29.next = 12;
+              _context29.next = 10;
               return postPhotoIfNecessary(photo);
 
-            case 12:
+            case 10:
               _context29.t1 = _context29.sent;
 
               _context29.t0.push.call(_context29.t0, _context29.t1);
 
-            case 14:
-              _iteratorNormalCompletion10 = true;
-              _context29.next = 7;
+            case 12:
+              _context29.next = 5;
               break;
 
-            case 17:
-              _context29.next = 23;
+            case 14:
+              _context29.next = 19;
               break;
+
+            case 16:
+              _context29.prev = 16;
+              _context29.t2 = _context29["catch"](3);
+
+              _iterator10.e(_context29.t2);
 
             case 19:
               _context29.prev = 19;
-              _context29.t2 = _context29["catch"](5);
-              _didIteratorError10 = true;
-              _iteratorError10 = _context29.t2;
 
-            case 23:
-              _context29.prev = 23;
-              _context29.prev = 24;
+              _iterator10.f();
 
-              if (!_iteratorNormalCompletion10 && _iterator10.return != null) {
-                _iterator10.return();
-              }
+              return _context29.finish(19);
 
-            case 26:
-              _context29.prev = 26;
-
-              if (!_didIteratorError10) {
-                _context29.next = 29;
-                break;
-              }
-
-              throw _iteratorError10;
-
-            case 29:
-              return _context29.finish(26);
-
-            case 30:
-              return _context29.finish(23);
-
-            case 31:
+            case 22:
               console.log('');
-              _context29.next = 34;
+              _context29.next = 25;
               return getClient().forums().create(subject, text, photoIds);
 
-            case 34:
+            case 25:
               thread = _context29.sent;
               printThreadSummary(thread);
 
-            case 36:
+            case 27:
             case "end":
               return _context29.stop();
           }
         }
-      }, _callee29, null, [[5, 19, 23, 31], [24,, 26, 30]]);
+      }, _callee29, null, [[3, 16, 19, 22]]);
     }));
 
     return function doCreateForumThread(_x50, _x51, _x52) {
@@ -32844,7 +32688,7 @@ var CLI = function CLI() {
 
   var doPostToForumThread = /*#__PURE__*/function () {
     var _ref30 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee30(id, text, photos) {
-      var photoIds, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, photo, post;
+      var photoIds, _iterator11, _step11, photo, post;
 
       return _regenerator.default.wrap(function _callee30$(_context30) {
         while (1) {
@@ -32853,86 +32697,67 @@ var CLI = function CLI() {
               photoIds = [];
 
               if (!(photos && photos.length)) {
-                _context30.next = 31;
+                _context30.next = 22;
                 break;
               }
 
-              _iteratorNormalCompletion11 = true;
-              _didIteratorError11 = false;
-              _iteratorError11 = undefined;
-              _context30.prev = 5;
-              _iterator11 = (0, _getIterator2.default)(photos);
+              _iterator11 = _createForOfIteratorHelper(photos);
+              _context30.prev = 3;
 
-            case 7:
-              if (_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done) {
-                _context30.next = 17;
+              _iterator11.s();
+
+            case 5:
+              if ((_step11 = _iterator11.n()).done) {
+                _context30.next = 14;
                 break;
               }
 
               photo = _step11.value;
               _context30.t0 = photoIds;
-              _context30.next = 12;
+              _context30.next = 10;
               return postPhotoIfNecessary(photo);
 
-            case 12:
+            case 10:
               _context30.t1 = _context30.sent;
 
               _context30.t0.push.call(_context30.t0, _context30.t1);
 
-            case 14:
-              _iteratorNormalCompletion11 = true;
-              _context30.next = 7;
+            case 12:
+              _context30.next = 5;
               break;
 
-            case 17:
-              _context30.next = 23;
+            case 14:
+              _context30.next = 19;
               break;
+
+            case 16:
+              _context30.prev = 16;
+              _context30.t2 = _context30["catch"](3);
+
+              _iterator11.e(_context30.t2);
 
             case 19:
               _context30.prev = 19;
-              _context30.t2 = _context30["catch"](5);
-              _didIteratorError11 = true;
-              _iteratorError11 = _context30.t2;
 
-            case 23:
-              _context30.prev = 23;
-              _context30.prev = 24;
+              _iterator11.f();
 
-              if (!_iteratorNormalCompletion11 && _iterator11.return != null) {
-                _iterator11.return();
-              }
+              return _context30.finish(19);
 
-            case 26:
-              _context30.prev = 26;
-
-              if (!_didIteratorError11) {
-                _context30.next = 29;
-                break;
-              }
-
-              throw _iteratorError11;
-
-            case 29:
-              return _context30.finish(26);
-
-            case 30:
-              return _context30.finish(23);
-
-            case 31:
+            case 22:
               console.log('');
-              _context30.next = 34;
+              _context30.next = 25;
               return getClient().forums().post(id, text, photoIds);
 
-            case 34:
+            case 25:
               post = _context30.sent;
               printForumPost(post);
 
-            case 36:
+            case 27:
             case "end":
               return _context30.stop();
           }
         }
-      }, _callee30, null, [[5, 19, 23, 31], [24,, 26, 30]]);
+      }, _callee30, null, [[3, 16, 19, 22]]);
     }));
 
     return function doPostToForumThread(_x53, _x54, _x55) {
@@ -33055,7 +32880,7 @@ var CLI = function CLI() {
 
   var doUpdatePost = /*#__PURE__*/function () {
     var _ref35 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee35(threadId, postId, text, photos) {
-      var photoIds, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, photo, post;
+      var photoIds, _iterator12, _step12, photo, post;
 
       return _regenerator.default.wrap(function _callee35$(_context35) {
         while (1) {
@@ -33064,86 +32889,67 @@ var CLI = function CLI() {
               photoIds = [];
 
               if (!(photos && photos.length)) {
-                _context35.next = 31;
+                _context35.next = 22;
                 break;
               }
 
-              _iteratorNormalCompletion12 = true;
-              _didIteratorError12 = false;
-              _iteratorError12 = undefined;
-              _context35.prev = 5;
-              _iterator12 = (0, _getIterator2.default)(photos);
+              _iterator12 = _createForOfIteratorHelper(photos);
+              _context35.prev = 3;
 
-            case 7:
-              if (_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done) {
-                _context35.next = 17;
+              _iterator12.s();
+
+            case 5:
+              if ((_step12 = _iterator12.n()).done) {
+                _context35.next = 14;
                 break;
               }
 
               photo = _step12.value;
               _context35.t0 = photoIds;
-              _context35.next = 12;
+              _context35.next = 10;
               return postPhotoIfNecessary(photo);
 
-            case 12:
+            case 10:
               _context35.t1 = _context35.sent;
 
               _context35.t0.push.call(_context35.t0, _context35.t1);
 
-            case 14:
-              _iteratorNormalCompletion12 = true;
-              _context35.next = 7;
+            case 12:
+              _context35.next = 5;
               break;
 
-            case 17:
-              _context35.next = 23;
+            case 14:
+              _context35.next = 19;
               break;
+
+            case 16:
+              _context35.prev = 16;
+              _context35.t2 = _context35["catch"](3);
+
+              _iterator12.e(_context35.t2);
 
             case 19:
               _context35.prev = 19;
-              _context35.t2 = _context35["catch"](5);
-              _didIteratorError12 = true;
-              _iteratorError12 = _context35.t2;
 
-            case 23:
-              _context35.prev = 23;
-              _context35.prev = 24;
+              _iterator12.f();
 
-              if (!_iteratorNormalCompletion12 && _iterator12.return != null) {
-                _iterator12.return();
-              }
+              return _context35.finish(19);
 
-            case 26:
-              _context35.prev = 26;
-
-              if (!_didIteratorError12) {
-                _context35.next = 29;
-                break;
-              }
-
-              throw _iteratorError12;
-
-            case 29:
-              return _context35.finish(26);
-
-            case 30:
-              return _context35.finish(23);
-
-            case 31:
+            case 22:
               console.log('');
-              _context35.next = 34;
+              _context35.next = 25;
               return getClient().forums().updatePost(threadId, postId, text, photoIds);
 
-            case 34:
+            case 25:
               post = _context35.sent;
               printForumPost(post);
 
-            case 36:
+            case 27:
             case "end":
               return _context35.stop();
           }
         }
-      }, _callee35, null, [[5, 19, 23, 31], [24,, 26, 30]]);
+      }, _callee35, null, [[3, 16, 19, 22]]);
     }));
 
     return function doUpdatePost(_x64, _x65, _x66, _x67) {
@@ -34733,6 +34539,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -34765,9 +34577,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -34778,10 +34594,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var AlertDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(AlertDAO, _AbstractDAO);
 
+  var _super = _createSuper(AlertDAO);
+
   function AlertDAO() {
     _classCallCheck(this, AlertDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(AlertDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(AlertDAO, [{
@@ -34935,6 +34753,10 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -34973,9 +34795,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -34986,10 +34812,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var AutocompleteDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(AutocompleteDAO, _AbstractDAO);
 
+  var _super = _createSuper(AutocompleteDAO);
+
   function AutocompleteDAO() {
     _classCallCheck(this, AutocompleteDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(AutocompleteDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(AutocompleteDAO, [{
@@ -35135,6 +34963,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -35169,9 +35003,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -35215,10 +35053,12 @@ var sortEvents = function sortEvents(a, b) {
 var EventDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(EventDAO, _AbstractDAO);
 
+  var _super = _createSuper(EventDAO);
+
   function EventDAO() {
     _classCallCheck(this, EventDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(EventDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(EventDAO, [{
@@ -35531,6 +35371,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -35569,9 +35415,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -35582,10 +35432,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var ForumDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(ForumDAO, _AbstractDAO);
 
+  var _super = _createSuper(ForumDAO);
+
   function ForumDAO() {
     _classCallCheck(this, ForumDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ForumDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(ForumDAO, [{
@@ -36150,6 +36002,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -36182,9 +36040,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -36195,10 +36057,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var PhotoDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(PhotoDAO, _AbstractDAO);
 
+  var _super = _createSuper(PhotoDAO);
+
   function PhotoDAO() {
     _classCallCheck(this, PhotoDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(PhotoDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(PhotoDAO, [{
@@ -36474,6 +36338,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -36508,9 +36378,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -36521,10 +36395,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var SeamailDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(SeamailDAO, _AbstractDAO);
 
+  var _super = _createSuper(SeamailDAO);
+
   function SeamailDAO() {
     _classCallCheck(this, SeamailDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(SeamailDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(SeamailDAO, [{
@@ -36789,6 +36665,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -36819,9 +36701,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -36832,10 +36718,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var SearchDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(SearchDAO, _AbstractDAO);
 
+  var _super = _createSuper(SearchDAO);
+
   function SearchDAO() {
     _classCallCheck(this, SearchDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(SearchDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(SearchDAO, [{
@@ -37078,6 +36966,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -37112,9 +37006,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -37125,10 +37023,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var StreamDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(StreamDAO, _AbstractDAO);
 
+  var _super = _createSuper(StreamDAO);
+
   function StreamDAO() {
     _classCallCheck(this, StreamDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(StreamDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(StreamDAO, [{
@@ -37600,6 +37500,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -37632,9 +37538,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -37645,10 +37555,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var TextDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(TextDAO, _AbstractDAO);
 
+  var _super = _createSuper(TextDAO);
+
   function TextDAO() {
     _classCallCheck(this, TextDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TextDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(TextDAO, [{
@@ -37816,6 +37728,12 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -37850,9 +37768,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -37863,10 +37785,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var UserDAO = /*#__PURE__*/function (_AbstractDAO) {
   _inherits(UserDAO, _AbstractDAO);
 
+  var _super = _createSuper(UserDAO);
+
   function UserDAO() {
     _classCallCheck(this, UserDAO);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(UserDAO).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(UserDAO, [{
@@ -41026,6 +40950,8 @@ var _promise = _interopRequireDefault(__webpack_require__(/*! ../../node_modules
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -41068,9 +40994,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -41092,6 +41022,8 @@ var fetchWarn = false;
 var BrowserHTTP = /*#__PURE__*/function (_AbstractHTTP) {
   _inherits(BrowserHTTP, _AbstractHTTP);
 
+  var _super = _createSuper(BrowserHTTP);
+
   /**
    * Construct a BrowserHTTP instance.
    * @param server - The server to connect to.
@@ -41102,7 +41034,7 @@ var BrowserHTTP = /*#__PURE__*/function (_AbstractHTTP) {
 
     _classCallCheck(this, BrowserHTTP);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(BrowserHTTP).call(this, server, timeout));
+    return _super.call(this, server, timeout);
   }
   /**
    * Make an HTTP GET call using `fetch({method:'GET'})`.
@@ -41638,6 +41570,8 @@ var _iterator = _interopRequireDefault(__webpack_require__(/*! ../../node_module
 
 var _symbol = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/symbol */ "./node_modules/@babel/runtime-corejs2/core-js/symbol.js"));
 
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -41682,11 +41616,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = (0, _create.default)(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -41702,6 +41640,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { (0, _definePropert
 var CordovaHTTP = /*#__PURE__*/function (_AbstractHTTP) {
   _inherits(CordovaHTTP, _AbstractHTTP);
 
+  var _super = _createSuper(CordovaHTTP);
+
   /**
    * Construct a CordovaHTTP instance.
    * @param server - The server to connect to.
@@ -41714,7 +41654,7 @@ var CordovaHTTP = /*#__PURE__*/function (_AbstractHTTP) {
 
     _classCallCheck(this, CordovaHTTP);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CordovaHTTP).call(this, server, timeout)); // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    _this = _super.call(this, server, timeout); // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
 
     _defineProperty(_assertThisInitialized(_this), "initialized", false);
@@ -42083,6 +42023,12 @@ var _symbol = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js"));
 
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+
+__webpack_require__(/*! ../../node_modules/core-js/modules/es6.object.to-string */ "./node_modules/core-js/modules/es6.object.to-string.js");
+
+var _construct = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/reflect/construct */ "./node_modules/@babel/runtime-corejs2/core-js/reflect/construct.js"));
+
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js"));
 
 var _create = _interopRequireDefault(__webpack_require__(/*! ../../node_modules/@babel/runtime-corejs2/core-js/object/create */ "./node_modules/@babel/runtime-corejs2/core-js/object/create.js"));
@@ -42101,9 +42047,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = (0, _construct.default)(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_construct.default) return false; if (_construct.default.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call((0, _construct.default)(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = _setPrototypeOf2.default ? _getPrototypeOf2.default : function _getPrototypeOf(o) { return o.__proto__ || (0, _getPrototypeOf2.default)(o); }; return _getPrototypeOf(o); }
 
@@ -42115,10 +42065,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = _setPrototypeOf2.default || f
 var NodeHTTP = /*#__PURE__*/function (_BrowserHTTP) {
   _inherits(NodeHTTP, _BrowserHTTP);
 
+  var _super = _createSuper(NodeHTTP);
+
   function NodeHTTP() {
     _classCallCheck(this, NodeHTTP);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(NodeHTTP).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(NodeHTTP, [{
