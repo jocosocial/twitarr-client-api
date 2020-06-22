@@ -41934,8 +41934,8 @@ var AbstractHTTP = /*#__PURE__*/function () {
 
   }, {
     key: "onSetServer",
-    value: function onSetServer() {} // do nothing by default
-
+    value: function onSetServer() {// do nothing by default
+    }
     /**
      * Create an [[Error]] from an error response.
      * @hidden
