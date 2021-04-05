@@ -84,7 +84,7 @@
     "lodash.startcase": "^4.4.0",
     "moment": "^2.24.0",
     "qs": "^6.6.0",
-    "runtypes": "^4.1.0",
+    "runtypes": "^6.0.0",
     "string-hash": "^1.1.3",
     "urijs": "^1.19.2",
     "whatwg-fetch": "^3.0.0",
