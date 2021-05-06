@@ -51,7 +51,7 @@
     "chai": "^4.2.0",
     "child_process": "^1.0.2",
     "conventional-changelog-lint": "^2.1.1",
-    "eslint": "^6.8.0",
+    "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-loader": "^4.0.0",
     "eslint-plugin-prettier": "^3.0.1",
