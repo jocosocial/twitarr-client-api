@@ -1,5 +1,5 @@
 <a name="0.1.2-beta.1"></a>
-## [0.1.2-beta.1](https://github.com/seamonkeysocial/twitarr-client-api/compare/v0.1.1...v0.1.2-beta.1) (2021-04-16)
+## [0.1.2-beta.1](https://github.com/seamonkeysocial/twitarr-client-api/compare/v0.1.1...v0.1.2-beta.1) (2021-05-06)
 
 
 ### Bug Fixes
