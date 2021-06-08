@@ -69,7 +69,7 @@
     "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "~3.9.2",
     "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^4.7.2",
     "webpack-closure-compiler": "^2.1.6",
     "yargs": "^15.1.0"
   },
