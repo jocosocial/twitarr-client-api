@@ -71,7 +71,7 @@
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-closure-compiler": "^2.1.6",
-    "yargs": "^15.1.0"
+    "yargs": "^17.1.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
