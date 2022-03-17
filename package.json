@@ -79,7 +79,7 @@
     "browser-or-node": "^1.1.0",
     "cli-table2": "^0.2.0",
     "es6-promise": "^4.2.6",
-    "fetch-ponyfill": "^6.1.0",
+    "fetch-ponyfill": "^7.1.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.startcase": "^4.4.0",
     "moment": "^2.24.0",
